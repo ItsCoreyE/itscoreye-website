@@ -172,17 +172,26 @@ const processCSVData = async (csvText: string): Promise<SalesData> => {
     .slice(0, 6);
 
   // Fetch additional details from ROBLOX API
-  console.log('🔍 Fetching asset details from ROBLOX API...');
-  const topItems = await Promise.all(
-    topItemsRaw.map(async (item) => {
-      const details = await fetchAssetDetails(item.assetId);
-      return {
-        ...item,
-        description: details?.description || `Amazing ${item.assetType} by ItsCoreyE`,
-        thumbnail: details?.thumbnail || null
-      };
-    })
-  );
+console.log('🔍 Fetching asset details from ROBLOX API...');
+const topItems = [];
+
+// Process items one by one to avoid rate limiting
+for (let i = 0; i < topItemsRaw.length; i++) {
+  const item = topItemsRaw[i];
+  console.log(`Processing item ${i + 1}/${topItemsRaw.length}: ${item.name}`);
+  
+  const details = await fetchAssetDetails(item.assetId);
+  topItems.push({
+    ...item,
+    description: details?.description || `Amazing ${item.assetType} by ItsCoreyE`,
+    thumbnail: details?.thumbnail || null
+  });
+  
+  // Add delay between requests to avoid rate limiting
+  if (i < topItemsRaw.length - 1) {
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+}
 
   // Calculate period
   let dataPeriod = 'CSV Data';
@@ -208,20 +217,27 @@ const processCSVData = async (csvText: string): Promise<SalesData> => {
 // Add this function to fetch asset details
 const fetchAssetDetails = async (assetId: string) => {
   try {
-    // Fetch asset info
-    const assetResponse = await fetch(`https://economy.roblox.com/v2/assets/${assetId}/details`);
-    const assetData = await assetResponse.json();
+    console.log(`🔍 Fetching details for asset ${assetId} via proxy...`);
     
-    // Fetch thumbnail
-    const thumbnailResponse = await fetch(`https://thumbnails.roblox.com/v1/assets?assetIds=${assetId}&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false`);
-    const thumbnailData = await thumbnailResponse.json();
+    // Use our internal API route instead of direct ROBLOX calls
+    const response = await fetch(`/api/roblox?assetId=${assetId}`);
+    const data = await response.json();
     
-    return {
-      description: assetData.Description || 'Steampunk creation by ItsCoreyE',
-      thumbnail: thumbnailData.data?.[0]?.imageUrl || null
-    };
+    if (data.success) {
+      console.log(`✅ Successfully fetched details for ${assetId}`);
+      return {
+        description: data.description,
+        thumbnail: data.thumbnail
+      };
+    } else {
+      console.log(`⚠️ API returned error for ${assetId}:`, data.error);
+      return {
+        description: 'Amazing steampunk creation by ItsCoreyE',
+        thumbnail: null
+      };
+    }
   } catch (error) {
-    console.log(`⚠️ Failed to fetch details for asset ${assetId}:`, error);
+    console.log(`❌ Failed to fetch details for asset ${assetId}:`, error);
     return {
       description: 'Amazing steampunk creation by ItsCoreyE',
       thumbnail: null
