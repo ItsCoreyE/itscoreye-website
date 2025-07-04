@@ -19,18 +19,7 @@ export default function Contact() {
     <section className="dark-rich-gradient py-16 sm:py-20 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 steampunk-font leading-tight"
-            data-text="Get In Touch"
-            style={{
-              background: 'linear-gradient(135deg, #FFD700, #DAA520, #CD7F32)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              textShadow: '0 4px 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.2)',
-              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
-            }}
-          >
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight text-amber-100">
             Get In Touch
           </h2>
           <div className="flex items-center justify-center gap-4 mb-6">
