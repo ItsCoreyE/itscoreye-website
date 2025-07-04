@@ -117,7 +117,7 @@ function AnimatedGears() {
 // Steam Particles Component
 function SteamParticles() {
   // Reduce particle count on mobile for better performance
-  const particleCount = typeof window !== 'undefined' && window.innerWidth < 640 ? 4 : 8;
+  const particleCount = typeof window !== 'undefined' && window.innerWidth < 640 ? 15 : 30;
   
   return (
     <div className="absolute inset-0">
@@ -126,20 +126,20 @@ function SteamParticles() {
           key={i}
           className="absolute w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/30 sm:bg-white/40 rounded-full"
           style={{
-            left: `${20 + i * (60 / particleCount)}%`,
-            bottom: '10%',
+            left: `${Math.random() * 100}%`,
+            bottom: '100%',
           }}
           animate={{
-            y: [-20, -200, -300],
-            opacity: [0, 0.6, 0.8, 0],
-            scale: [0.5, 1, 1.2, 1.5],
-            x: [0, Math.sin(i) * 30, Math.sin(i) * 50]
+            y: [0, -window.innerHeight],
+            x: [0, Math.sin(i) * 60 - 30, Math.cos(i) * 60 - 30, 0],
+            opacity: [0, 0.8, 0.8, 0],
+            scale: [0.5, 1, 1.2, 0.5],
           }}
           transition={{
-            duration: 3 + i * 0.4,
+            duration: 5 + Math.random() * 5,
             repeat: Infinity,
-            delay: i * 0.4,
-            ease: "easeOut"
+            delay: i * 0.2,
+            ease: "linear"
           }}
         />
       ))}
