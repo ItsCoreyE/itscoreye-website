@@ -125,6 +125,120 @@ const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
   }
 };
 
+const handleGrowthCalculation = async () => {
+  const previousFile = document.getElementById('previousFile') as HTMLInputElement;
+  const currentFile = document.getElementById('currentFile') as HTMLInputElement;
+  
+  if (!previousFile.files?.[0] || !currentFile.files?.[0]) {
+    alert('❌ Please select both previous month and current month CSV files');
+    return;
+  }
+
+  setIsUploading(true);
+  
+  try {
+    console.log('📊 Processing both CSV files for growth calculation...');
+    
+    // Process previous month file
+    const previousText = await previousFile.files[0].text();
+    const previousData = await processCSVDataForGrowth(previousText, 'Previous Month');
+    
+    // Process current month file  
+    const currentText = await currentFile.files[0].text();
+    const currentData = await processCSVDataForGrowth(currentText, 'Current Month');
+    
+    // Calculate growth
+    const revenueGrowth = previousData.totalRevenue > 0 
+      ? ((currentData.totalRevenue - previousData.totalRevenue) / previousData.totalRevenue) * 100
+      : 0;
+    
+    const salesGrowth = previousData.totalSales > 0
+      ? ((currentData.totalSales - previousData.totalSales) / previousData.totalSales) * 100  
+      : 0;
+    
+    // Use revenue growth as the main growth metric
+    const growthPercentage = Math.round(revenueGrowth * 10) / 10; // Round to 1 decimal
+    
+    // Create final data with growth calculation
+    const finalData = {
+      ...currentData,
+      growthPercentage: growthPercentage,
+      lastUpdated: new Date().toLocaleString(),
+      dataPeriod: `${previousData.dataPeriod} → ${currentData.dataPeriod}`
+    };
+    
+    // Save to Upstash automatically
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(finalData)
+    });
+    
+    if (response.ok) {
+      setSalesData(finalData);
+      alert(`✅ Growth calculation complete!\n📈 Revenue Growth: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}%\n📊 Sales Growth: ${salesGrowth > 0 ? '+' : ''}${Math.round(salesGrowth * 10) / 10}%\n🌐 Data is now live for all visitors!`);
+    } else {
+      alert('❌ Failed to save processed data');
+    }
+  } catch (error) {
+    console.error('Error processing growth calculation:', error);
+    alert('❌ Error processing files. Please check the CSV format.');
+  } finally {
+    setIsUploading(false);
+  }
+};
+
+const processCSVDataForGrowth = async (csvText: string, periodLabel: string): Promise<SalesData> => {
+  console.log(`Processing ${periodLabel} CSV data...`);
+  
+  const lines = csvText.split('\n');
+  let totalRevenue = 0;
+  let totalSales = 0;
+  let earliestDate: Date | null = null;
+  let latestDate: Date | null = null;
+
+  // Process CSV data (simplified for growth calculation)
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const columns = line.split(',');
+    
+    if (columns.length >= 13) {
+      const revenue = parseFloat(columns[11]);
+      const dateStr = columns[2].replace(/"/g, '').trim();
+      
+      const saleDate = new Date(dateStr);
+      if (!isNaN(saleDate.getTime())) {
+        if (!earliestDate || saleDate < earliestDate) earliestDate = saleDate;
+        if (!latestDate || saleDate > latestDate) latestDate = saleDate;
+      }
+      
+      if (!isNaN(revenue) && revenue > 0) {
+        totalRevenue += revenue;
+        totalSales += 1;
+      }
+    }
+  }
+
+  // Calculate period
+  let dataPeriod = periodLabel;
+  if (earliestDate && latestDate) {
+    const earliestMonth = earliestDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+    const latestMonth = latestDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+    dataPeriod = earliestMonth === latestMonth ? earliestMonth : `${earliestMonth} - ${latestMonth}`;
+  }
+
+  return {
+    totalRevenue: Math.round(totalRevenue),
+    totalSales,
+    growthPercentage: 0, // Will be calculated later
+    lastUpdated: new Date().toLocaleString(),
+    dataPeriod,
+    topItems: [] // Not needed for growth calculation
+  };
+};
+
 const processCSVData = async (csvText: string): Promise<SalesData> => {
   console.log('Processing ROBLOX CSV data...');
   
@@ -433,6 +547,61 @@ const fetchAssetDetails = async (assetId: string) => {
                 </motion.button>
               </motion.div>
             </div>
+
+            {/* Growth Calculation Section */}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-amber-900/30 border border-amber-600 rounded-lg p-6 mb-8"
+            >
+              <h3 className="text-2xl font-bold text-amber-200 mb-4 flex items-center">
+                📊 Growth Calculation
+              </h3>
+              <p className="text-amber-300 mb-6">
+                Upload two CSV files to calculate real month-over-month growth percentage
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                  <label className="block text-amber-200 font-semibold mb-2">
+                    📅 Previous Month CSV (e.g., May)
+                  </label>
+                  <input
+                    id="previousFile"
+                    type="file"
+                    accept=".csv"
+                    className="w-full p-3 rounded-lg bg-amber-800/50 border border-amber-600 text-amber-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-700 file:text-amber-100 hover:file:bg-amber-600 transition-colors"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-amber-200 font-semibold mb-2">
+                    📅 Current Month CSV (e.g., June)
+                  </label>
+                  <input
+                    id="currentFile"
+                    type="file"
+                    accept=".csv"
+                    className="w-full p-3 rounded-lg bg-amber-800/50 border border-amber-600 text-amber-100 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-700 file:text-amber-100 hover:file:bg-amber-600 transition-colors"
+                  />
+                </div>
+              </div>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleGrowthCalculation}
+                disabled={isUploading}
+                className="brass-button w-full py-4 text-lg font-bold disabled:opacity-50"
+              >
+                {isUploading ? '⏳ Calculating Growth...' : '🧮 Calculate Real Growth'}
+              </motion.button>
+              
+              <div className="mt-4 p-4 bg-amber-800/30 rounded-lg border border-amber-700">
+                <p className="text-amber-300 text-sm">
+                  <strong>💡 How it works:</strong> Upload your May and June CSV files, and the system will automatically calculate the real revenue growth percentage between the two months. This replaces the placeholder 2579% with actual data!
+                </p>
+              </div>
+            </motion.div>
 
             {/* Current Stats Display */}
             {salesData && (
