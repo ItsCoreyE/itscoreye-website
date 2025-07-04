@@ -6,7 +6,7 @@ import Contact from '@/components/Contact';
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-gradient-to-b from-amber-900 via-orange-900 to-amber-800 overflow-hidden">
+    <main className="relative min-h-screen dark-rich-gradient overflow-hidden">
       {/* Animated gears background */}
       <div className="absolute inset-0">
         <AnimatedGears />
@@ -16,7 +16,7 @@ export default function Home() {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8 sm:mb-12 lg:mb-16">
           <h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 steampunk-font leading-none"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 steampunk-font text-glow text-depth leading-none"
             data-text="ItsCoreyE"
           >
             ItsCoreyE

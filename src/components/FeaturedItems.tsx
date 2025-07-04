@@ -87,7 +87,7 @@ export default function FeaturedItems() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-amber-800 to-orange-900 py-12 sm:py-16 md:py-20">
+    <section className="min-h-screen rich-gradient py-12 sm:py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <h2 
@@ -111,14 +111,7 @@ export default function FeaturedItems() {
             <motion.div
               key={`${item.name}-${index}`}
               whileHover={{ scale: 1.02 }}
-              className="relative group bg-gradient-to-br from-amber-900/50 via-amber-800/40 to-orange-900/50 backdrop-blur-md border-2 border-amber-600/60 rounded-xl p-5 sm:p-6 hover:border-amber-400/80 transition-all duration-300 shadow-xl hover:shadow-2xl"
-              style={{
-                boxShadow: `
-                  0 10px 30px rgba(0, 0, 0, 0.3),
-                  inset 0 1px 2px rgba(255, 255, 255, 0.1),
-                  0 0 20px rgba(218, 165, 32, 0.1)
-                `
-              }}
+              className="relative group premium-card enhanced-glass deep-shadow hover-lift rounded-xl p-5 sm:p-6"
             >
               {/* Decorative corner accents */}
               <div className="absolute top-1 left-1 w-3 h-3 border-l border-t border-amber-400/40 group-hover:border-amber-300/60 transition-colors"></div>

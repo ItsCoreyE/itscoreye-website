@@ -55,17 +55,7 @@ export default function LiveStats() {
   }, []);
 
   return (
-    <div
-      className="relative bg-gradient-to-br from-amber-900/40 via-amber-800/30 to-orange-900/40 backdrop-blur-md border-3 border-amber-600/60 rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto shadow-2xl"
-      style={{
-        boxShadow: `
-          0 20px 40px rgba(0, 0, 0, 0.4),
-          inset 0 2px 4px rgba(255, 255, 255, 0.1),
-          inset 0 -2px 4px rgba(0, 0, 0, 0.2),
-          0 0 30px rgba(218, 165, 32, 0.2)
-        `
-      }}
-    >
+    <div className="relative premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
       {/* Decorative corner elements */}
       <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
       <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-amber-400/60"></div>
@@ -101,7 +91,7 @@ export default function LiveStats() {
             <p className="text-amber-200 text-sm sm:text-base font-medium tracking-wide">Total Revenue</p>
             <div className="flex items-center justify-center mt-2">
               <span className="text-green-400 text-xs sm:text-sm font-bold bg-green-900/30 px-2 py-1 rounded-full">
-                ↗ {statsData.growthPercentage}% Growth
+                {statsData.growthPercentage}% Growth
               </span>
             </div>
           </div>

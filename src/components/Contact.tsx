@@ -16,7 +16,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="bg-gradient-to-b from-orange-900 to-amber-900 py-16 sm:py-20 md:py-24">
+    <section className="dark-rich-gradient py-16 sm:py-20 md:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16">
           <h2 
@@ -38,15 +38,7 @@ export default function Contact() {
         <div className="flex justify-center">
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="relative bg-gradient-to-br from-amber-900/50 via-amber-800/40 to-orange-900/50 backdrop-blur-md border-2 border-amber-600/60 rounded-xl p-8 sm:p-10 max-w-md w-full shadow-2xl hover:border-amber-400/80 transition-all duration-300"
-            style={{
-              boxShadow: `
-                0 20px 40px rgba(0, 0, 0, 0.4),
-                inset 0 2px 4px rgba(255, 255, 255, 0.1),
-                inset 0 -2px 4px rgba(0, 0, 0, 0.2),
-                0 0 30px rgba(218, 165, 32, 0.2)
-              `
-            }}
+            className="relative premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-8 sm:p-10 max-w-md w-full"
           >
             {/* Decorative corner elements */}
             <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
