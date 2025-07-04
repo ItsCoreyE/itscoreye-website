@@ -63,7 +63,7 @@ export default function Contact() {
                   </svg>
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-amber-100 mb-2">Discord</h3>
-                <p className="text-amber-300/80 text-sm mb-4">Let's connect and discuss your next project</p>
+                <p className="text-amber-300/80 text-sm mb-4">Let&apos;s connect and discuss your next project</p>
               </div>
 
               {/* Discord Username */}
