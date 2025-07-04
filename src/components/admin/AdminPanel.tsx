@@ -211,9 +211,9 @@ for (let i = 0; i < topItemsRaw.length; i++) {
     thumbnail: details?.thumbnail || null
   });
   
-  // Add delay between requests to avoid rate limiting
+  // Add longer delay between requests to avoid rate limiting
   if (i < topItemsRaw.length - 1) {
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 2000));
   }
 }
 
