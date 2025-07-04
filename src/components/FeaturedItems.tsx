@@ -70,40 +70,17 @@ export default function FeaturedItems() {
     // Function to fetch data from API
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/roblox');
+        const response = await fetch('/api/data');
         if (response.ok) {
           const data = await response.json();
           if (data.topItems && data.topItems.length > 0) {
             setFeaturedItems(data.topItems);
           }
-          // Also save to localStorage as backup
-          if (typeof window !== 'undefined') {
-            localStorage.setItem('ugc-sales-data', JSON.stringify(data));
-          }
         } else {
-          // Fallback to localStorage if API fails
-          if (typeof window !== 'undefined') {
-            const savedData = localStorage.getItem('ugc-sales-data');
-            if (savedData) {
-              const parsedData = JSON.parse(savedData);
-              if (parsedData.topItems && parsedData.topItems.length > 0) {
-                setFeaturedItems(parsedData.topItems);
-              }
-            }
-          }
+          console.error('Failed to fetch featured items from API:', response.status);
         }
       } catch (error) {
         console.error('Error fetching featured items from API:', error);
-        // Fallback to localStorage if API fails
-        if (typeof window !== 'undefined') {
-          const savedData = localStorage.getItem('ugc-sales-data');
-          if (savedData) {
-            const parsedData = JSON.parse(savedData);
-            if (parsedData.topItems && parsedData.topItems.length > 0) {
-              setFeaturedItems(parsedData.topItems);
-            }
-          }
-        }
       }
     };
 

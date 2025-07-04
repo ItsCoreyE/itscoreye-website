@@ -34,34 +34,15 @@ export default function LiveStats() {
     // Function to fetch data from API
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/roblox');
+        const response = await fetch('/api/data');
         if (response.ok) {
           const data = await response.json();
           setStatsData(data);
-          // Also save to localStorage as backup
-          if (typeof window !== 'undefined') {
-            localStorage.setItem('ugc-sales-data', JSON.stringify(data));
-          }
         } else {
-          // Fallback to localStorage if API fails
-          if (typeof window !== 'undefined') {
-            const savedData = localStorage.getItem('ugc-sales-data');
-            if (savedData) {
-              const parsedData = JSON.parse(savedData);
-              setStatsData(parsedData);
-            }
-          }
+          console.error('Failed to fetch data from API:', response.status);
         }
       } catch (error) {
         console.error('Error fetching data from API:', error);
-        // Fallback to localStorage if API fails
-        if (typeof window !== 'undefined') {
-          const savedData = localStorage.getItem('ugc-sales-data');
-          if (savedData) {
-            const parsedData = JSON.parse(savedData);
-            setStatsData(parsedData);
-          }
-        }
       }
     };
 
