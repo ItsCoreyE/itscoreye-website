@@ -118,14 +118,24 @@ function AnimatedGears() {
 // Steam Particles Component
 function SteamParticles() {
   const [particleCount, setParticleCount] = useState(0);
-  const [windowHeight, setWindowHeight] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(800); // Default fallback
+  const [particles, setParticles] = useState<Array<{left: number, delay: number, duration: number}>>([]);
 
   useEffect(() => {
-    setParticleCount(window.innerWidth < 640 ? 15 : 30);
+    const count = window.innerWidth < 640 ? 15 : 30;
+    setParticleCount(count);
     setWindowHeight(window.innerHeight);
+    
+    // Generate static particle properties to prevent jumping
+    const particleData = Array.from({ length: count }, (_, i) => ({
+      left: Math.random() * 100,
+      delay: i * 0.2,
+      duration: 5 + Math.random() * 5
+    }));
+    setParticles(particleData);
   }, []);
 
-  if (particleCount === 0) {
+  if (particleCount === 0 || particles.length === 0) {
     return null;
   }
 
@@ -136,8 +146,8 @@ function SteamParticles() {
       opacity: 0,
       scale: 0.5,
     },
-    animate: (i:number) => ({
-      y: -windowHeight,
+    animate: (i: number) => ({
+      y: -windowHeight - 100, // Move from bottom to above the screen
       x: [0, Math.sin(i) * 60 - 30, Math.cos(i) * 60 - 30, 0],
       opacity: [0, 0.8, 0.8, 0],
       scale: [0.5, 1, 1.2, 0.5],
@@ -146,22 +156,22 @@ function SteamParticles() {
   
   return (
     <div className="absolute inset-0">
-      {[...Array(particleCount)].map((_, i) => (
+      {particles.map((particle, i) => (
         <motion.div
           key={i}
           custom={i}
           className="absolute w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/30 sm:bg-white/40 rounded-full"
           style={{
-            left: `${Math.random() * 100}%`,
-            bottom: '100%',
+            left: `${particle.left}%`,
+            bottom: '0%', // Start from bottom of screen
           }}
           variants={particleVariants}
           initial="initial"
           animate="animate"
           transition={{
-            duration: 5 + Math.random() * 5,
+            duration: particle.duration,
             repeat: Infinity,
-            delay: i * 0.2,
+            delay: particle.delay,
             ease: "linear"
           }}
         />
