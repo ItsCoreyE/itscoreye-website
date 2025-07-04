@@ -13,79 +13,48 @@ export default function Home() {
       
       {/* Hero Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4 sm:px-6 lg:px-8 py-8">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="mb-8 sm:mb-12 lg:mb-16"
-        >
-          <motion.h1 
+        <div className="mb-8 sm:mb-12 lg:mb-16">
+          <h1 
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 steampunk-font leading-none"
             data-text="ItsCoreyE"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
           >
             ItsCoreyE
-          </motion.h1>
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, delay: 0.8 }}
-            className="flex items-center justify-center gap-4 mb-6 sm:mb-8"
-          >
+          </h1>
+          <div className="flex items-center justify-center gap-4 mb-6 sm:mb-8">
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16 sm:w-24"></div>
             <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl steampunk-subtitle whitespace-nowrap">
               UGC Creator
             </p>
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16 sm:w-24"></div>
-          </motion.div>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.2 }}
-            className="text-sm sm:text-base md:text-lg text-amber-300/80 max-w-2xl mx-auto leading-relaxed"
-          >
+          </div>
+          <p className="text-sm sm:text-base md:text-lg text-amber-300/80 max-w-2xl mx-auto leading-relaxed">
             Crafting extraordinary virtual experiences through innovative design and meticulous attention to detail
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
         
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 1.5 }}
-        >
+        <div>
           <LiveStats />
-        </motion.div>
+        </div>
 
         {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.8 }}
-          className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-sm sm:max-w-lg mt-8 sm:mt-12"
-        >
-          <motion.a 
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-sm sm:max-w-lg mt-8 sm:mt-12">
+          <a 
             href="https://www.roblox.com/users/3504185/profile" 
             target="_blank" 
-            className="brass-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+            className="brass-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group hover:scale-105 transition-transform"
           >
             <span className="mr-2">🎮</span>
             View ROBLOX Profile
-          </motion.a>
-          <motion.a 
+          </a>
+          <a 
             href="https://www.tiktok.com/@itscoreye" 
             target="_blank" 
-            className="brass-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
+            className="brass-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group hover:scale-105 transition-transform"
           >
             <span className="mr-2">📱</span>
             Follow on TikTok
-          </motion.a>
-        </motion.div>
+          </a>
+        </div>
       </div>
       
       {/* Featured Items Section */}

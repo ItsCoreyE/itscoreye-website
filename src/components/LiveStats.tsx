@@ -56,10 +56,7 @@ export default function LiveStats() {
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8, rotateX: 20 }}
-      animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-      transition={{ duration: 1.2, ease: "easeOut" }}
+    <div
       className="relative bg-gradient-to-br from-amber-900/40 via-amber-800/30 to-orange-900/40 backdrop-blur-md border-3 border-amber-600/60 rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto shadow-2xl"
       style={{
         boxShadow: `
@@ -78,27 +75,19 @@ export default function LiveStats() {
 
       {/* Data Period Header */}
       {statsData.dataPeriod && (
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="text-center mb-6"
-        >
+        <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 bg-amber-700/30 px-4 py-2 rounded-full border border-amber-500/40">
             <span className="text-amber-300 text-sm sm:text-base font-semibold tracking-wide">
               ⚡ {statsData.dataPeriod} Statistics
             </span>
           </div>
-        </motion.div>
+        </div>
       )}
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 text-center">
         <motion.div
-          whileHover={{ scale: 1.05, rotateY: 5 }}
+          whileHover={{ scale: 1.02 }}
           className="relative cursor-pointer group"
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
         >
           <div className="bg-gradient-to-br from-green-900/20 to-emerald-800/20 rounded-lg p-4 border border-green-600/30 group-hover:border-green-500/50 transition-all duration-300">
             <motion.h3 
@@ -120,11 +109,8 @@ export default function LiveStats() {
         </motion.div>
         
         <motion.div
-          whileHover={{ scale: 1.05, rotateY: -5 }}
+          whileHover={{ scale: 1.02 }}
           className="relative cursor-pointer group"
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7 }}
         >
           <div className="bg-gradient-to-br from-blue-900/20 to-cyan-800/20 rounded-lg p-4 border border-blue-600/30 group-hover:border-blue-500/50 transition-all duration-300">
             <motion.h3 
@@ -146,17 +132,12 @@ export default function LiveStats() {
         </motion.div>
       </div>
       
-      <motion.div 
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9 }}
-        className="text-center mt-6"
-      >
+      <div className="text-center mt-6">
         <div className="inline-flex items-center gap-2 text-amber-400 text-xs sm:text-sm">
           <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
           <span className="font-medium">{statsData.lastUpdated}</span>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
