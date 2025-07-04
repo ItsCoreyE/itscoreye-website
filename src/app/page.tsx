@@ -128,23 +128,36 @@ function SteamParticles() {
   if (particleCount === 0) {
     return null;
   }
+
+  const particleVariants = {
+    initial: {
+      y: 0,
+      x: 0,
+      opacity: 0,
+      scale: 0.5,
+    },
+    animate: (i:number) => ({
+      y: -windowHeight,
+      x: [0, Math.sin(i) * 60 - 30, Math.cos(i) * 60 - 30, 0],
+      opacity: [0, 0.8, 0.8, 0],
+      scale: [0.5, 1, 1.2, 0.5],
+    }),
+  };
   
   return (
     <div className="absolute inset-0">
       {[...Array(particleCount)].map((_, i) => (
         <motion.div
           key={i}
+          custom={i}
           className="absolute w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/30 sm:bg-white/40 rounded-full"
           style={{
             left: `${Math.random() * 100}%`,
             bottom: '100%',
           }}
-          animate={{
-            y: [0, -windowHeight],
-            x: [0, Math.sin(i) * 60 - 30, Math.cos(i) * 60 - 30, 0],
-            opacity: [0, 0.8, 0.8, 0],
-            scale: [0.5, 1, 1.2, 0.5],
-          }}
+          variants={particleVariants}
+          initial="initial"
+          animate="animate"
           transition={{
             duration: 5 + Math.random() * 5,
             repeat: Infinity,
