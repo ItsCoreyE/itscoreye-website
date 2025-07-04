@@ -194,12 +194,29 @@ const processCSVData = async (csvText: string): Promise<SalesData> => {
     .sort((a, b) => b.sales - a.sales)
     .slice(0, 6);
 
-  // Use the raw items without fetching additional details
-  console.log('✅ Processing complete - using item data from CSV');
-  const topItems = topItemsRaw.map(item => ({
-    ...item,
-    thumbnail: undefined
-  }));
+  // Fetch thumbnails for top items
+  console.log('🖼️ Fetching thumbnails for top items...');
+  const topItems = [];
+  
+  for (let i = 0; i < topItemsRaw.length; i++) {
+    const item = topItemsRaw[i];
+    console.log(`📸 Fetching thumbnail ${i + 1}/${topItemsRaw.length} for ${item.name}`);
+    
+    // Fetch thumbnail details
+    const assetDetails = await fetchAssetDetails(item.assetId);
+    
+    topItems.push({
+      ...item,
+      thumbnail: assetDetails.thumbnail
+    });
+    
+    // Add delay between requests to avoid rate limiting
+    if (i < topItemsRaw.length - 1) {
+      await new Promise(resolve => setTimeout(resolve, 1500));
+    }
+  }
+  
+  console.log('✅ Thumbnail fetching complete');
 
   // Calculate period
   let dataPeriod = 'CSV Data';
