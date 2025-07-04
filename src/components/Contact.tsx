@@ -22,6 +22,14 @@ export default function Contact() {
           <h2 
             className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 steampunk-font leading-tight"
             data-text="Get In Touch"
+            style={{
+              background: 'linear-gradient(135deg, #FFD700, #DAA520, #CD7F32)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              textShadow: '0 4px 8px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.2)',
+              filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+            }}
           >
             Get In Touch
           </h2>
