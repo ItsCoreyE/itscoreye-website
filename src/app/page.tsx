@@ -29,7 +29,7 @@ export default function Home() {
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16 sm:w-24"></div>
           </div>
           <p className="text-sm sm:text-base md:text-lg text-amber-300/80 max-w-2xl mx-auto leading-relaxed">
-            Creating unique UGC items that bring your Roblox avatar to life with style and creativity
+            Crafting quality UGC items for your Roblox avatar
           </p>
         </div>
         

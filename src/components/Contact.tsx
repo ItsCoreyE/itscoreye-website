@@ -31,7 +31,7 @@ export default function Contact() {
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16 sm:w-24"></div>
           </div>
           <p className="text-base sm:text-lg text-amber-300/90 max-w-2xl mx-auto leading-relaxed">
-            Ready to collaborate or have questions about my UGC creations? Reach out on Discord!
+            Got questions or want to chat? Drop me a message on Discord
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default function Contact() {
                   </svg>
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-amber-100 mb-2">Discord</h3>
-                <p className="text-amber-300/80 text-sm mb-4">Let&apos;s connect and discuss your next project</p>
+                <p className="text-amber-300/80 text-sm mb-4">Always happy to have a chat</p>
               </div>
 
               {/* Discord Username */}

@@ -77,7 +77,7 @@ export default function LiveStats() {
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 bg-amber-700/30 px-4 py-2 rounded-full border border-amber-500/40">
             <span className="text-amber-300 text-sm sm:text-base font-semibold tracking-wide">
-              ⚡ {statsData.dataPeriod} Statistics
+              {statsData.dataPeriod}
             </span>
           </div>
         </div>
@@ -124,7 +124,7 @@ export default function LiveStats() {
             <p className="text-amber-200 text-sm sm:text-base font-medium tracking-wide">Total Sales</p>
             <div className="flex items-center justify-center mt-2">
               <span className="text-blue-400 text-xs sm:text-sm font-bold bg-blue-900/30 px-2 py-1 rounded-full">
-                🎯 Items Sold
+                Items Sold
               </span>
             </div>
           </div>

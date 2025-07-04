@@ -102,7 +102,7 @@ export default function FeaturedItems() {
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
           </div>
           <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
-            Discover my most popular UGC items that have captured the imagination of thousands of players across all categories
+            My most popular UGC items
           </p>
         </div>
 
@@ -157,12 +157,12 @@ export default function FeaturedItems() {
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-2 mb-4">
                 <div className="flex items-center gap-2">
                   <span className="text-green-400 font-bold text-sm sm:text-base bg-green-900/20 px-3 py-1 rounded-full border border-green-600/30 hover:bg-green-900/30 transition-colors">
-                    📈 {typeof item.sales === 'number' ? item.sales.toLocaleString() : item.sales}
+                    {typeof item.sales === 'number' ? item.sales.toLocaleString() : item.sales} sold
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-amber-400 text-sm sm:text-base font-bold bg-amber-900/20 px-3 py-1 rounded-full border border-amber-600/30 hover:bg-amber-900/30 transition-colors">
-                    💰 {item.price} R$
+                    {item.price} R$
                   </span>
                 </div>
               </div>
