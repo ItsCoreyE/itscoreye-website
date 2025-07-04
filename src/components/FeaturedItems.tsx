@@ -67,29 +67,51 @@ export default function FeaturedItems() {
   ]);
 
   useEffect(() => {
-    // Load featured items from localStorage
-    if (typeof window !== 'undefined') {
-      const savedData = localStorage.getItem('ugc-sales-data');
-      if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        if (parsedData.topItems && parsedData.topItems.length > 0) {
-          setFeaturedItems(parsedData.topItems);
+    // Function to fetch data from API
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/roblox');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.topItems && data.topItems.length > 0) {
+            setFeaturedItems(data.topItems);
+          }
+          // Also save to localStorage as backup
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('ugc-sales-data', JSON.stringify(data));
+          }
+        } else {
+          // Fallback to localStorage if API fails
+          if (typeof window !== 'undefined') {
+            const savedData = localStorage.getItem('ugc-sales-data');
+            if (savedData) {
+              const parsedData = JSON.parse(savedData);
+              if (parsedData.topItems && parsedData.topItems.length > 0) {
+                setFeaturedItems(parsedData.topItems);
+              }
+            }
+          }
         }
-      }
-    }
-
-    // Check for updates every 30 seconds
-    const interval = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        const savedData = localStorage.getItem('ugc-sales-data');
-        if (savedData) {
-          const parsedData = JSON.parse(savedData);
-          if (parsedData.topItems && parsedData.topItems.length > 0) {
-            setFeaturedItems(parsedData.topItems);
+      } catch (error) {
+        console.error('Error fetching featured items from API:', error);
+        // Fallback to localStorage if API fails
+        if (typeof window !== 'undefined') {
+          const savedData = localStorage.getItem('ugc-sales-data');
+          if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            if (parsedData.topItems && parsedData.topItems.length > 0) {
+              setFeaturedItems(parsedData.topItems);
+            }
           }
         }
       }
-    }, 30000);
+    };
+
+    // Initial fetch
+    fetchData();
+
+    // Check for updates every 30 seconds
+    const interval = setInterval(fetchData, 30000);
 
     return () => clearInterval(interval);
   }, []);

@@ -31,25 +31,45 @@ export default function LiveStats() {
   });
 
   useEffect(() => {
-    // Load data from localStorage on component mount (client-side only)
-    if (typeof window !== 'undefined') {
-      const savedData = localStorage.getItem('ugc-sales-data');
-      if (savedData) {
-        const parsedData = JSON.parse(savedData);
-        setStatsData(parsedData);
-      }
-    }
-
-    // Set up interval to check for updates every 30 seconds
-    const interval = setInterval(() => {
-      if (typeof window !== 'undefined') {
-        const savedData = localStorage.getItem('ugc-sales-data');
-        if (savedData) {
-          const parsedData = JSON.parse(savedData);
-          setStatsData(parsedData);
+    // Function to fetch data from API
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/roblox');
+        if (response.ok) {
+          const data = await response.json();
+          setStatsData(data);
+          // Also save to localStorage as backup
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('ugc-sales-data', JSON.stringify(data));
+          }
+        } else {
+          // Fallback to localStorage if API fails
+          if (typeof window !== 'undefined') {
+            const savedData = localStorage.getItem('ugc-sales-data');
+            if (savedData) {
+              const parsedData = JSON.parse(savedData);
+              setStatsData(parsedData);
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching data from API:', error);
+        // Fallback to localStorage if API fails
+        if (typeof window !== 'undefined') {
+          const savedData = localStorage.getItem('ugc-sales-data');
+          if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            setStatsData(parsedData);
+          }
         }
       }
-    }, 30000);
+    };
+
+    // Initial fetch
+    fetchData();
+
+    // Set up interval to check for updates every 30 seconds
+    const interval = setInterval(fetchData, 30000);
 
     return () => clearInterval(interval);
   }, []);
