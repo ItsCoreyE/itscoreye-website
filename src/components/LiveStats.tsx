@@ -57,55 +57,106 @@ export default function LiveStats() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 1, delay: 0.5 }}
-      className="bg-amber-800/30 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 w-full max-w-lg mx-auto"
+      initial={{ opacity: 0, scale: 0.8, rotateX: 20 }}
+      animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+      className="relative bg-gradient-to-br from-amber-900/40 via-amber-800/30 to-orange-900/40 backdrop-blur-md border-3 border-amber-600/60 rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto shadow-2xl"
+      style={{
+        boxShadow: `
+          0 20px 40px rgba(0, 0, 0, 0.4),
+          inset 0 2px 4px rgba(255, 255, 255, 0.1),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.2),
+          0 0 30px rgba(218, 165, 32, 0.2)
+        `
+      }}
     >
+      {/* Decorative corner elements */}
+      <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
+      <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-amber-400/60"></div>
+      <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-amber-400/60"></div>
+      <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-amber-400/60"></div>
+
       {/* Data Period Header */}
       {statsData.dataPeriod && (
-        <div className="text-center mb-3 sm:mb-4">
-          <span className="text-amber-400 text-base sm:text-lg font-semibold">
-            📅 {statsData.dataPeriod}
-          </span>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-center mb-6"
+        >
+          <div className="inline-flex items-center gap-2 bg-amber-700/30 px-4 py-2 rounded-full border border-amber-500/40">
+            <span className="text-amber-300 text-sm sm:text-base font-semibold tracking-wide">
+              ⚡ {statsData.dataPeriod} Statistics
+            </span>
+          </div>
+        </motion.div>
       )}
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 text-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 text-center">
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="cursor-pointer p-2 sm:p-0"
+          whileHover={{ scale: 1.05, rotateY: 5 }}
+          className="relative cursor-pointer group"
+          initial={{ opacity: 0, x: -30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.5 }}
         >
-          <motion.h3 
-            key={statsData.totalRevenue}
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-100 leading-tight"
-          >
-            {statsData.totalRevenue.toLocaleString()}
-          </motion.h3>
-          <p className="text-amber-300 text-sm sm:text-base mt-1">Total Revenue</p>
-          <span className="text-green-400 text-xs sm:text-sm">↗ {statsData.growthPercentage}%</span>
+          <div className="bg-gradient-to-br from-green-900/20 to-emerald-800/20 rounded-lg p-4 border border-green-600/30 group-hover:border-green-500/50 transition-all duration-300">
+            <motion.h3 
+              key={statsData.totalRevenue}
+              initial={{ scale: 1.2, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-green-300 leading-tight mb-2 steampunk-font"
+              style={{ textShadow: '0 0 20px rgba(34, 197, 94, 0.5)' }}
+            >
+              {statsData.totalRevenue.toLocaleString()}
+            </motion.h3>
+            <p className="text-amber-200 text-sm sm:text-base font-medium tracking-wide">Total Revenue</p>
+            <div className="flex items-center justify-center mt-2">
+              <span className="text-green-400 text-xs sm:text-sm font-bold bg-green-900/30 px-2 py-1 rounded-full">
+                ↗ {statsData.growthPercentage}% Growth
+              </span>
+            </div>
+          </div>
         </motion.div>
+        
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="cursor-pointer p-2 sm:p-0"
+          whileHover={{ scale: 1.05, rotateY: -5 }}
+          className="relative cursor-pointer group"
+          initial={{ opacity: 0, x: 30 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.7 }}
         >
-          <motion.h3 
-            key={statsData.totalSales}
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-100 leading-tight"
-          >
-            {statsData.totalSales.toLocaleString()}
-          </motion.h3>
-          <p className="text-amber-300 text-sm sm:text-base mt-1">Total Sales</p>
+          <div className="bg-gradient-to-br from-blue-900/20 to-cyan-800/20 rounded-lg p-4 border border-blue-600/30 group-hover:border-blue-500/50 transition-all duration-300">
+            <motion.h3 
+              key={statsData.totalSales}
+              initial={{ scale: 1.2, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-300 leading-tight mb-2 steampunk-font"
+              style={{ textShadow: '0 0 20px rgba(59, 130, 246, 0.5)' }}
+            >
+              {statsData.totalSales.toLocaleString()}
+            </motion.h3>
+            <p className="text-amber-200 text-sm sm:text-base font-medium tracking-wide">Total Sales</p>
+            <div className="flex items-center justify-center mt-2">
+              <span className="text-blue-400 text-xs sm:text-sm font-bold bg-blue-900/30 px-2 py-1 rounded-full">
+                🎯 Items Sold
+              </span>
+            </div>
+          </div>
         </motion.div>
       </div>
       
-      <div className="text-center mt-3 sm:mt-4">
-        <span className="text-amber-400 text-xs sm:text-sm">🔴 {statsData.lastUpdated}</span>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9 }}
+        className="text-center mt-6"
+      >
+        <div className="inline-flex items-center gap-2 text-amber-400 text-xs sm:text-sm">
+          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+          <span className="font-medium">{statsData.lastUpdated}</span>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
