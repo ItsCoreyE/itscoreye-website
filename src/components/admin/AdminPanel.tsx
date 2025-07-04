@@ -64,38 +64,32 @@ const handleManualUpdate = async () => {
       }
     }
     
-    const manualData: SalesData = {
+    const manualData = {
       totalRevenue: revenueNum,
       totalSales: salesNum,
       growthPercentage: growth ? parseInt(growth.replace(/[^\d]/g, '')) : 2579,
       lastUpdated: new Date().toLocaleString(),
       dataPeriod: period,
-      topItems: []
+      topItems: salesData?.topItems || []
     };
     
     try {
-      // Send data to API
-      const response = await fetch('/api/roblox', {
+      // Save automatically to Upstash
+      const response = await fetch('/api/data', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(manualData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(manualData)
       });
       
-      const result = await response.json();
-      
-      if (result.success) {
-        // Also save to localStorage as backup
-        localStorage.setItem('ugc-sales-data', JSON.stringify(manualData));
+      if (response.ok) {
         setSalesData(manualData);
-        alert(`✅ Stats updated!\n💰 Revenue: ${revenueNum.toLocaleString()}\n📊 Sales: ${salesNum.toLocaleString()}\n📅 Period: ${period}\n\n${result.message}`);
+        alert(`✅ Stats updated automatically for all visitors!\n💰 Revenue: ${revenueNum.toLocaleString()}\n📊 Sales: ${salesNum.toLocaleString()}\n📅 Period: ${period}`);
       } else {
-        alert(`❌ Failed to update: ${result.error}`);
+        alert('❌ Failed to save data');
       }
     } catch (error) {
-      console.error('Error updating stats:', error);
-      alert('❌ Error updating stats. Check console for details.');
+      console.error('Error saving data:', error);
+      alert('❌ Failed to save data');
     }
   }
 };
@@ -111,35 +105,19 @@ const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log('📁 Processing CSV and fetching asset details...');
     const processedData = await processCSVData(text);
     
-    // Send processed data to API
-    try {
-      const response = await fetch('/api/roblox', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(processedData),
-      });
-      
-      const result = await response.json();
-      
-      if (result.success) {
-        // Also save to localStorage as backup
-        localStorage.setItem('ugc-sales-data', JSON.stringify(processedData));
-        setSalesData(processedData);
-        alert(`✅ CSV processed successfully!\n🎨 ${processedData.topItems.length} featured items loaded with thumbnails!\n\n${result.message}`);
-      } else {
-        alert(`⚠️ CSV processed but API update failed: ${result.error}\nData saved locally only.`);
-        localStorage.setItem('ugc-sales-data', JSON.stringify(processedData));
-        setSalesData(processedData);
-      }
-    } catch (apiError) {
-      console.error('Error sending data to API:', apiError);
-      alert('⚠️ CSV processed but API update failed. Data saved locally only.');
-      localStorage.setItem('ugc-sales-data', JSON.stringify(processedData));
-      setSalesData(processedData);
-    }
+    // Save to Upstash automatically
+    const response = await fetch('/api/data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(processedData)
+    });
     
+    if (response.ok) {
+      setSalesData(processedData);
+      alert(`✅ CSV processed and saved automatically!\n🎨 ${processedData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!`);
+    } else {
+      alert('❌ Failed to save processed data');
+    }
   } catch (error) {
     console.error('Error processing CSV:', error);
     alert('❌ Error processing file. Please check the CSV format.');
