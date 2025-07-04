@@ -91,10 +91,10 @@ export default function FeaturedItems() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <h2 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 steampunk-font leading-tight"
-            data-text="Featured Creations"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 steampunk-font text-glow leading-tight"
+            data-text="Best Sellers"
           >
-            Featured Creations
+            Best Sellers
           </h2>
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
@@ -102,7 +102,7 @@ export default function FeaturedItems() {
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
           </div>
           <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
-            My most popular UGC items
+            Discover this month's top-performing designs that have captured the community's attention
           </p>
         </div>
 
