@@ -107,7 +107,7 @@ export default function FeaturedItems() {
             Featured Creations ⚙️
           </h2>
           <p className="text-xl text-amber-300 max-w-2xl mx-auto">
-            Discover my most popular steampunk UGC items that have captured the imagination of thousands of players
+            Discover my most popular UGC items that have captured the imagination of thousands of players across all categories
           </p>
         </motion.div>
 
