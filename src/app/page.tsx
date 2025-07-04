@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import LiveStats from '@/components/LiveStats';
 import FeaturedItems from '@/components/FeaturedItems';
@@ -116,8 +117,17 @@ function AnimatedGears() {
 
 // Steam Particles Component
 function SteamParticles() {
-  // Reduce particle count on mobile for better performance
-  const particleCount = typeof window !== 'undefined' && window.innerWidth < 640 ? 15 : 30;
+  const [particleCount, setParticleCount] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  useEffect(() => {
+    setParticleCount(window.innerWidth < 640 ? 15 : 30);
+    setWindowHeight(window.innerHeight);
+  }, []);
+
+  if (particleCount === 0) {
+    return null;
+  }
   
   return (
     <div className="absolute inset-0">
@@ -130,7 +140,7 @@ function SteamParticles() {
             bottom: '100%',
           }}
           animate={{
-            y: [0, -window.innerHeight],
+            y: [0, -windowHeight],
             x: [0, Math.sin(i) * 60 - 30, Math.cos(i) * 60 - 30, 0],
             opacity: [0, 0.8, 0.8, 0],
             scale: [0.5, 1, 1.2, 0.5],
