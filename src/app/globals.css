@@ -21,3 +21,117 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  /* Prevent horizontal scroll on mobile */
+  html, body {
+    overflow-x: hidden;
+  }
+  
+  /* Improve touch targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better text rendering on mobile */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* Steampunk button styling with mobile optimization */
+.brass-button {
+  background: linear-gradient(145deg, #DAA520, #CD7F32);
+  border: 2px solid #8B4513;
+  color: #2F1B14;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.brass-button:hover {
+  background: linear-gradient(145deg, #FFD700, #DAA520);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.brass-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile-specific button adjustments */
+@media (max-width: 640px) {
+  .brass-button {
+    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .brass-button:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* Steampunk font styling */
+.steampunk-font {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(218, 165, 32, 0.3);
+  letter-spacing: 0.05em;
+}
+
+/* Mobile typography improvements */
+@media (max-width: 640px) {
+  .steampunk-font {
+    text-shadow: 
+      1px 1px 2px rgba(0, 0, 0, 0.5),
+      0 0 5px rgba(218, 165, 32, 0.3);
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Line clamp utility for better text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Improved focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #DAA520;
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling for better mobile experience */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

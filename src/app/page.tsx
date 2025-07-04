@@ -12,17 +12,17 @@ export default function Home() {
       </div>
       
       {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="mb-8"
+          className="mb-6 sm:mb-8"
         >
-          <h1 className="text-6xl md:text-8xl font-bold text-amber-100 mb-4 steampunk-font">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-amber-100 mb-3 sm:mb-4 steampunk-font leading-tight">
             ItsCoreyE
           </h1>
-          <p className="text-2xl md:text-3xl text-amber-200 mb-8">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-amber-200 mb-6 sm:mb-8">
             UGC Creator
           </p>
         </motion.div>
@@ -34,12 +34,12 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.8 }}
-          className="flex gap-4"
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-md sm:max-w-none"
         >
-          <a href="https://www.roblox.com/users/3504185/profile" target="_blank" className="brass-button px-6 py-3 rounded-lg">
+          <a href="https://www.roblox.com/users/3504185/profile" target="_blank" className="brass-button px-4 sm:px-6 py-3 rounded-lg text-sm sm:text-base font-medium min-h-[48px] flex items-center justify-center">
             View ROBLOX Profile
           </a>
-          <a href="https://www.tiktok.com/@itscoreye" target="_blank" className="brass-button px-6 py-3 rounded-lg">
+          <a href="https://www.tiktok.com/@itscoreye" target="_blank" className="brass-button px-4 sm:px-6 py-3 rounded-lg text-sm sm:text-base font-medium min-h-[48px] flex items-center justify-center">
             Follow on TikTok
           </a>
         </motion.div>
@@ -59,38 +59,38 @@ function AnimatedGears() {
       {/* Steam Particles */}
       <SteamParticles />
       
-      {/* Large prominent gear */}
+      {/* Large prominent gear - hidden on mobile, smaller on tablet */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-        className="absolute top-20 right-20 w-40 h-40 opacity-30"
+        className="hidden md:block absolute top-20 right-20 w-24 md:w-32 lg:w-40 h-24 md:h-32 lg:h-40 opacity-20 md:opacity-30"
       >
         <GearSVG />
       </motion.div>
       
-      {/* Medium gear */}
+      {/* Medium gear - repositioned for mobile */}
       <motion.div
         animate={{ rotate: -360 }}
         transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-        className="absolute bottom-32 left-16 w-32 h-32 opacity-25"
+        className="absolute bottom-20 sm:bottom-32 left-4 sm:left-16 w-20 sm:w-24 md:w-32 h-20 sm:h-24 md:h-32 opacity-15 sm:opacity-20 md:opacity-25"
       >
         <GearSVG />
       </motion.div>
       
-      {/* Small gear */}
+      {/* Small gear - repositioned and resized for mobile */}
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        className="absolute top-1/2 left-1/4 w-24 h-24 opacity-20"
+        className="absolute top-1/3 sm:top-1/2 left-1/6 sm:left-1/4 w-16 sm:w-20 md:w-24 h-16 sm:h-20 md:h-24 opacity-10 sm:opacity-15 md:opacity-20"
       >
         <GearSVG />
       </motion.div>
       
-      {/* Extra small decorative gear */}
+      {/* Extra small decorative gear - hidden on small mobile */}
       <motion.div
         animate={{ rotate: -360 }}
         transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className="absolute top-1/3 right-1/3 w-16 h-16 opacity-15"
+        className="hidden sm:block absolute top-1/4 md:top-1/3 right-1/4 md:right-1/3 w-12 sm:w-14 md:w-16 h-12 sm:h-14 md:h-16 opacity-10 sm:opacity-12 md:opacity-15"
       >
         <GearSVG />
       </motion.div>
@@ -100,26 +100,29 @@ function AnimatedGears() {
 
 // Steam Particles Component
 function SteamParticles() {
+  // Reduce particle count on mobile for better performance
+  const particleCount = typeof window !== 'undefined' && window.innerWidth < 640 ? 4 : 8;
+  
   return (
     <div className="absolute inset-0">
-      {[...Array(8)].map((_, i) => (
+      {[...Array(particleCount)].map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-2 h-2 bg-white/40 rounded-full"
+          className="absolute w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/30 sm:bg-white/40 rounded-full"
           style={{
-            left: `${20 + i * 10}%`,
+            left: `${20 + i * (60 / particleCount)}%`,
             bottom: '10%',
           }}
           animate={{
-            y: [-20, -300],
-            opacity: [0, 0.8, 0],
-            scale: [0.5, 1, 1.5],
-            x: [0, Math.sin(i) * 50]
+            y: [-20, -200, -300],
+            opacity: [0, 0.6, 0.8, 0],
+            scale: [0.5, 1, 1.2, 1.5],
+            x: [0, Math.sin(i) * 30, Math.sin(i) * 50]
           }}
           transition={{
-            duration: 4 + i * 0.5,
+            duration: 3 + i * 0.4,
             repeat: Infinity,
-            delay: i * 0.3,
+            delay: i * 0.4,
             ease: "easeOut"
           }}
         />

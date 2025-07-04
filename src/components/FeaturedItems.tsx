@@ -94,60 +94,60 @@ export default function FeaturedItems() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-amber-800 to-orange-900 py-20">
-      <div className="container mx-auto px-4">
+    <section className="min-h-screen bg-gradient-to-b from-amber-800 to-orange-900 py-12 sm:py-16 md:py-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 md:mb-16"
         >
-          <h2 className="text-5xl font-bold text-amber-100 mb-6 steampunk-font">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-amber-100 mb-4 sm:mb-6 steampunk-font leading-tight">
             Featured Creations ⚙️
           </h2>
-          <p className="text-xl text-amber-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-amber-300 max-w-2xl mx-auto px-4">
             Discover my most popular UGC items that have captured the imagination of thousands of players across all categories
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {featuredItems.map((item, index) => (
             <motion.div
               key={`${item.name}-${index}`}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, rotateY: 5 }}
-              className="bg-amber-900/40 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-6 hover:border-amber-400 transition-all duration-300"
+              whileHover={{ scale: 1.02, rotateY: 2 }}
+              className="bg-amber-900/40 backdrop-blur-sm border-2 border-amber-600 rounded-lg p-4 sm:p-5 md:p-6 hover:border-amber-400 transition-all duration-300"
             >
               {/* Thumbnail */}
-              <div className="aspect-square bg-amber-800/50 rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+              <div className="aspect-square bg-amber-800/50 rounded-lg mb-3 sm:mb-4 flex items-center justify-center overflow-hidden">
                 {item.thumbnail ? (
                   <motion.img
                     src={item.thumbnail}
                     alt={item.name}
                     className="w-full h-full object-cover rounded-lg"
                     initial={{ scale: 1.1 }}
-                    whileHover={{ scale: 1.2 }}
+                    whileHover={{ scale: 1.15 }}
                     transition={{ duration: 0.3 }}
                   />
                 ) : (
-                  <span className="text-4xl">⚙️</span>
+                  <span className="text-3xl sm:text-4xl">⚙️</span>
                 )}
               </div>
 
               {/* Item Details */}
-              <h3 className="text-xl font-bold text-amber-100 mb-2">{item.name}</h3>
-              <p className="text-amber-300 text-sm mb-4 line-clamp-2">
+              <h3 className="text-lg sm:text-xl font-bold text-amber-100 mb-2 leading-tight">{item.name}</h3>
+              <p className="text-amber-300 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 leading-relaxed">
                 {item.description}
               </p>
               
               {/* Stats */}
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-green-400 font-bold">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-0 mb-3">
+                <span className="text-green-400 font-bold text-sm sm:text-base">
                   {typeof item.sales === 'number' ? item.sales.toLocaleString() : item.sales} sales
                 </span>
-                <span className="text-amber-400">
+                <span className="text-amber-400 text-sm sm:text-base font-medium">
                   {item.price} R$
                 </span>
               </div>
@@ -155,7 +155,7 @@ export default function FeaturedItems() {
               {/* Asset Type Badge */}
               {item.assetType && (
                 <div className="text-center">
-                  <span className="bg-amber-700 text-amber-200 px-3 py-1 rounded-full text-xs font-semibold">
+                  <span className="bg-amber-700 text-amber-200 px-2 sm:px-3 py-1 rounded-full text-xs font-semibold">
                     {item.assetType}
                   </span>
                 </div>
