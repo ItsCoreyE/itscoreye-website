@@ -1,61 +1,51 @@
+import { get } from '@vercel/edge-config';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const assetId = searchParams.get('assetId');
-  
-  if (!assetId) {
-    return NextResponse.json({ error: 'Asset ID required' }, { status: 400 });
-  }
-
+// GET - Fetch current data from Edge Config
+export async function GET() {
   try {
-    console.log(`Fetching asset details for ${assetId}`);
+    const data = await get('ugc-sales-data');
     
-    // Add delay to avoid rate limiting
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
-    // Fetch asset details from server-side (no CORS issues)
-    const assetResponse = await fetch(`https://economy.roblox.com/v2/assets/${assetId}/details`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
-      }
-    });
-    
-    let description = 'Amazing steampunk creation by ItsCoreyE';
-    let thumbnail = null;
-    
-    if (assetResponse.ok) {
-      const assetData = await assetResponse.json();
-      description = assetData.Description || description;
+    if (!data) {
+      // Return default data if none exists
+      return NextResponse.json({
+        totalRevenue: 56799,
+        totalSales: 2653,
+        growthPercentage: 2579,
+        lastUpdated: 'Default Data',
+        dataPeriod: 'All Time',
+        topItems: []
+      });
     }
     
-    // Fetch thumbnail
-    const thumbnailResponse = await fetch(`https://thumbnails.roblox.com/v1/assets?assetIds=${assetId}&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        'Accept': 'application/json',
-      }
-    });
-    
-    if (thumbnailResponse.ok) {
-      const thumbnailData = await thumbnailResponse.json();
-      thumbnail = thumbnailData.data?.[0]?.imageUrl || null;
-    }
-    
-    return NextResponse.json({
-      description,
-      thumbnail,
-      success: true
-    });
-    
+    return NextResponse.json(data);
   } catch (error) {
-    console.error(`Error fetching asset ${assetId}:`, error);
-    return NextResponse.json({
-      description: 'Amazing steampunk creation by ItsCoreyE',
-      thumbnail: null,
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+    console.error('Error fetching data:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch data' },
+      { status: 500 }
+    );
+  }
+}
+
+// POST - For now, we'll store data temporarily and you can manually update Edge Config
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+    
+    // Store the data format for manual Edge Config update
+    console.log('Data to be added to Edge Config:', JSON.stringify(data, null, 2));
+    
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Data processed! Please copy the console output to Edge Config dashboard.',
+      data: data
     });
+  } catch (error) {
+    console.error('Error processing data:', error);
+    return NextResponse.json(
+      { error: 'Failed to process data' },
+      { status: 500 }
+    );
   }
 }
