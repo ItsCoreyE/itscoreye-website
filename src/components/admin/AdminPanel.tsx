@@ -139,13 +139,13 @@ const handleGrowthCalculation = async () => {
   try {
     console.log('📊 Processing both CSV files for growth calculation...');
     
-    // Process previous month file
+    // Process previous month file (simplified - just need totals)
     const previousText = await previousFile.files[0].text();
     const previousData = await processCSVDataForGrowth(previousText, 'Previous Month');
     
-    // Process current month file  
+    // Process current month file (FULL processing with thumbnails and featured items)
     const currentText = await currentFile.files[0].text();
-    const currentData = await processCSVDataForGrowth(currentText, 'Current Month');
+    const currentData = await processCSVData(currentText);
     
     // Calculate growth
     const revenueGrowth = previousData.totalRevenue > 0 
@@ -159,7 +159,7 @@ const handleGrowthCalculation = async () => {
     // Use revenue growth as the main growth metric
     const growthPercentage = Math.round(revenueGrowth * 10) / 10; // Round to 1 decimal
     
-    // Create final data with growth calculation
+    // Create final data with growth calculation and featured items
     const finalData = {
       ...currentData,
       growthPercentage: growthPercentage,
@@ -176,7 +176,7 @@ const handleGrowthCalculation = async () => {
     
     if (response.ok) {
       setSalesData(finalData);
-      alert(`✅ Growth calculation complete!\n📈 Revenue Growth: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}%\n📊 Sales Growth: ${salesGrowth > 0 ? '+' : ''}${Math.round(salesGrowth * 10) / 10}%\n🌐 Data is now live for all visitors!`);
+      alert(`✅ Growth calculation complete!\n📈 Revenue Growth: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}%\n📊 Sales Growth: ${salesGrowth > 0 ? '+' : ''}${Math.round(salesGrowth * 10) / 10}%\n🎨 ${finalData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!`);
     } else {
       alert('❌ Failed to save processed data');
     }
