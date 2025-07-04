@@ -102,7 +102,7 @@ export default function FeaturedItems() {
             <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
           </div>
           <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
-            Discover this month's top-performing designs that have captured the community's attention
+            Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
           </p>
         </div>
 
