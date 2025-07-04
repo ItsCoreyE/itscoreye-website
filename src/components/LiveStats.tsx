@@ -14,9 +14,8 @@ interface SalesData {
     revenue: number;
     price: number;
     assetId?: string;
-    assetType?: string;
-    description?: string;
-    thumbnail?: string;
+  assetType?: string;
+  thumbnail?: string;
   }>;
 }
 

@@ -15,7 +15,6 @@ interface SalesData {
     price: number;
     assetId?: string;
     assetType?: string;
-    description?: string;
     thumbnail?: string;
   }>;
 }
@@ -223,32 +222,29 @@ const processCSVData = async (csvText: string): Promise<SalesData> => {
   return result;
 };
 
-// Add this function to fetch asset details
+// Function to fetch asset thumbnails (descriptions no longer needed)
 const fetchAssetDetails = async (assetId: string) => {
   try {
-    console.log(`🔍 Fetching details for asset ${assetId} via proxy...`);
+    console.log(`🔍 Fetching thumbnail for asset ${assetId} via proxy...`);
     
-    // Use our internal API route instead of direct ROBLOX calls
+    // Use our internal API route for thumbnails only
     const response = await fetch(`/api/roblox?assetId=${assetId}`);
     const data = await response.json();
     
     if (data.success) {
-      console.log(`✅ Successfully fetched details for ${assetId}`);
+      console.log(`✅ Successfully fetched thumbnail for ${assetId}`);
       return {
-        description: data.description,
         thumbnail: data.thumbnail
       };
     } else {
       console.log(`⚠️ API returned error for ${assetId}:`, data.error);
       return {
-        description: 'Amazing steampunk creation by ItsCoreyE',
         thumbnail: null
       };
     }
   } catch (error) {
-    console.log(`❌ Failed to fetch details for asset ${assetId}:`, error);
+    console.log(`❌ Failed to fetch thumbnail for asset ${assetId}:`, error);
     return {
-      description: 'Amazing steampunk creation by ItsCoreyE',
       thumbnail: null
     };
   }

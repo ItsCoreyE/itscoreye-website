@@ -9,7 +9,6 @@ interface FeaturedItem {
   price: number;
   assetId?: string;
   assetType?: string;
-  description?: string;
   thumbnail?: string;
 }
 
@@ -18,7 +17,6 @@ export default function FeaturedItems() {
     // Default steampunk items as fallback
     {
       name: "Steampunk Lantern",
-      description: "Illuminating Victorian-era inspired lantern with brass details",
       sales: 1247,
       revenue: 187050,
       price: 150,
@@ -26,7 +24,6 @@ export default function FeaturedItems() {
     },
     {
       name: "Mechanical Backpack", 
-      description: "Intricate steampunk backpack with moving gears and pipes",
       sales: 892,
       revenue: 178400,
       price: 200,
@@ -34,7 +31,6 @@ export default function FeaturedItems() {
     },
     {
       name: "Clockwork Wings",
-      description: "Majestic bronze wings with spinning clockwork mechanisms",
       sales: 756,
       revenue: 226800,
       price: 300,
@@ -42,7 +38,6 @@ export default function FeaturedItems() {
     },
     {
       name: "Gear Satchel",
-      description: "Practical steampunk bag with authentic brass fittings",
       sales: 634,
       revenue: 79250,
       price: 125,
@@ -50,7 +45,6 @@ export default function FeaturedItems() {
     },
     {
       name: "Reporter Camera",
-      description: "Vintage-style camera perfect for steampunk adventures",
       sales: 523,
       revenue: 91525,
       price: 175,
@@ -58,7 +52,6 @@ export default function FeaturedItems() {
     },
     {
       name: "Brass Goggles",
-      description: "Classic steampunk eyewear with adjustable lenses",
       sales: 412,
       revenue: 41200,
       price: 100,
