@@ -156,12 +156,9 @@ export default function FeaturedItems() {
               </div>
 
               {/* Item Details */}
-              <h3 className="text-lg sm:text-xl font-bold text-amber-100 mb-3 leading-tight group-hover:text-amber-50 transition-colors">
+              <h3 className="text-lg sm:text-xl font-bold text-amber-100 mb-4 leading-tight group-hover:text-amber-50 transition-colors">
                 {item.name}
               </h3>
-              <p className="text-amber-300/80 text-xs sm:text-sm mb-4 line-clamp-2 leading-relaxed group-hover:text-amber-300 transition-colors">
-                {item.description}
-              </p>
               
               {/* Stats */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-2 mb-4">

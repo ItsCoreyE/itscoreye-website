@@ -195,27 +195,12 @@ const processCSVData = async (csvText: string): Promise<SalesData> => {
     .sort((a, b) => b.sales - a.sales)
     .slice(0, 6);
 
-  // Fetch additional details from ROBLOX API
-console.log('🔍 Fetching asset details from ROBLOX API...');
-const topItems = [];
-
-// Process items one by one to avoid rate limiting
-for (let i = 0; i < topItemsRaw.length; i++) {
-  const item = topItemsRaw[i];
-  console.log(`Processing item ${i + 1}/${topItemsRaw.length}: ${item.name}`);
-  
-  const details = await fetchAssetDetails(item.assetId);
-  topItems.push({
+  // Use the raw items without fetching additional details
+  console.log('✅ Processing complete - using item data from CSV');
+  const topItems = topItemsRaw.map(item => ({
     ...item,
-    description: details?.description || `Amazing ${item.assetType} by ItsCoreyE`,
-    thumbnail: details?.thumbnail || null
-  });
-  
-  // Add longer delay between requests to avoid rate limiting
-  if (i < topItemsRaw.length - 1) {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-  }
-}
+    thumbnail: undefined
+  }));
 
   // Calculate period
   let dataPeriod = 'CSV Data';
