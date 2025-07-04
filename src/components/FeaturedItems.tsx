@@ -13,51 +13,9 @@ interface FeaturedItem {
 }
 
 export default function FeaturedItems() {
-  const [featuredItems, setFeaturedItems] = useState<FeaturedItem[]>([
-    // Default steampunk items as fallback
-    {
-      name: "Steampunk Lantern",
-      sales: 1247,
-      revenue: 187050,
-      price: 150,
-      thumbnail: undefined
-    },
-    {
-      name: "Mechanical Backpack", 
-      sales: 892,
-      revenue: 178400,
-      price: 200,
-      thumbnail: undefined
-    },
-    {
-      name: "Clockwork Wings",
-      sales: 756,
-      revenue: 226800,
-      price: 300,
-      thumbnail: undefined
-    },
-    {
-      name: "Gear Satchel",
-      sales: 634,
-      revenue: 79250,
-      price: 125,
-      thumbnail: undefined
-    },
-    {
-      name: "Reporter Camera",
-      sales: 523,
-      revenue: 91525,
-      price: 175,
-      thumbnail: undefined
-    },
-    {
-      name: "Brass Goggles",
-      sales: 412,
-      revenue: 41200,
-      price: 100,
-      thumbnail: undefined
-    }
-  ]);
+  const [featuredItems, setFeaturedItems] = useState<FeaturedItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Function to fetch data from API
@@ -69,11 +27,16 @@ export default function FeaturedItems() {
           if (data.topItems && data.topItems.length > 0) {
             setFeaturedItems(data.topItems);
           }
+          setError(null);
         } else {
           console.error('Failed to fetch featured items from API:', response.status);
+          setError('Failed to load featured items');
         }
       } catch (error) {
         console.error('Error fetching featured items from API:', error);
+        setError('Failed to load featured items');
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -86,6 +49,125 @@ export default function FeaturedItems() {
     return () => clearInterval(interval);
   }, []);
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <section className="min-h-screen rich-gradient py-12 sm:py-16 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-amber-100">
+              Best Sellers
+            </h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+              <span className="text-3xl sm:text-4xl">⚙️</span>
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+            </div>
+            <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
+              Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
+            </p>
+          </div>
+
+          {/* Loading skeleton grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="relative premium-card enhanced-glass deep-shadow rounded-xl p-5 sm:p-6"
+              >
+                {/* Decorative corner accents */}
+                <div className="absolute top-1 left-1 w-3 h-3 border-l border-t border-amber-400/40"></div>
+                <div className="absolute top-1 right-1 w-3 h-3 border-r border-t border-amber-400/40"></div>
+                <div className="absolute bottom-1 left-1 w-3 h-3 border-l border-b border-amber-400/40"></div>
+                <div className="absolute bottom-1 right-1 w-3 h-3 border-r border-b border-amber-400/40"></div>
+
+                {/* Thumbnail skeleton */}
+                <div className="relative aspect-square bg-amber-800/20 rounded-xl mb-4 border border-amber-600/30 animate-pulse"></div>
+
+                {/* Title skeleton */}
+                <div className="h-6 bg-amber-100/20 rounded mb-4 animate-pulse"></div>
+                
+                {/* Stats skeleton */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-2 mb-4">
+                  <div className="h-8 bg-green-400/20 rounded-full w-20 animate-pulse"></div>
+                  <div className="h-8 bg-amber-400/20 rounded-full w-16 animate-pulse"></div>
+                </div>
+
+                {/* Asset type skeleton */}
+                <div className="text-center">
+                  <div className="h-6 bg-amber-700/20 rounded-full w-24 mx-auto animate-pulse"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section className="min-h-screen rich-gradient py-12 sm:py-16 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-amber-100">
+              Best Sellers
+            </h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+              <span className="text-3xl sm:text-4xl">⚙️</span>
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+            </div>
+            <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
+              Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
+            </p>
+          </div>
+
+          <div className="text-center">
+            <div className="text-red-400 text-4xl mb-4">⚠️</div>
+            <p className="text-amber-200 mb-6 text-lg">{error}</p>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="brass-button px-6 py-3 text-base"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // No items found
+  if (featuredItems.length === 0) {
+    return (
+      <section className="min-h-screen rich-gradient py-12 sm:py-16 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-amber-100">
+              Best Sellers
+            </h2>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+              <span className="text-3xl sm:text-4xl">⚙️</span>
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+            </div>
+            <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
+              Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
+            </p>
+          </div>
+
+          <div className="text-center">
+            <div className="text-amber-400 text-4xl mb-4">📦</div>
+            <p className="text-amber-200 text-lg">No featured items available at the moment.</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Data loaded successfully
   return (
     <section className="min-h-screen rich-gradient py-12 sm:py-16 md:py-20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
