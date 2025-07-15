@@ -188,8 +188,22 @@ export default function MilestonesSection() {
                   whileHover={{ scale: 1.02 }}
                   className="relative group premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 overflow-hidden"
                 >
-                {/* Gradient Hover Effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-400/5 via-transparent to-amber-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                {/* Edge Glow Hover Effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                  {/* Top edge glow */}
+                  <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-400/20 to-transparent"></div>
+                  {/* Bottom edge glow */}
+                  <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-400/20 to-transparent"></div>
+                  {/* Left edge glow */}
+                  <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-amber-400/20 to-transparent"></div>
+                  {/* Right edge glow */}
+                  <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-amber-400/20 to-transparent"></div>
+                  {/* Corner glows for extra premium effect */}
+                  <div className="absolute top-0 left-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-tl-xl"></div>
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-tr-xl"></div>
+                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-bl-xl"></div>
+                  <div className="absolute bottom-0 right-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-br-xl"></div>
+                </div>
                 
                 {/* Content Container */}
                 <div className="relative z-10">
