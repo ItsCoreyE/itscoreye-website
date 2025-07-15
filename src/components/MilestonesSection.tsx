@@ -174,12 +174,17 @@ export default function MilestonesSection() {
             return (
               <motion.div
                 key={category}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.8, delay: categoryIndex * 0.2 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: categoryIndex * 0.15,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
                 viewport={{ once: true }}
                 className="relative group premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 overflow-hidden"
+                style={{ willChange: 'transform, opacity' }}
               >
                 {/* Gradient Hover Effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400/5 via-transparent to-amber-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
@@ -211,9 +216,14 @@ export default function MilestonesSection() {
                     <motion.div
                       initial={{ width: 0 }}
                       whileInView={{ width: `${progressPercentage}%` }}
-                      transition={{ duration: 1.5, delay: categoryIndex * 0.3 }}
+                      transition={{ 
+                        duration: 1.2, 
+                        delay: categoryIndex * 0.2 + 0.3,
+                        ease: [0.25, 0.46, 0.45, 0.94]
+                      }}
                       viewport={{ once: true }}
                       className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full relative"
+                      style={{ willChange: 'width' }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
                     </motion.div>
@@ -230,24 +240,35 @@ export default function MilestonesSection() {
                   {categoryData.milestones.map((milestone, index) => (
                     <motion.div
                       key={milestone.id}
-                      initial={{ opacity: 0, x: -20 }}
+                      initial={{ opacity: 0, x: -15 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: (categoryIndex * 0.2) + (index * 0.1) }}
+                      transition={{ 
+                        duration: 0.4, 
+                        delay: (categoryIndex * 0.15) + (index * 0.05) + 0.2,
+                        ease: [0.25, 0.46, 0.45, 0.94]
+                      }}
                       viewport={{ once: true }}
                       className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-300 ${
                         milestone.isCompleted
                           ? 'bg-green-900/20 border-green-600/40 hover:bg-green-900/30'
                           : 'bg-amber-900/10 border-amber-600/20 hover:bg-amber-900/20'
                       }`}
+                      style={{ willChange: 'transform, opacity' }}
                     >
                       <div className="flex-shrink-0">
                         {milestone.isCompleted ? (
                           <motion.div
-                            initial={{ scale: 0 }}
-                            whileInView={{ scale: 1 }}
-                            transition={{ type: "spring", delay: (categoryIndex * 0.2) + (index * 0.1) + 0.3 }}
+                            initial={{ scale: 0, rotate: -180 }}
+                            whileInView={{ scale: 1, rotate: 0 }}
+                            transition={{ 
+                              type: "spring", 
+                              delay: (categoryIndex * 0.15) + (index * 0.05) + 0.4,
+                              stiffness: 200,
+                              damping: 15
+                            }}
                             viewport={{ once: true }}
                             className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                            style={{ willChange: 'transform' }}
                           >
                             ✓
                           </motion.div>
