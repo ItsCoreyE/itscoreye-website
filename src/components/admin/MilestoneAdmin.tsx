@@ -287,7 +287,7 @@ export default function MilestoneAdmin() {
         <ul className="text-amber-300 text-sm space-y-1">
           <li>• Toggle milestones on/off as you achieve them</li>
           <li>• Set completion dates for transparency</li>
-          <li>• Click "Save Changes" to update your live website</li>
+          <li>• Click &quot;Save Changes&quot; to update your live website</li>
           <li>• All changes are immediately visible to visitors</li>
         </ul>
       </div>
