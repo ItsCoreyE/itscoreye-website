@@ -176,15 +176,18 @@ export default function MilestonesSection() {
                 key={category}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.02 }}
                 transition={{ 
                   duration: 0.6, 
                   delay: categoryIndex * 0.15,
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
                 viewport={{ once: true }}
-                className="relative group premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 overflow-hidden"
+                className="relative"
               >
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="relative group premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 overflow-hidden"
+                >
                 {/* Gradient Hover Effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-400/5 via-transparent to-amber-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
                 
@@ -291,6 +294,7 @@ export default function MilestonesSection() {
                   ))}
                 </div>
                 </div>
+                </motion.div>
               </motion.div>
             );
           })}
