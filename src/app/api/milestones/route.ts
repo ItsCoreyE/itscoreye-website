@@ -49,16 +49,16 @@ const defaultMilestones: Milestone[] = [
 
 export async function GET() {
   try {
-    let milestones = await redis.get('ugc-milestones');
+    const milestones = await redis.get('ugc-milestones');
     
     if (!milestones) {
-      // Initialize with default milestones
-      await redis.set('ugc-milestones', JSON.stringify(defaultMilestones));
-      milestones = defaultMilestones;
-    } else {
-      milestones = JSON.parse(milestones as string);
+      return NextResponse.json({
+        success: true,
+        milestones: defaultMilestones,
+        lastUpdated: new Date().toISOString()
+      });
     }
-
+    
     return NextResponse.json({
       success: true,
       milestones,
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    await redis.set('ugc-milestones', JSON.stringify(milestones));
+    await redis.set('ugc-milestones', milestones);
 
     return NextResponse.json({
       success: true,
