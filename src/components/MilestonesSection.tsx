@@ -176,7 +176,10 @@ export default function MilestonesSection() {
                 key={category}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ 
+                  scale: 1.02,
+                  transition: { duration: 0.2, ease: "easeOut" }
+                }}
                 transition={{ 
                   duration: 0.6, 
                   delay: categoryIndex * 0.15,
