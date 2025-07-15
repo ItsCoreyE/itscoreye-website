@@ -144,13 +144,7 @@ export default function MilestonesSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-12 sm:mb-16"
-        >
+        <div className="text-center mb-12 sm:mb-16">
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-amber-100">
             Achievement Milestones
           </h2>
@@ -163,7 +157,7 @@ export default function MilestonesSection() {
             Track my verified progress and achievements in the UGC marketplace. 
             All milestones are manually verified for complete transparency.
           </p>
-        </motion.div>
+        </div>
 
         {/* Milestones Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -172,38 +166,19 @@ export default function MilestonesSection() {
             const progressPercentage = (categoryData.completed / categoryData.total) * 100;
 
             return (
-              <motion.div
+              <div
                 key={category}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: categoryIndex * 0.15,
-                  ease: [0.25, 0.46, 0.45, 0.94]
-                }}
-                viewport={{ once: true }}
                 className="relative"
               >
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="relative group premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 overflow-hidden"
+                  className="relative group premium-card enhanced-glass deep-shadow hover-lift rounded-xl p-6 sm:p-8"
                 >
-                {/* Edge Glow Hover Effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                  {/* Top edge glow */}
-                  <div className="absolute top-0 left-0 right-0 h-8 bg-gradient-to-b from-amber-400/20 to-transparent"></div>
-                  {/* Bottom edge glow */}
-                  <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-amber-400/20 to-transparent"></div>
-                  {/* Left edge glow */}
-                  <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-amber-400/20 to-transparent"></div>
-                  {/* Right edge glow */}
-                  <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-amber-400/20 to-transparent"></div>
-                  {/* Corner glows for extra premium effect */}
-                  <div className="absolute top-0 left-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-tl-xl"></div>
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-tr-xl"></div>
-                  <div className="absolute bottom-0 left-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-bl-xl"></div>
-                  <div className="absolute bottom-0 right-0 w-16 h-16 bg-radial-gradient from-amber-400/15 to-transparent rounded-br-xl"></div>
-                </div>
+                {/* Decorative corner accents */}
+                <div className="absolute top-1 left-1 w-3 h-3 border-l border-t border-amber-400/40 group-hover:border-amber-300/60 transition-colors"></div>
+                <div className="absolute top-1 right-1 w-3 h-3 border-r border-t border-amber-400/40 group-hover:border-amber-300/60 transition-colors"></div>
+                <div className="absolute bottom-1 left-1 w-3 h-3 border-l border-b border-amber-400/40 group-hover:border-amber-300/60 transition-colors"></div>
+                <div className="absolute bottom-1 right-1 w-3 h-3 border-r border-b border-amber-400/40 group-hover:border-amber-300/60 transition-colors"></div>
                 
                 {/* Content Container */}
                 <div className="relative z-10">
@@ -229,20 +204,12 @@ export default function MilestonesSection() {
                     </span>
                   </div>
                   <div className="w-full bg-amber-900/30 rounded-full h-3 overflow-hidden border border-amber-600/30">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${progressPercentage}%` }}
-                      transition={{ 
-                        duration: 1.2, 
-                        delay: categoryIndex * 0.2 + 0.3,
-                        ease: [0.25, 0.46, 0.45, 0.94]
-                      }}
-                      viewport={{ once: true }}
+                    <div
                       className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full relative"
-                      style={{ willChange: 'width' }}
+                      style={{ width: `${progressPercentage}%` }}
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
-                    </motion.div>
+                    </div>
                   </div>
                   <div className="text-center mt-2">
                     <span className="text-amber-400 font-bold text-lg">
@@ -254,40 +221,19 @@ export default function MilestonesSection() {
                 {/* Milestones List */}
                 <div className="space-y-3">
                   {categoryData.milestones.map((milestone, index) => (
-                    <motion.div
+                    <div
                       key={milestone.id}
-                      initial={{ opacity: 0, x: -15 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ 
-                        duration: 0.4, 
-                        delay: (categoryIndex * 0.15) + (index * 0.05) + 0.2,
-                        ease: [0.25, 0.46, 0.45, 0.94]
-                      }}
-                      viewport={{ once: true }}
                       className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-300 ${
                         milestone.isCompleted
                           ? 'bg-green-900/20 border-green-600/40 hover:bg-green-900/30'
                           : 'bg-amber-900/10 border-amber-600/20 hover:bg-amber-900/20'
                       }`}
-                      style={{ willChange: 'transform, opacity' }}
                     >
                       <div className="flex-shrink-0">
                         {milestone.isCompleted ? (
-                          <motion.div
-                            initial={{ scale: 0, rotate: -180 }}
-                            whileInView={{ scale: 1, rotate: 0 }}
-                            transition={{ 
-                              type: "spring", 
-                              delay: (categoryIndex * 0.15) + (index * 0.05) + 0.4,
-                              stiffness: 200,
-                              damping: 15
-                            }}
-                            viewport={{ once: true }}
-                            className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold"
-                            style={{ willChange: 'transform' }}
-                          >
+                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                             ✓
-                          </motion.div>
+                          </div>
                         ) : (
                           <div className="w-6 h-6 border-2 border-amber-600/40 rounded-full"></div>
                         )}
@@ -304,25 +250,19 @@ export default function MilestonesSection() {
                           </p>
                         )}
                       </div>
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
                 </div>
                 </motion.div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Footer */}
         {milestonesData && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mt-12"
-          >
+          <div className="text-center mt-12">
             <div className="inline-flex items-center gap-2 text-amber-400 text-sm">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="font-medium">
@@ -332,7 +272,7 @@ export default function MilestonesSection() {
             <p className="text-amber-300/60 text-xs mt-2">
               All milestones are manually verified for transparency and credibility
             </p>
-          </motion.div>
+          </div>
         )}
       </div>
     </section>
