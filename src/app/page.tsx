@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import LiveStats from '@/components/LiveStats';
 import FeaturedItems from '@/components/FeaturedItems';
 import Contact from '@/components/Contact';
+import MilestonesSection from '@/components/MilestonesSection';
 
 export default function Home() {
   return (
@@ -60,6 +61,9 @@ export default function Home() {
       
       {/* Featured Items Section */}
       <FeaturedItems />
+      
+      {/* Milestones Section */}
+      <MilestonesSection />
       
       {/* Contact Section */}
       <Contact />

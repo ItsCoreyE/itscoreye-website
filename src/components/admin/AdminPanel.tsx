@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import MilestoneAdmin from './MilestoneAdmin';
 
 interface SalesData {
   totalRevenue: number;
@@ -652,6 +653,16 @@ const fetchAssetDetails = async (assetId: string) => {
                 </div>
               </motion.div>
             )}
+          </motion.div>
+
+          {/* Milestone Management Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mb-8"
+          >
+            <MilestoneAdmin />
           </motion.div>
 
           {/* Instructions */}
