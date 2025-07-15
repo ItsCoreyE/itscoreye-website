@@ -86,23 +86,83 @@ export default function MilestonesSection() {
   if (isLoading) {
     return (
       <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="h-12 bg-amber-300/20 rounded mb-4 animate-pulse"></div>
+        <div className="relative z-10 max-w-7xl mx-auto">
+          {/* Header skeleton */}
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="h-12 sm:h-16 md:h-20 bg-amber-100/20 rounded mb-6 sm:mb-8 animate-pulse"></div>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+              <span className="text-3xl sm:text-4xl">🏆</span>
+              <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+            </div>
             <div className="h-6 bg-amber-200/20 rounded w-2/3 mx-auto animate-pulse"></div>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="premium-card enhanced-glass deep-shadow rounded-xl p-6 animate-pulse">
-                <div className="h-8 bg-amber-300/20 rounded mb-4"></div>
-                <div className="h-4 bg-amber-200/20 rounded mb-6"></div>
-                <div className="space-y-3">
-                  {[1, 2, 3, 4].map((j) => (
-                    <div key={j} className="h-12 bg-amber-100/10 rounded"></div>
-                  ))}
+
+          {/* Loading skeleton grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+            {['revenue', 'sales', 'items'].map((category, index) => (
+              <div key={category} className="relative">
+                <div className="relative premium-card enhanced-glass deep-shadow rounded-xl p-6 sm:p-8">
+                  {/* Decorative corner accents */}
+                  <div className="absolute top-1 left-1 w-3 h-3 border-l border-t border-amber-400/40"></div>
+                  <div className="absolute top-1 right-1 w-3 h-3 border-r border-t border-amber-400/40"></div>
+                  <div className="absolute bottom-1 left-1 w-3 h-3 border-l border-b border-amber-400/40"></div>
+                  <div className="absolute bottom-1 right-1 w-3 h-3 border-r border-b border-amber-400/40"></div>
+
+                  {/* Category header skeleton */}
+                  <div className="text-center mb-6">
+                    <div className="text-4xl sm:text-5xl mb-3 animate-pulse">
+                      {index === 0 ? '💰' : index === 1 ? '🛍️' : '🎨'}
+                    </div>
+                    <div className="h-8 bg-amber-100/20 rounded mb-2 animate-pulse"></div>
+                    <div className="h-4 bg-amber-300/20 rounded w-3/4 mx-auto animate-pulse"></div>
+                  </div>
+
+                  {/* Progress bar skeleton */}
+                  <div className="mb-6">
+                    <div className="flex justify-between items-center mb-2">
+                      <div className="h-5 bg-amber-200/20 rounded w-16 animate-pulse"></div>
+                      <div className="h-5 bg-amber-300/20 rounded w-12 animate-pulse"></div>
+                    </div>
+                    <div className="w-full bg-amber-900/30 rounded-full h-3 overflow-hidden border border-amber-600/30">
+                      <div className="h-full bg-amber-400/20 rounded-full w-1/2 animate-pulse"></div>
+                    </div>
+                    <div className="text-center mt-2">
+                      <div className="h-6 bg-amber-400/20 rounded w-24 mx-auto animate-pulse"></div>
+                    </div>
+                  </div>
+
+                  {/* Milestones list skeleton */}
+                  <div className="space-y-3">
+                    {Array.from({ length: 4 }).map((_, milestoneIndex) => (
+                      <div
+                        key={milestoneIndex}
+                        className="flex items-center gap-3 p-3 rounded-lg border bg-amber-900/10 border-amber-600/20"
+                      >
+                        <div className="flex-shrink-0">
+                          <div className="w-6 h-6 border-2 border-amber-600/40 rounded-full animate-pulse"></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="h-5 bg-amber-200/20 rounded mb-1 animate-pulse"></div>
+                          {milestoneIndex % 2 === 0 && (
+                            <div className="h-3 bg-green-400/20 rounded w-1/2 animate-pulse"></div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Footer skeleton */}
+          <div className="text-center mt-12">
+            <div className="inline-flex items-center gap-2 mb-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="h-4 bg-amber-400/20 rounded w-32 animate-pulse"></div>
+            </div>
+            <div className="h-3 bg-amber-300/20 rounded w-48 mx-auto animate-pulse"></div>
           </div>
         </div>
       </section>
