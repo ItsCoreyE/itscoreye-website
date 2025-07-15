@@ -24,7 +24,12 @@ export default function MilestonesSection() {
   useEffect(() => {
     const fetchMilestones = async () => {
       try {
-        const response = await fetch('/api/milestones');
+        // Add minimum loading duration to ensure loading state is visible
+        const [response] = await Promise.all([
+          fetch('/api/milestones'),
+          new Promise(resolve => setTimeout(resolve, 800)) // Minimum 800ms loading
+        ]);
+        
         if (response.ok) {
           const data = await response.json();
           setMilestonesData(data);
@@ -85,17 +90,22 @@ export default function MilestonesSection() {
 
   if (isLoading) {
     return (
-      <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="relative z-10 max-w-7xl mx-auto">
+      <section className="min-h-screen rich-gradient py-12 sm:py-16 md:py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header skeleton */}
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="h-12 sm:h-16 md:h-20 bg-amber-100/20 rounded mb-6 sm:mb-8 animate-pulse"></div>
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-amber-100">
+              Achievement Milestones
+            </h2>
             <div className="flex items-center justify-center gap-4 mb-6">
               <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
               <span className="text-3xl sm:text-4xl">🏆</span>
               <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
             </div>
-            <div className="h-6 bg-amber-200/20 rounded w-2/3 mx-auto animate-pulse"></div>
+            <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
+              Track my verified progress and achievements in the UGC marketplace. 
+              All milestones are manually verified for complete transparency.
+            </p>
           </div>
 
           {/* Loading skeleton grid */}
