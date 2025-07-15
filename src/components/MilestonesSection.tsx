@@ -161,7 +161,7 @@ export default function MilestonesSection() {
 
         {/* Milestones Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          {['revenue', 'sales', 'items'].map((category, categoryIndex) => {
+          {['revenue', 'sales', 'items'].map((category) => {
             const categoryData = getCategoryData(category);
             const progressPercentage = (categoryData.completed / categoryData.total) * 100;
 
@@ -220,7 +220,7 @@ export default function MilestonesSection() {
 
                 {/* Milestones List */}
                 <div className="space-y-3">
-                  {categoryData.milestones.map((milestone, index) => (
+                  {categoryData.milestones.map((milestone) => (
                     <div
                       key={milestone.id}
                       className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-300 ${
