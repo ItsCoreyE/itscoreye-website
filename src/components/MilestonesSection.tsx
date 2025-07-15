@@ -151,10 +151,15 @@ export default function MilestonesSection() {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-amber-100 mb-4 steampunk-font">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight text-amber-100">
             Achievement Milestones
           </h2>
-          <p className="text-lg sm:text-xl text-amber-300 max-w-3xl mx-auto leading-relaxed">
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+            <span className="text-3xl sm:text-4xl">🏆</span>
+            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-20 sm:w-32"></div>
+          </div>
+          <p className="text-base sm:text-lg md:text-xl text-amber-300/90 max-w-3xl mx-auto px-4 leading-relaxed">
             Track my verified progress and achievements in the UGC marketplace. 
             All milestones are manually verified for complete transparency.
           </p>
@@ -180,7 +185,7 @@ export default function MilestonesSection() {
                   <div className="text-4xl sm:text-5xl mb-3">
                     {getCategoryIcon(category)}
                   </div>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-amber-100 mb-2 steampunk-font">
+                  <h3 className="text-2xl sm:text-3xl font-bold text-amber-100 mb-2">
                     {getCategoryTitle(category)}
                   </h3>
                   <p className="text-sm sm:text-base text-amber-300/80 leading-relaxed">
