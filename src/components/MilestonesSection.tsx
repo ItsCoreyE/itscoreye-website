@@ -50,7 +50,9 @@ export default function MilestonesSection() {
   const getCategoryData = (category: string) => {
     if (!milestonesData) return { milestones: [], completed: 0, total: 0 };
     
-    const categoryMilestones = milestonesData.milestones.filter(m => m.category === category);
+    const categoryMilestones = milestonesData.milestones
+      .filter(m => m.category === category)
+      .sort((a, b) => a.target - b.target); // Sort by target value ascending
     const completed = categoryMilestones.filter(m => m.isCompleted).length;
     
     return {

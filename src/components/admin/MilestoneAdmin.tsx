@@ -95,7 +95,9 @@ export default function MilestoneAdmin() {
 
   const getCategoryData = (category: string) => {
     if (!milestonesData) return [];
-    return milestonesData.milestones.filter(m => m.category === category);
+    return milestonesData.milestones
+      .filter(m => m.category === category)
+      .sort((a, b) => a.target - b.target); // Sort by target value ascending
   };
 
   const getCategoryIcon = (category: string) => {
