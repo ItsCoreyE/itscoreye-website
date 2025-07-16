@@ -68,9 +68,10 @@ const defaultMilestones: Milestone[] = [
 
 export async function GET() {
   try {
-    const milestones = await redis.get('ugc-milestones');
+    const existingMilestones = await redis.get('ugc-milestones') as Milestone[] | null;
     
-    if (!milestones) {
+    if (!existingMilestones) {
+      // No existing data, return defaults
       return NextResponse.json({
         success: true,
         milestones: defaultMilestones,
@@ -78,9 +79,30 @@ export async function GET() {
       });
     }
     
+    // Check if we need to migrate (if existing has fewer milestones than default)
+    const needsMigration = existingMilestones.length < defaultMilestones.length;
+    
+    if (needsMigration) {
+      // Migrate: preserve existing completion status, add new milestones
+      const migratedMilestones = defaultMilestones.map(defaultMilestone => {
+        const existingMilestone = existingMilestones.find(m => m.id === defaultMilestone.id);
+        return existingMilestone || defaultMilestone;
+      });
+      
+      // Save the migrated data
+      await redis.set('ugc-milestones', migratedMilestones);
+      
+      return NextResponse.json({
+        success: true,
+        milestones: migratedMilestones,
+        lastUpdated: new Date().toISOString(),
+        migrated: true
+      });
+    }
+    
     return NextResponse.json({
       success: true,
-      milestones,
+      milestones: existingMilestones,
       lastUpdated: new Date().toISOString()
     });
   } catch (error) {
