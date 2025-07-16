@@ -8,7 +8,6 @@ interface Milestone {
   target: number;
   description: string;
   isCompleted: boolean;
-  completedDate?: string;
 }
 
 interface MilestonesData {
@@ -314,11 +313,6 @@ export default function MilestonesSection() {
                         }`}>
                           {milestone.description}
                         </p>
-                        {milestone.isCompleted && milestone.completedDate && (
-                          <p className="text-xs text-green-400/80 mt-1">
-                            Completed: {new Date(milestone.completedDate).toLocaleDateString()}
-                          </p>
-                        )}
                       </div>
                     </div>
                   ))}

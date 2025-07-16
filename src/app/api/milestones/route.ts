@@ -10,7 +10,6 @@ export interface Milestone {
   target: number;
   description: string;
   isCompleted: boolean;
-  completedDate?: string;
 }
 
 // Default milestones data

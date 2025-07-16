@@ -8,7 +8,6 @@ interface Milestone {
   target: number;
   description: string;
   isCompleted: boolean;
-  completedDate?: string;
 }
 
 interface MilestonesData {
@@ -50,11 +49,9 @@ export default function MilestoneAdmin() {
 
     const updatedMilestones = milestonesData.milestones.map(milestone => {
       if (milestone.id === milestoneId) {
-        const isCompleted = !milestone.isCompleted;
         return {
           ...milestone,
-          isCompleted,
-          completedDate: isCompleted ? new Date().toISOString() : undefined
+          isCompleted: !milestone.isCompleted
         };
       }
       return milestone;
@@ -66,24 +63,6 @@ export default function MilestoneAdmin() {
     });
   };
 
-  const handleDateChange = (milestoneId: string, date: string) => {
-    if (!milestonesData) return;
-
-    const updatedMilestones = milestonesData.milestones.map(milestone => {
-      if (milestone.id === milestoneId) {
-        return {
-          ...milestone,
-          completedDate: date ? new Date(date).toISOString() : undefined
-        };
-      }
-      return milestone;
-    });
-
-    setMilestonesData({
-      ...milestonesData,
-      milestones: updatedMilestones
-    });
-  };
 
   const saveMilestones = async () => {
     if (!milestonesData) return;
@@ -258,22 +237,6 @@ export default function MilestoneAdmin() {
                       Target: {milestone.target.toLocaleString()}
                     </p>
                   </div>
-
-                  {/* Date Input */}
-                  {milestone.isCompleted && (
-                    <div className="flex items-center gap-2">
-                      <label className="text-xs text-amber-300">Completed:</label>
-                      <input
-                        type="date"
-                        value={milestone.completedDate ? 
-                          new Date(milestone.completedDate).toISOString().split('T')[0] : 
-                          new Date().toISOString().split('T')[0]
-                        }
-                        onChange={(e) => handleDateChange(milestone.id, e.target.value)}
-                        className="px-2 py-1 text-xs bg-amber-800/50 border border-amber-600 rounded text-amber-100 focus:border-amber-400 focus:outline-none"
-                      />
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -286,7 +249,6 @@ export default function MilestoneAdmin() {
         <h5 className="text-amber-200 font-semibold mb-2">📋 Instructions:</h5>
         <ul className="text-amber-300 text-sm space-y-1">
           <li>• Toggle milestones on/off as you achieve them</li>
-          <li>• Set completion dates for transparency</li>
           <li>• Click &quot;Save Changes&quot; to update your live website</li>
           <li>• All changes are immediately visible to visitors</li>
         </ul>
