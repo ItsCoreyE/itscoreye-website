@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       }
     };
 
-    // Replace 'yourusername' with your actual PythonAnywhere username
+    // PythonAnywhere webhook URL
     const PYTHONANYWHERE_WEBHOOK_URL = 'https://itscoreyedwards.pythonanywhere.com/milestone-webhook';
     
     console.log('🚀 Sending milestone notification to PythonAnywhere...');
@@ -72,13 +72,15 @@ export async function POST(request: NextRequest) {
         }, { status: 500 });
       }
       
-    } catch (fetchError: any) {
+    } catch (fetchError: unknown) {
       console.error('❌ Failed to reach PythonAnywhere:', fetchError);
+      
+      const errorMessage = fetchError instanceof Error ? fetchError.message : 'Unknown error occurred';
       
       return NextResponse.json({
         success: false,
         error: 'Failed to reach notification service',
-        details: fetchError.message,
+        details: errorMessage,
         milestone: milestone.description
       }, { status: 500 });
     }
