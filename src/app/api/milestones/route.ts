@@ -135,13 +135,111 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Get existing milestones to detect newly completed ones
+    const existingMilestones = await redis.get('ugc-milestones') as Milestone[] | null;
+    const newlyCompletedMilestones: Milestone[] = [];
+
+    if (existingMilestones) {
+      // Compare with existing milestones to find newly completed ones
+      for (const newMilestone of milestones) {
+        const existingMilestone = existingMilestones.find(m => m.id === newMilestone.id);
+        
+        // If milestone was not completed before but is now completed
+        if (existingMilestone && !existingMilestone.isCompleted && newMilestone.isCompleted) {
+          newlyCompletedMilestones.push(newMilestone);
+        }
+      }
+    }
+
+    // Save updated milestones
     await redis.set('ugc-milestones', milestones);
 
-    return NextResponse.json({
+    // Calculate progress statistics for Discord notifications
+    const calculateProgress = () => {
+      const revenueTotal = milestones.filter(m => m.category === 'revenue').length;
+      const salesTotal = milestones.filter(m => m.category === 'sales').length;
+      const itemsTotal = milestones.filter(m => m.category === 'items').length;
+      
+      const revenueCompleted = milestones.filter(m => m.category === 'revenue' && m.isCompleted).length;
+      const salesCompleted = milestones.filter(m => m.category === 'sales' && m.isCompleted).length;
+      const itemsCompleted = milestones.filter(m => m.category === 'items' && m.isCompleted).length;
+      
+      const totalCompleted = revenueCompleted + salesCompleted + itemsCompleted;
+      const totalMilestones = revenueTotal + salesTotal + itemsTotal;
+      const completionPercentage = totalMilestones > 0 ? Math.round((totalCompleted / totalMilestones) * 100) : 0;
+
+      return {
+        revenue_completed: revenueCompleted,
+        revenue_total: revenueTotal,
+        sales_completed: salesCompleted,
+        sales_total: salesTotal,
+        items_completed: itemsCompleted,
+        items_total: itemsTotal,
+        total_completed: totalCompleted,
+        total_milestones: totalMilestones,
+        completion_percentage: completionPercentage
+      };
+    };
+
+    // Send Discord notifications for newly completed milestones
+    const discordNotifications = [];
+    if (newlyCompletedMilestones.length > 0) {
+      const progressStats = calculateProgress();
+      
+      for (const milestone of newlyCompletedMilestones) {
+        try {
+          console.log(`🎉 Sending Discord notification for milestone: ${milestone.description}`);
+          
+          const discordResponse = await fetch(`${request.nextUrl.origin}/api/discord/milestone-webhook`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              milestone,
+              progress: progressStats
+            })
+          });
+
+          if (discordResponse.ok) {
+            const discordResult = await discordResponse.json();
+            discordNotifications.push({
+              milestone: milestone.description,
+              success: true,
+              message: discordResult.message
+            });
+            console.log(`✅ Discord notification sent for: ${milestone.description}`);
+          } else {
+            const errorResult = await discordResponse.json();
+            discordNotifications.push({
+              milestone: milestone.description,
+              success: false,
+              error: errorResult.error
+            });
+            console.error(`❌ Discord notification failed for: ${milestone.description}`, errorResult);
+          }
+        } catch (discordError) {
+          console.error(`❌ Discord notification error for ${milestone.description}:`, discordError);
+          discordNotifications.push({
+            milestone: milestone.description,
+            success: false,
+            error: 'Network error'
+          });
+        }
+      }
+    }
+
+    const response = {
       success: true,
       message: 'Milestones updated successfully',
-      lastUpdated: new Date().toISOString()
-    });
+      lastUpdated: new Date().toISOString(),
+      newlyCompleted: newlyCompletedMilestones.length,
+      discordNotifications
+    };
+
+    if (newlyCompletedMilestones.length > 0) {
+      response.message += ` (${newlyCompletedMilestones.length} new milestone${newlyCompletedMilestones.length > 1 ? 's' : ''} completed!)`;
+    }
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Error updating milestones:', error);
     return NextResponse.json(
