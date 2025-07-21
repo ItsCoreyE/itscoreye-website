@@ -39,7 +39,7 @@ export default function Home() {
         </div>
 
         {/* Call to Action */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-sm sm:max-w-lg mt-8 sm:mt-12">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-sm sm:max-w-2xl mt-8 sm:mt-12">
           <a 
             href="https://www.roblox.com/users/3504185/profile" 
             target="_blank" 
@@ -55,6 +55,14 @@ export default function Home() {
           >
             <span className="mr-2">📱</span>
             Follow on TikTok
+          </a>
+          <a 
+            href="https://discord.gg/bkY6wTseTS" 
+            target="_blank" 
+            className="brass-button discord-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group hover:scale-105 transition-transform"
+          >
+            <span className="mr-2">💬</span>
+            Join Discord Server
           </a>
         </div>
       </div>
