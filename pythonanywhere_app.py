@@ -119,6 +119,138 @@ class MilestoneNotifier:
         except Exception as e:
             return False, f"Discord error: {e}"
 
+class CSVStatsNotifier:
+    def __init__(self, webhook_url, user_id, username, ping_role_id=None):
+        self.webhook_url = webhook_url
+        self.user_id = user_id
+        self.username = username
+        self.ping_role_id = ping_role_id
+        
+        # CSV stats color scheme
+        self.stats_color = 0x4169E1  # Royal Blue
+
+    def format_number(self, num):
+        """Format numbers with appropriate suffixes (K, M, etc.)"""
+        if num >= 1000000:
+            return f"{num/1000000:.1f}M".rstrip('0').rstrip('.')
+        elif num >= 1000:
+            return f"{num/1000:.1f}K".rstrip('0').rstrip('.')
+        else:
+            return str(num)
+
+    def create_csv_stats_embed(self, stats_data):
+        """Create a rich Discord embed for CSV stats upload"""
+        upload_type = stats_data.get('uploadType', 'single')
+        
+        # Determine title based on upload type
+        data_period = stats_data.get('dataPeriod', 'Current Period')
+        
+        if upload_type == 'growth':
+            title = f"📈 **{data_period} Monthly Stats!**"
+            description = f"**New sales data processed with growth analysis**\n\n*Month-over-month comparison calculated*"
+        else:
+            title = f"📊 **{data_period} Monthly Stats!**"
+            description = f"**Fresh sales analytics uploaded**\n\n*Latest ROBLOX sales data processed*"
+        
+        # Format numbers
+        revenue = self.format_number(stats_data.get('totalRevenue', 0))
+        sales = self.format_number(stats_data.get('totalSales', 0))
+        growth = stats_data.get('growthPercentage', 0)
+        
+        # Growth formatting
+        growth_display = f"+{growth}%" if growth > 0 else f"{growth}%"
+        if growth > 0:
+            growth_emoji = "📈"
+        elif growth < 0:
+            growth_emoji = "📉"
+        else:
+            growth_emoji = "➡️"
+        
+        # Top items summary
+        top_items = stats_data.get('topItems', [])
+        top_items_text = "No items data"
+        if top_items:
+            top_item = top_items[0]
+            top_items_text = f"{top_item.get('name', 'Unknown')} ({top_item.get('sales', 0)} sales)"
+            if len(top_items) > 1:
+                top_items_text += f" + {len(top_items) - 1} more"
+        
+        embed = {
+            "title": title,
+            "description": description,
+            "color": self.stats_color,
+            "fields": [
+                {
+                    "name": "💰 **Total Revenue**",
+                    "value": f"`{revenue} Robux`",
+                    "inline": True
+                },
+                {
+                    "name": "🛍️ **Total Sales**",
+                    "value": f"`{sales} sales`",
+                    "inline": True
+                },
+                {
+                    "name": f"{growth_emoji} **Growth**",
+                    "value": f"`{growth_display}`",
+                    "inline": True
+                },
+                {
+                    "name": "📅 **Data Period**",
+                    "value": f"`{stats_data.get('dataPeriod', 'Unknown')}`",
+                    "inline": True
+                },
+                {
+                    "name": "🎨 **Top Item**",
+                    "value": f"`{top_items_text}`",
+                    "inline": True
+                },
+                {
+                    "name": "🕒 **Updated**",
+                    "value": f"`{stats_data.get('lastUpdated', 'Just now')}`",
+                    "inline": True
+                }
+            ],
+            "footer": {
+                "text": "CSV Stats Tracker • ItsCoreyE"
+            },
+            "author": {
+                "name": f"ItsCoreyE ({self.user_id})",
+                "url": f"https://www.roblox.com/users/{self.user_id}/profile"
+            }
+        }
+        
+        return embed
+
+    def post_csv_stats_to_discord(self, stats_data):
+        """Post CSV stats to Discord"""
+        embed = self.create_csv_stats_embed(stats_data)
+        
+        # Create content with role ping
+        data_period = stats_data.get('dataPeriod', 'Current Period')
+        upload_type = stats_data.get('uploadType', 'single')
+        if upload_type == 'growth':
+            content = f"📈 **{data_period} Monthly Stats!**"
+        else:
+            content = f"📊 **{data_period} Monthly Stats!**"
+            
+        if self.ping_role_id:
+            content = f"<@&{self.ping_role_id}> {content}"
+        
+        payload = {
+            "content": content,
+            "embeds": [embed]
+        }
+        
+        try:
+            response = requests.post(self.webhook_url, json=payload)
+            if response.status_code == 204:
+                return True, f"Posted CSV stats: {stats_data.get('dataPeriod', 'Unknown period')}"
+            else:
+                return False, f"Discord post failed: {response.status_code} - {response.text}"
+        except Exception as e:
+            return False, f"Discord error: {e}"
+
 @app.route('/milestone-webhook', methods=['POST'])
 def milestone_webhook():
     """Handle incoming milestone completion webhook from Vercel"""
@@ -166,6 +298,53 @@ def milestone_webhook():
             'details': str(e)
         }), 500
 
+@app.route('/csv-stats-webhook', methods=['POST'])
+def csv_stats_webhook():
+    """Handle incoming CSV stats webhook from Vercel"""
+    try:
+        data = request.get_json()
+        
+        if not data or 'statsData' not in data:
+            return jsonify({
+                'success': False,
+                'error': 'Missing stats data'
+            }), 400
+        
+        stats_data = data['statsData']
+        
+        # Configuration for CSV stats webhook
+        CSV_STATS_WEBHOOK_URL = "https://ptb.discord.com/api/webhooks/1399742825960046632/HUMERyHgiRWhv3DdXQuqYlGwU_3_Z-lP5Lc0ld9N15E7AAZAfo2xDswYDUfrD-Oz6EH9"
+        USER_ID = "3504185"
+        USERNAME = "ItsCoreyE"
+        PING_ROLE_ID = "1396163147311616141"  # Using existing milestones role
+        
+        # Create and run the CSV stats notifier
+        notifier = CSVStatsNotifier(CSV_STATS_WEBHOOK_URL, USER_ID, USERNAME, PING_ROLE_ID)
+        success, message = notifier.post_csv_stats_to_discord(stats_data)
+        
+        if success:
+            return jsonify({
+                'success': True,
+                'message': 'CSV stats notification sent to Discord',
+                'revenue': stats_data.get('totalRevenue', 0),
+                'sales': stats_data.get('totalSales', 0),
+                'period': stats_data.get('dataPeriod', 'Unknown')
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': 'Failed to send CSV stats notification',
+                'details': message,
+                'revenue': stats_data.get('totalRevenue', 0)
+            }), 500
+            
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': 'Internal server error',
+            'details': str(e)
+        }), 500
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
@@ -183,6 +362,7 @@ def home():
         'version': '1.0.0',
         'endpoints': {
             '/milestone-webhook': 'POST - Send milestone notifications',
+            '/csv-stats-webhook': 'POST - Send CSV stats notifications',
             '/health': 'GET - Health check'
         }
     })

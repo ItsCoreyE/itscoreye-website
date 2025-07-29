@@ -114,7 +114,30 @@ const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     
     if (response.ok) {
       setSalesData(processedData);
-      alert(`✅ CSV processed and saved automatically!\n🎨 ${processedData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!`);
+      
+      // Trigger CSV stats webhook
+      try {
+        const webhookData = {
+          ...processedData,
+          uploadType: 'single'
+        };
+        
+        const webhookResponse = await fetch('/api/discord/csv-stats-webhook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ statsData: webhookData })
+        });
+        
+        if (webhookResponse.ok) {
+          console.log('✅ CSV stats webhook sent successfully');
+        } else {
+          console.log('⚠️ CSV stats webhook failed, but data was saved');
+        }
+      } catch (webhookError) {
+        console.log('⚠️ CSV stats webhook error:', webhookError);
+      }
+      
+      alert(`✅ CSV processed and saved automatically!\n🎨 ${processedData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!\n📢 Discord notification sent!`);
     } else {
       alert('❌ Failed to save processed data');
     }
@@ -177,7 +200,30 @@ const handleGrowthCalculation = async () => {
     
     if (response.ok) {
       setSalesData(finalData);
-      alert(`✅ Growth calculation complete!\n📈 Revenue Growth: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}%\n📊 Sales Growth: ${salesGrowth > 0 ? '+' : ''}${Math.round(salesGrowth * 10) / 10}%\n🎨 ${finalData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!`);
+      
+      // Trigger CSV stats webhook for growth calculation
+      try {
+        const webhookData = {
+          ...finalData,
+          uploadType: 'growth'
+        };
+        
+        const webhookResponse = await fetch('/api/discord/csv-stats-webhook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ statsData: webhookData })
+        });
+        
+        if (webhookResponse.ok) {
+          console.log('✅ Growth calculation webhook sent successfully');
+        } else {
+          console.log('⚠️ Growth calculation webhook failed, but data was saved');
+        }
+      } catch (webhookError) {
+        console.log('⚠️ Growth calculation webhook error:', webhookError);
+      }
+      
+      alert(`✅ Growth calculation complete!\n📈 Revenue Growth: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}%\n📊 Sales Growth: ${salesGrowth > 0 ? '+' : ''}${Math.round(salesGrowth * 10) / 10}%\n🎨 ${finalData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!\n📢 Discord notification sent!`);
     } else {
       alert('❌ Failed to save processed data');
     }
