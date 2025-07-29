@@ -172,8 +172,6 @@ class CSVStatsNotifier:
         if top_items:
             top_item = top_items[0]
             top_items_text = f"{top_item.get('name', 'Unknown')} ({top_item.get('sales', 0)} sales)"
-            if len(top_items) > 1:
-                top_items_text += f" + {len(top_items) - 1} more"
         
         embed = {
             "title": title,
@@ -203,11 +201,6 @@ class CSVStatsNotifier:
                 {
                     "name": "🎨 **Top Item**",
                     "value": f"`{top_items_text}`",
-                    "inline": True
-                },
-                {
-                    "name": "🕒 **Updated**",
-                    "value": f"`{stats_data.get('lastUpdated', 'Just now')}`",
                     "inline": True
                 }
             ],
