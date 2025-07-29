@@ -212,7 +212,7 @@ class CSVStatsNotifier:
                 }
             ],
             "footer": {
-                "text": "CSV Stats Tracker • ItsCoreyE"
+                "text": "Monthly Stats Tracker • ItsCoreyE"
             },
             "author": {
                 "name": f"ItsCoreyE ({self.user_id})",
