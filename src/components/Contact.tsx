@@ -27,162 +27,183 @@ export default function Contact() {
   };
 
   return (
-    <section className="dark-rich-gradient py-16 sm:py-20 md:py-24">
+    <section className="modern-gradient-bg section-padding">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight text-amber-100">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12 sm:mb-16 md:mb-20"
+        >
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Get In Touch
           </h2>
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16 sm:w-24"></div>
-            <span className="text-2xl sm:text-3xl">💬</span>
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent w-16 sm:w-24"></div>
-          </div>
-          <p className="text-base sm:text-lg text-amber-300/90 max-w-2xl mx-auto leading-relaxed">
+          <div className="modern-divider max-w-xs mx-auto mb-6"></div>
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 leading-relaxed">
             Got questions or want to chat? Drop me a message on Discord
           </p>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col lg:flex-row justify-center gap-6 lg:gap-8">
+        <div className="flex flex-col lg:flex-row justify-center gap-6 lg:gap-8 max-w-4xl mx-auto">
           {/* Discord Username Card */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="relative premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-8 sm:p-10 max-w-md w-full"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            whileHover={{ y: -8 }}
+            className="glass-card hover-lift p-8 sm:p-10 rounded-xl flex-1 group"
           >
-            {/* Decorative corner elements */}
-            <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
-            <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-amber-400/60"></div>
-            <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-amber-400/60"></div>
-            <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-amber-400/60"></div>
-
             <div className="text-center">
               {/* Discord Icon */}
-              <div className="mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600/20 rounded-full border border-indigo-500/40 mb-4">
-                  <svg className="w-8 h-8 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+              <motion.div 
+                className="mb-6"
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 mb-4 group-hover:border-indigo-500/40 transition-colors">
+                  <svg className="w-10 h-10 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
                   </svg>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-amber-100 mb-2">Direct Message</h3>
-                <p className="text-amber-300/80 text-sm mb-4">Send me a private message</p>
-              </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-100 mb-2">Direct Message</h3>
+                <p className="text-gray-400 text-sm sm:text-base mb-6">Send me a private message</p>
+              </motion.div>
 
               {/* Discord Username */}
               <motion.button
                 onClick={handleCopyDiscord}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className="relative bg-gradient-to-r from-indigo-700 to-indigo-600 text-white px-6 py-3 rounded-lg font-bold text-lg border border-indigo-500/40 shadow-lg hover:shadow-xl transition-all duration-300 w-full group"
-                style={{
-                  boxShadow: '0 0 20px rgba(99, 102, 241, 0.3)'
-                }}
+                className="relative modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-3 group"
               >
-                <span className="flex items-center justify-center gap-2">
-                  <span>itscoreye</span>
-                  {copied ? (
-                    <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                  )}
-                </span>
+                <span className="text-gray-900">itscoreye</span>
+                {copied ? (
+                  <motion.svg 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="w-5 h-5 text-green-700" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </motion.svg>
+                ) : (
+                  <svg className="w-5 h-5 text-gray-700 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                )}
                 {copied && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-3 py-1 rounded text-sm font-medium"
+                    className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg"
                   >
                     Copied!
                   </motion.div>
                 )}
               </motion.button>
               
-              <p className="text-amber-400/60 text-xs mt-3">Click to copy username</p>
+              <p className="text-gray-500 text-xs sm:text-sm mt-3">Click to copy username</p>
             </div>
           </motion.div>
 
           {/* Discord Server Card */}
           <motion.div
-            whileHover={{ scale: 1.02 }}
-            className="relative premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-8 sm:p-10 max-w-md w-full"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            whileHover={{ y: -8 }}
+            className="glass-card hover-lift p-8 sm:p-10 rounded-xl flex-1 group"
           >
-            {/* Decorative corner elements */}
-            <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
-            <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-amber-400/60"></div>
-            <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-amber-400/60"></div>
-            <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-amber-400/60"></div>
-
             <div className="text-center">
               {/* Server Icon */}
-              <div className="mb-6">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600/20 rounded-full border border-purple-500/40 mb-4">
-                  <svg className="w-8 h-8 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              <motion.div 
+                className="mb-6"
+                whileHover={{ scale: 1.1, rotate: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-purple-500/10 rounded-2xl border border-purple-500/20 mb-4 group-hover:border-purple-500/40 transition-colors">
+                  <svg className="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-amber-100 mb-2">Join My Server</h3>
-                <p className="text-amber-300/80 text-sm mb-4">Connect with the community</p>
-              </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-100 mb-2">Join My Server</h3>
+                <p className="text-gray-400 text-sm sm:text-base mb-6">Connect with the community</p>
+              </motion.div>
 
-              {/* Server Invite Button */}
-              <motion.button
-                onClick={handleCopyInvite}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="relative bg-gradient-to-r from-purple-700 to-purple-600 text-white px-6 py-3 rounded-lg font-bold text-lg border border-purple-500/40 shadow-lg hover:shadow-xl transition-all duration-300 w-full group mb-4"
-                style={{
-                  boxShadow: '0 0 20px rgba(147, 51, 234, 0.3)'
-                }}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <span>Copy Invite Link</span>
+              {/* Server Invite Buttons */}
+              <div className="space-y-3">
+                <motion.button
+                  onClick={handleCopyInvite}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-3 group"
+                >
+                  <span className="text-gray-900">Copy Invite Link</span>
                   {inviteCopied ? (
-                    <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                    <motion.svg 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="w-5 h-5 text-green-700" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                    </motion.svg>
                   ) : (
-                    <svg className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-gray-700 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
                   )}
-                </span>
-                {inviteCopied && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-3 py-1 rounded text-sm font-medium"
-                  >
-                    Copied!
-                  </motion.div>
-                )}
-              </motion.button>
+                  {inviteCopied && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg"
+                    >
+                      Copied!
+                    </motion.div>
+                  )}
+                </motion.button>
 
-              {/* Direct Join Button */}
-              <a 
-                href="https://discord.gg/bkY6wTseTS" 
-                target="_blank"
-                className="inline-block bg-gradient-to-r from-green-700 to-green-600 text-white px-6 py-3 rounded-lg font-bold text-lg border border-green-500/40 shadow-lg hover:shadow-xl transition-all duration-300 w-full group hover:scale-105"
-                style={{
-                  boxShadow: '0 0 20px rgba(34, 197, 94, 0.3)'
-                }}
-              >
-                <span className="flex items-center justify-center gap-2">
-                  <span>Join Now</span>
-                  <svg className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {/* Direct Join Button */}
+                <motion.a 
+                  href="https://discord.gg/bkY6wTseTS" 
+                  target="_blank"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-3 group inline-block"
+                  style={{
+                    background: 'linear-gradient(135deg, #10B981, #059669)'
+                  }}
+                >
+                  <span className="text-gray-900">Join Now</span>
+                  <svg className="w-5 h-5 text-gray-700 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
-                </span>
-              </a>
+                </motion.a>
+              </div>
               
-              <p className="text-amber-400/60 text-xs mt-3">discord.gg/bkY6wTseTS</p>
+              <p className="text-gray-500 text-xs sm:text-sm mt-3">discord.gg/bkY6wTseTS</p>
             </div>
           </motion.div>
         </div>
+
+        {/* Additional Contact Info */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-center mt-16"
+        >
+          <p className="text-gray-500 text-sm">
+            Response time: Usually within 24 hours
+          </p>
+        </motion.div>
       </div>
     </section>
   );

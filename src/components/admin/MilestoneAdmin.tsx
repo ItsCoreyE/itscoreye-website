@@ -63,7 +63,6 @@ export default function MilestoneAdmin() {
     });
   };
 
-
   const saveMilestones = async () => {
     if (!milestonesData) return;
 
@@ -125,13 +124,13 @@ export default function MilestoneAdmin() {
 
   if (isLoading) {
     return (
-      <div className="bg-amber-900/30 border border-amber-600 rounded-lg p-6">
-        <h3 className="text-2xl font-bold text-amber-200 mb-4 flex items-center">
+      <div className="glass-card p-8">
+        <h3 className="text-3xl font-bold text-gray-100 mb-6 flex items-center">
           🏆 Milestone Management
         </h3>
         <div className="animate-pulse space-y-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-20 bg-amber-800/30 rounded"></div>
+            <div key={i} className="h-20 bg-gray-800/50 rounded-lg"></div>
           ))}
         </div>
       </div>
@@ -142,10 +141,10 @@ export default function MilestoneAdmin() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-amber-900/30 border border-amber-600 rounded-lg p-6"
+      className="glass-card p-8"
     >
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-2xl font-bold text-amber-200 flex items-center">
+      <div className="flex items-center justify-between mb-8">
+        <h3 className="text-3xl font-bold text-gray-100 flex items-center">
           🏆 Milestone Management
         </h3>
         <motion.button
@@ -153,65 +152,98 @@ export default function MilestoneAdmin() {
           whileTap={{ scale: 0.95 }}
           onClick={saveMilestones}
           disabled={isSaving}
-          className="brass-button px-6 py-3 text-sm font-bold disabled:opacity-50"
+          className="modern-button px-6 py-3 text-base font-bold disabled:opacity-50"
         >
           {isSaving ? '⏳ Saving...' : '💾 Save Changes'}
         </motion.button>
       </div>
 
       {error && (
-        <div className="bg-red-900/30 border border-red-600 rounded-lg p-4 mb-6">
-          <p className="text-red-300">{error}</p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6"
+        >
+          <p className="text-red-400">{error}</p>
+        </motion.div>
       )}
 
       {successMessage && (
-        <div className="bg-green-900/30 border border-green-600 rounded-lg p-4 mb-6">
-          <p className="text-green-300">{successMessage}</p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6"
+        >
+          <p className="text-green-400">{successMessage}</p>
+        </motion.div>
       )}
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        {['revenue', 'sales', 'items'].map(category => {
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {['revenue', 'sales', 'items'].map((category, index) => {
           const completed = getCompletedCount(category);
           const total = getCategoryData(category).length;
           const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
           return (
-            <div key={category} className="bg-amber-800/30 rounded-lg p-4 text-center">
-              <div className="text-2xl mb-2">{getCategoryIcon(category)}</div>
-              <div className="text-amber-200 font-semibold text-sm mb-1">
+            <motion.div 
+              key={category} 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="stats-card text-center"
+            >
+              <motion.div 
+                className="text-3xl mb-3"
+                whileHover={{ scale: 1.2, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                {getCategoryIcon(category)}
+              </motion.div>
+              <div className="text-gray-400 font-semibold text-sm mb-2">
                 {getCategoryTitle(category)}
               </div>
-              <div className="text-amber-100 font-bold">
-                {completed}/{total} ({percentage}%)
+              <div className="text-2xl font-bold gradient-text mb-1">
+                {completed}/{total}
               </div>
-            </div>
+              <div className="text-amber-400 font-bold text-lg">
+                {percentage}% Complete
+              </div>
+            </motion.div>
           );
         })}
       </div>
 
       {/* Milestone Categories */}
       <div className="space-y-8">
-        {['revenue', 'sales', 'items'].map(category => (
-          <div key={category} className="bg-amber-800/20 rounded-lg p-6">
-            <h4 className="text-xl font-bold text-amber-100 mb-4 flex items-center gap-2">
-              <span className="text-2xl">{getCategoryIcon(category)}</span>
+        {['revenue', 'sales', 'items'].map((category, categoryIndex) => (
+          <motion.div 
+            key={category} 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: categoryIndex * 0.1 }}
+            className="glass-card p-6"
+          >
+            <h4 className="text-2xl font-bold text-gray-100 mb-6 flex items-center gap-3">
+              <span className="text-3xl">{getCategoryIcon(category)}</span>
               {getCategoryTitle(category)}
             </h4>
             
             <div className="space-y-3">
-              {getCategoryData(category).map(milestone => (
-                <div
+              {getCategoryData(category).map((milestone, index) => (
+                <motion.div
                   key={milestone.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.05 }}
                   className={`flex items-center gap-4 p-4 rounded-lg border transition-all ${
                     milestone.isCompleted
-                      ? 'bg-green-900/20 border-green-600/40'
-                      : 'bg-amber-900/20 border-amber-600/30'
+                      ? 'bg-green-500/10 border-green-500/30 hover:bg-green-500/20'
+                      : 'bg-gray-800/30 border-gray-700/50 hover:bg-gray-800/50'
                   }`}
                 >
-                  {/* Toggle Switch */}
+                  {/* Modern Toggle Switch */}
                   <label className="flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -219,49 +251,88 @@ export default function MilestoneAdmin() {
                       onChange={() => handleMilestoneToggle(milestone.id)}
                       className="sr-only"
                     />
-                    <div className={`relative w-12 h-6 rounded-full transition-colors ${
-                      milestone.isCompleted ? 'bg-green-600' : 'bg-amber-700'
+                    <div className={`relative w-14 h-7 rounded-full transition-all duration-300 ${
+                      milestone.isCompleted ? 'bg-green-500' : 'bg-gray-600'
                     }`}>
-                      <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                        milestone.isCompleted ? 'translate-x-6' : 'translate-x-0'
-                      }`}></div>
+                      <motion.div 
+                        className="absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-md"
+                        animate={{ x: milestone.isCompleted ? 24 : 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      />
                     </div>
                   </label>
 
                   {/* Milestone Info */}
                   <div className="flex-1">
-                    <p className={`font-medium ${
-                      milestone.isCompleted ? 'text-green-300' : 'text-amber-200'
+                    <p className={`font-medium text-lg ${
+                      milestone.isCompleted ? 'text-green-400' : 'text-gray-300'
                     }`}>
                       {milestone.description}
                     </p>
-                    <p className="text-xs text-amber-400">
+                    <p className="text-sm text-gray-500 mt-1">
                       Target: {milestone.target.toLocaleString()}
                     </p>
                   </div>
-                </div>
+
+                  {/* Status Badge */}
+                  <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    milestone.isCompleted 
+                      ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                      : 'bg-gray-700/50 text-gray-400 border border-gray-600/50'
+                  }`}>
+                    {milestone.isCompleted ? 'Completed' : 'Pending'}
+                  </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       {/* Instructions */}
-      <div className="mt-8 p-4 bg-amber-800/20 rounded-lg border border-amber-700">
-        <h5 className="text-amber-200 font-semibold mb-2">📋 Instructions:</h5>
-        <ul className="text-amber-300 text-sm space-y-1">
-          <li>• Toggle milestones on/off as you achieve them</li>
-          <li>• Click &quot;Save Changes&quot; to update your live website</li>
-          <li>• All changes are immediately visible to visitors</li>
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mt-8 p-6 bg-gray-800/30 rounded-lg border border-gray-700/50"
+      >
+        <h5 className="text-gray-300 font-semibold mb-3 flex items-center gap-2">
+          <span className="text-xl">📋</span> Instructions
+        </h5>
+        <ul className="text-gray-400 text-sm space-y-2">
+          <li className="flex items-start gap-2">
+            <span className="text-amber-400 mt-0.5">•</span>
+            <span>Toggle milestones on/off as you achieve them</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-400 mt-0.5">•</span>
+            <span>Click "Save Changes" to update your live website</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-400 mt-0.5">•</span>
+            <span>All changes are immediately visible to visitors</span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-400 mt-0.5">•</span>
+            <span>Milestones are displayed in order by target value</span>
+          </li>
         </ul>
-      </div>
+      </motion.div>
 
       {milestonesData && (
-        <div className="mt-6 text-center">
-          <p className="text-amber-400 text-sm">
-            Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}
-          </p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-6 text-center"
+        >
+          <div className="inline-flex items-center gap-2 text-gray-500 text-sm">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="font-medium">
+              Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}
+            </span>
+          </div>
+        </motion.div>
       )}
     </motion.div>
   );

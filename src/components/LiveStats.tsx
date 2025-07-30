@@ -14,8 +14,8 @@ interface SalesData {
     revenue: number;
     price: number;
     assetId?: string;
-  assetType?: string;
-  thumbnail?: string;
+    assetType?: string;
+    thumbnail?: string;
   }>;
 }
 
@@ -57,36 +57,31 @@ export default function LiveStats() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="relative premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
-        {/* Decorative corner elements */}
-        <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
-        <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-amber-400/60"></div>
-        <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-amber-400/60"></div>
-        <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-amber-400/60"></div>
+      <div className="glass-card subtle-glow rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
+        {/* Data Period Header Skeleton */}
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center gap-2 bg-amber-900/20 px-4 py-2 rounded-full h-8 w-32 mx-auto animate-pulse"></div>
+        </div>
 
         {/* Loading skeleton */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 text-center">
-          <div className="relative">
-            <div className="bg-gradient-to-br from-green-900/20 to-emerald-800/20 rounded-lg p-4 border border-green-600/30">
-              <div className="h-12 sm:h-16 md:h-20 bg-green-300/20 rounded mb-2 animate-pulse"></div>
-              <div className="h-4 bg-amber-200/20 rounded mb-2 animate-pulse"></div>
-              <div className="h-6 bg-green-400/20 rounded-full w-24 mx-auto animate-pulse"></div>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+          <div className="stats-card">
+            <div className="h-12 sm:h-16 bg-amber-500/10 rounded mb-2 animate-pulse"></div>
+            <div className="h-4 bg-gray-700/50 rounded mb-2 animate-pulse w-24 mx-auto"></div>
+            <div className="h-6 bg-green-500/10 rounded-full w-20 mx-auto animate-pulse mt-2"></div>
           </div>
           
-          <div className="relative">
-            <div className="bg-gradient-to-br from-blue-900/20 to-cyan-800/20 rounded-lg p-4 border border-blue-600/30">
-              <div className="h-12 sm:h-16 md:h-20 bg-blue-300/20 rounded mb-2 animate-pulse"></div>
-              <div className="h-4 bg-amber-200/20 rounded mb-2 animate-pulse"></div>
-              <div className="h-6 bg-blue-400/20 rounded-full w-20 mx-auto animate-pulse"></div>
-            </div>
+          <div className="stats-card">
+            <div className="h-12 sm:h-16 bg-amber-500/10 rounded mb-2 animate-pulse"></div>
+            <div className="h-4 bg-gray-700/50 rounded mb-2 animate-pulse w-20 mx-auto"></div>
+            <div className="h-6 bg-blue-500/10 rounded-full w-16 mx-auto animate-pulse mt-2"></div>
           </div>
         </div>
         
         <div className="text-center mt-6">
           <div className="inline-flex items-center gap-2">
-            <div className="w-2 h-2 bg-amber-400/40 rounded-full animate-pulse"></div>
-            <div className="h-4 w-20 bg-amber-400/20 rounded animate-pulse"></div>
+            <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
+            <div className="h-4 w-20 bg-gray-700/50 rounded animate-pulse"></div>
           </div>
         </div>
       </div>
@@ -96,19 +91,13 @@ export default function LiveStats() {
   // Error state
   if (error) {
     return (
-      <div className="relative premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
-        {/* Decorative corner elements */}
-        <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
-        <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-amber-400/60"></div>
-        <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-amber-400/60"></div>
-        <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-amber-400/60"></div>
-
+      <div className="glass-card subtle-glow rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
         <div className="text-center">
           <div className="text-red-400 text-lg mb-4">⚠️</div>
-          <p className="text-amber-200 mb-4">{error}</p>
+          <p className="text-gray-300 mb-4">{error}</p>
           <button 
             onClick={() => window.location.reload()} 
-            className="brass-button px-4 py-2 text-sm"
+            className="modern-button px-4 py-2 text-sm"
           >
             Retry
           </button>
@@ -121,76 +110,64 @@ export default function LiveStats() {
   if (!statsData) return null;
 
   return (
-    <div className="relative premium-card enhanced-glass deep-shadow hover-lift glow-border rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
-      {/* Decorative corner elements */}
-      <div className="absolute top-2 left-2 w-4 h-4 border-l-2 border-t-2 border-amber-400/60"></div>
-      <div className="absolute top-2 right-2 w-4 h-4 border-r-2 border-t-2 border-amber-400/60"></div>
-      <div className="absolute bottom-2 left-2 w-4 h-4 border-l-2 border-b-2 border-amber-400/60"></div>
-      <div className="absolute bottom-2 right-2 w-4 h-4 border-r-2 border-b-2 border-amber-400/60"></div>
-
+    <div className="glass-card subtle-glow rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
       {/* Data Period Header */}
       {statsData.dataPeriod && (
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 bg-amber-700/30 px-4 py-2 rounded-full border border-amber-500/40">
-            <span className="text-amber-300 text-sm sm:text-base font-semibold tracking-wide">
+          <div className="inline-flex items-center gap-2 modern-badge">
+            <span className="text-sm sm:text-base font-semibold">
               {statsData.dataPeriod}
             </span>
           </div>
         </div>
       )}
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 text-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="relative cursor-pointer group"
+          className="stats-card cursor-pointer group"
         >
-          <div className="bg-gradient-to-br from-green-900/20 to-emerald-800/20 rounded-lg p-4 border border-green-600/30 group-hover:border-green-500/50 transition-all duration-300">
-            <motion.h3 
-              key={statsData.totalRevenue}
-              initial={{ scale: 1.2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-green-300 leading-tight mb-2 steampunk-font"
-              style={{ textShadow: '0 0 20px rgba(34, 197, 94, 0.5)' }}
-            >
-              {statsData.totalRevenue.toLocaleString()}
-            </motion.h3>
-            <p className="text-amber-200 text-sm sm:text-base font-medium tracking-wide">Total Revenue</p>
-            <div className="flex items-center justify-center mt-2">
-              <span className="text-green-400 text-xs sm:text-sm font-bold bg-green-900/30 px-2 py-1 rounded-full">
-                {statsData.growthPercentage}% Growth
-              </span>
-            </div>
+          <motion.h3 
+            key={statsData.totalRevenue}
+            initial={{ scale: 1.2, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text leading-tight mb-2"
+          >
+            {statsData.totalRevenue.toLocaleString()}
+          </motion.h3>
+          <p className="text-gray-400 text-sm sm:text-base font-medium">Total Revenue</p>
+          <div className="flex items-center justify-center mt-2">
+            <span className="text-green-400 text-xs sm:text-sm font-bold modern-badge bg-green-500/10 border-green-500/20">
+              ↗ {statsData.growthPercentage}% Growth
+            </span>
           </div>
         </motion.div>
         
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="relative cursor-pointer group"
+          className="stats-card cursor-pointer group"
         >
-          <div className="bg-gradient-to-br from-blue-900/20 to-cyan-800/20 rounded-lg p-4 border border-blue-600/30 group-hover:border-blue-500/50 transition-all duration-300">
-            <motion.h3 
-              key={statsData.totalSales}
-              initial={{ scale: 1.2, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-bold text-blue-300 leading-tight mb-2 steampunk-font"
-              style={{ textShadow: '0 0 20px rgba(59, 130, 246, 0.5)' }}
-            >
-              {statsData.totalSales.toLocaleString()}
-            </motion.h3>
-            <p className="text-amber-200 text-sm sm:text-base font-medium tracking-wide">Total Sales</p>
-            <div className="flex items-center justify-center mt-2">
-              <span className="text-blue-400 text-xs sm:text-sm font-bold bg-blue-900/30 px-2 py-1 rounded-full">
-                Items Sold
-              </span>
-            </div>
+          <motion.h3 
+            key={statsData.totalSales}
+            initial={{ scale: 1.2, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text leading-tight mb-2"
+          >
+            {statsData.totalSales.toLocaleString()}
+          </motion.h3>
+          <p className="text-gray-400 text-sm sm:text-base font-medium">Total Sales</p>
+          <div className="flex items-center justify-center mt-2">
+            <span className="text-blue-400 text-xs sm:text-sm font-bold modern-badge bg-blue-500/10 border-blue-500/20">
+              Items Sold
+            </span>
           </div>
         </motion.div>
       </div>
       
       <div className="text-center mt-6">
-        <div className="inline-flex items-center gap-2 text-amber-400 text-xs sm:text-sm">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-          <span className="font-medium">{statsData.lastUpdated}</span>
+        <div className="inline-flex items-center gap-2 text-gray-500 text-xs sm:text-sm">
+          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="font-medium">Live • {statsData.lastUpdated}</span>
         </div>
       </div>
     </div>
