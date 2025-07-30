@@ -38,7 +38,7 @@ export default function Contact() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Get In Touch
           </h2>
-          <div className="modern-divider max-w-xs mx-auto mb-6"></div>
+          <div className="w-20 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-6"></div>
           <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 leading-relaxed">
             Got questions or want to chat? Drop me a message on Discord
           </p>

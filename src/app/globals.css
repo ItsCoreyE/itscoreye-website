@@ -330,12 +330,6 @@ html {
   text-wrap: balance;
 }
 
-/* Modern Divider */
-.modern-divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent 0%, rgba(245, 158, 11, 0.8) 50%, transparent 100%);
-  margin: 2rem 0;
-}
 
 /* Subtle Shadow */
 .subtle-shadow {
