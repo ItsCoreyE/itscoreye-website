@@ -306,7 +306,7 @@ export default function MilestoneAdmin() {
           </li>
           <li className="flex items-start gap-2">
             <span className="text-amber-400 mt-0.5">•</span>
-            <span>Click "Save Changes" to update your live website</span>
+            <span>Click &quot;Save Changes&quot; to update your live website</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="text-amber-400 mt-0.5">•</span>
