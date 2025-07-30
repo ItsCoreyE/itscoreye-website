@@ -134,19 +134,19 @@ export default function Contact() {
               </motion.div>
 
               {/* Server Invite Buttons */}
-              <div className="space-y-3">
+              <div className="flex flex-col items-center space-y-3">
                 <motion.button
                   onClick={handleCopyInvite}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-3 group"
+                  className="relative modern-button px-6 py-3 text-base font-semibold flex items-center justify-center gap-3 group"
                 >
                   <span className="text-gray-900">Copy Invite Link</span>
                   {inviteCopied ? (
                     <motion.svg 
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="w-5 h-5 text-green-700" 
+                      className="w-4 h-4 text-green-700" 
                       fill="none" 
                       stroke="currentColor" 
                       viewBox="0 0 24 24"
@@ -154,7 +154,7 @@ export default function Contact() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </motion.svg>
                   ) : (
-                    <svg className="w-5 h-5 text-gray-700 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-gray-700 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
                   )}
@@ -176,13 +176,14 @@ export default function Contact() {
                   target="_blank"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
-                  className="modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-3 group inline-block"
+                  className="modern-button px-6 py-3 text-base font-semibold flex items-center justify-center gap-3 group"
                   style={{
-                    background: 'linear-gradient(135deg, #10B981, #059669)'
+                    background: 'linear-gradient(135deg, #10B981, #059669)',
+                    color: '#ffffff'
                   }}
                 >
-                  <span className="text-gray-900">Join Now</span>
-                  <svg className="w-5 h-5 text-gray-700 opacity-60 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span>Join Now</span>
+                  <svg className="w-4 h-4 opacity-80 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </motion.a>
