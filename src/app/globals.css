@@ -333,21 +333,8 @@ html {
 /* Modern Divider */
 .modern-divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(245, 158, 11, 0.3), transparent);
+  background: linear-gradient(to right, transparent 0%, rgba(245, 158, 11, 0.8) 50%, transparent 100%);
   margin: 2rem 0;
-  width: 100%;
-  position: relative;
-}
-
-.modern-divider::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, rgba(245, 158, 11, 0.6), transparent);
 }
 
 /* Subtle Shadow */
