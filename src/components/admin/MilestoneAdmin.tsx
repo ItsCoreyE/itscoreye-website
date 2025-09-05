@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 
 interface Milestone {
   id: string;
-  category: 'revenue' | 'sales' | 'items';
+  category: 'revenue' | 'sales' | 'items' | 'collectibles';
   target: number;
   description: string;
   isCompleted: boolean;
+  assetId?: string;
 }
 
 interface MilestonesData {
@@ -104,6 +105,7 @@ export default function MilestoneAdmin() {
       case 'revenue': return '💰';
       case 'sales': return '🛍️';
       case 'items': return '🎨';
+      case 'collectibles': return '💎';
       default: return '⭐';
     }
   };
@@ -113,6 +115,7 @@ export default function MilestoneAdmin() {
       case 'revenue': return 'Revenue Milestones';
       case 'sales': return 'Sales Milestones';
       case 'items': return 'Item Release Milestones';
+      case 'collectibles': return 'Collectible Goals';
       default: return 'Milestones';
     }
   };
@@ -179,8 +182,8 @@ export default function MilestoneAdmin() {
       )}
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {['revenue', 'sales', 'items'].map((category, index) => {
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {['revenue', 'sales', 'items', 'collectibles'].map((category, index) => {
           const completed = getCompletedCount(category);
           const total = getCategoryData(category).length;
           const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
@@ -217,7 +220,7 @@ export default function MilestoneAdmin() {
 
       {/* Milestone Categories */}
       <div className="space-y-8">
-        {['revenue', 'sales', 'items'].map((category, categoryIndex) => (
+        {['revenue', 'sales', 'items', 'collectibles'].map((category, categoryIndex) => (
           <motion.div 
             key={category} 
             initial={{ opacity: 0, x: -20 }}
