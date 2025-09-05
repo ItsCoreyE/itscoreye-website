@@ -97,10 +97,24 @@ export async function GET() {
     const needsMigration = existingMilestones.length < defaultMilestones.length;
     
     if (needsMigration) {
-      // Migrate: preserve existing completion status, add new milestones
+      // Migrate: preserve existing completion status, add new milestones, update collectible names
       const migratedMilestones = defaultMilestones.map(defaultMilestone => {
         const existingMilestone = existingMilestones.find(m => m.id === defaultMilestone.id);
-        return existingMilestone || defaultMilestone;
+        
+        if (existingMilestone) {
+          // For collectibles, update names and asset IDs while preserving completion status
+          if (defaultMilestone.category === 'collectibles') {
+            return {
+              ...defaultMilestone,
+              isCompleted: existingMilestone.isCompleted
+            };
+          }
+          // For other categories, keep existing data
+          return existingMilestone;
+        }
+        
+        // New milestone, use default
+        return defaultMilestone;
       });
       
       // Save the migrated data
