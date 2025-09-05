@@ -13,9 +13,10 @@ class MilestoneNotifier:
         
         # Milestone-specific color scheme matching ItsCoreyE branding
         self.milestone_colours = {
-            'revenue': 0xFFD700,  # Gold
-            'sales': 0x00FF7F,    # Spring Green  
-            'items': 0x1E90FF     # Dodger Blue
+            'revenue': 0xFFD700,    # Gold
+            'sales': 0x00FF7F,      # Spring Green  
+            'items': 0x1E90FF,      # Dodger Blue
+            'collectibles': 0x8A2BE2 # Blue Violet (Diamond theme)
         }
         
         # Category emojis and display names
@@ -37,6 +38,12 @@ class MilestoneNotifier:
                 'name': 'Item Release Milestone',
                 'unit': 'Items',
                 'celebration': 'Creation milestone unlocked!'
+            },
+            'collectibles': {
+                'emoji': '💎',
+                'name': 'Collectible Achievement',
+                'unit': 'Item',
+                'celebration': 'Limited collectible acquired!'
             }
         }
 
@@ -54,6 +61,7 @@ class MilestoneNotifier:
         category = milestone_data.get('category', 'revenue')
         target = milestone_data.get('target', 0)
         description = milestone_data.get('description', 'Milestone achieved!')
+        thumbnail_url = milestone_data.get('thumbnailUrl', None)
         
         config = self.category_config.get(category, self.category_config['revenue'])
         colour = self.milestone_colours.get(category, self.milestone_colours['revenue'])
@@ -61,8 +69,14 @@ class MilestoneNotifier:
         # Create achievement title
         achievement_title = f"🎉 **{config['name']} Unlocked!**"
         
-        # Format target number
-        formatted_target = self.format_number(target)
+        # Special formatting for collectibles
+        if category == 'collectibles':
+            # For collectibles, show the item name instead of generic target
+            achievement_value = f"`{description}`"
+        else:
+            # For other categories, show formatted target number
+            formatted_target = self.format_number(target)
+            achievement_value = f"`{formatted_target} {config['unit']}`"
         
         embed = {
             "title": achievement_title,
@@ -71,7 +85,7 @@ class MilestoneNotifier:
             "fields": [
                 {
                     "name": f"{config['emoji']} **Achievement**",
-                    "value": f"`{formatted_target} {config['unit']}`",
+                    "value": achievement_value,
                     "inline": True
                 },
                 {
@@ -93,6 +107,12 @@ class MilestoneNotifier:
                 "url": f"https://www.roblox.com/users/{self.user_id}/profile"
             }
         }
+        
+        # Add thumbnail for collectibles if available
+        if category == 'collectibles' and thumbnail_url:
+            embed["thumbnail"] = {
+                "url": thumbnail_url
+            }
         
         return embed
 
