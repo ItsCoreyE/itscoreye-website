@@ -93,10 +93,22 @@ export async function GET() {
       });
     }
     
-    // Check if we need to migrate (if existing has fewer milestones than default)
-    const needsMigration = existingMilestones.length < defaultMilestones.length;
+    // Check if we need to migrate (add new milestones or update collectible names)
+    const needsCountMigration = existingMilestones.length < defaultMilestones.length;
     
-    if (needsMigration) {
+    // Check if collectible names/asset IDs need updating
+    const needsCollectibleUpdate = defaultMilestones.some(defaultMilestone => {
+      if (defaultMilestone.category === 'collectibles') {
+        const existingMilestone = existingMilestones.find(m => m.id === defaultMilestone.id);
+        return existingMilestone && (
+          existingMilestone.description !== defaultMilestone.description ||
+          existingMilestone.assetId !== defaultMilestone.assetId
+        );
+      }
+      return false;
+    });
+    
+    if (needsCountMigration || needsCollectibleUpdate) {
       // Migrate: preserve existing completion status, add new milestones, update collectible names
       const migratedMilestones = defaultMilestones.map(defaultMilestone => {
         const existingMilestone = existingMilestones.find(m => m.id === defaultMilestone.id);
