@@ -4,10 +4,11 @@ import { motion } from 'framer-motion';
 
 interface Milestone {
   id: string;
-  category: 'revenue' | 'sales' | 'items';
+  category: 'revenue' | 'sales' | 'items' | 'collectibles';
   target: number;
   description: string;
   isCompleted: boolean;
+  assetId?: string;
 }
 
 interface MilestonesData {
@@ -67,6 +68,7 @@ export default function MilestonesSection() {
       case 'revenue': return '💰';
       case 'sales': return '🛍️';
       case 'items': return '🎨';
+      case 'collectibles': return '💎';
       default: return '⭐';
     }
   };
@@ -76,6 +78,7 @@ export default function MilestonesSection() {
       case 'revenue': return 'Revenue Milestones';
       case 'sales': return 'Sales Milestones';
       case 'items': return 'Item Release Milestones';
+      case 'collectibles': return 'Collectible Goals';
       default: return 'Milestones';
     }
   };
@@ -85,6 +88,7 @@ export default function MilestonesSection() {
       case 'revenue': return 'Earned Robux - Financial growth and credibility';
       case 'sales': return 'Units Sold - Popularity and demand for items';
       case 'items': return 'Creative output and consistency';
+      case 'collectibles': return 'Personal Roblox limited collection targets';
       default: return '';
     }
   };
@@ -111,13 +115,13 @@ export default function MilestonesSection() {
           </motion.div>
 
           {/* Loading skeleton grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {['revenue', 'sales', 'items'].map((category, index) => (
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
+            {['revenue', 'sales', 'items', 'collectibles'].map((category, index) => (
               <div key={category} className="glass-card p-6 sm:p-8 rounded-xl">
                 {/* Category header skeleton */}
                 <div className="text-center mb-6">
                   <div className="text-4xl sm:text-5xl mb-3 animate-pulse">
-                    {index === 0 ? '💰' : index === 1 ? '🛍️' : '🎨'}
+                    {index === 0 ? '💰' : index === 1 ? '🛍️' : index === 2 ? '🎨' : '💎'}
                   </div>
                   <div className="h-8 bg-gray-700/50 rounded mb-2 animate-pulse"></div>
                   <div className="h-4 bg-gray-700/30 rounded w-3/4 mx-auto animate-pulse"></div>
@@ -195,8 +199,8 @@ export default function MilestonesSection() {
         </motion.div>
 
         {/* Milestones Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {['revenue', 'sales', 'items'].map((category, index) => {
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
+          {['revenue', 'sales', 'items', 'collectibles'].map((category, index) => {
             const categoryData = getCategoryData(category);
             const progressPercentage = categoryData.total > 0 
               ? (categoryData.completed / categoryData.total) * 100 

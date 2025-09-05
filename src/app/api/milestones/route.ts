@@ -6,10 +6,11 @@ const redis = Redis.fromEnv();
 
 export interface Milestone {
   id: string;
-  category: 'revenue' | 'sales' | 'items';
+  category: 'revenue' | 'sales' | 'items' | 'collectibles';
   target: number;
   description: string;
   isCompleted: boolean;
+  assetId?: string; // For Roblox items to fetch thumbnails
 }
 
 // Default milestones data
@@ -64,6 +65,19 @@ const defaultMilestones: Milestone[] = [
   { id: 'items-1500', category: 'items', target: 1500, description: '1,500 UGC items published', isCompleted: false },
   { id: 'items-2000', category: 'items', target: 2000, description: '2,000 UGC items published', isCompleted: false },
   { id: 'items-3000', category: 'items', target: 3000, description: '3,000 UGC items published', isCompleted: false },
+
+  // Collectibles Milestones (11 total) - Personal Roblox Limited Goals
+  { id: 'coll-korblox', category: 'collectibles', target: 1, description: 'Korblox Deathwalker', isCompleted: false, assetId: '139607770' },
+  { id: 'coll-headless', category: 'collectibles', target: 2, description: 'Headless Horseman', isCompleted: false, assetId: '1374269' },
+  { id: 'coll-vampire', category: 'collectibles', target: 3, description: 'Playful Vampire', isCompleted: false, assetId: '102611675' },
+  { id: 'coll-violet-valk', category: 'collectibles', target: 4, description: 'Violet Valkyrie', isCompleted: false, assetId: '250395768' },
+  { id: 'coll-valk-helm', category: 'collectibles', target: 5, description: 'Valkyrie Helm', isCompleted: false, assetId: '1365767' },
+  { id: 'coll-ice-valk', category: 'collectibles', target: 6, description: 'Ice Valkyrie', isCompleted: false, assetId: '215798554' },
+  { id: 'coll-sparkle-valk', category: 'collectibles', target: 7, description: 'Sparkle Time Valkyrie Helm', isCompleted: false, assetId: '1374269' },
+  { id: 'coll-sparkle-fedora', category: 'collectibles', target: 8, description: 'Sparkle Time Fedora', isCompleted: false, assetId: '1285307' },
+  { id: 'coll-purple-fedora', category: 'collectibles', target: 9, description: 'Purple Sparkle Time Fedora', isCompleted: false, assetId: '1374270' },
+  { id: 'coll-green-fedora', category: 'collectibles', target: 10, description: 'Green Sparkle Time Fedora', isCompleted: false, assetId: '1374271' },
+  { id: 'coll-blue-fedora', category: 'collectibles', target: 11, description: 'Blue Sparkle Time Fedora', isCompleted: false, assetId: '1374272' },
 ];
 
 export async function GET() {
@@ -159,13 +173,15 @@ export async function POST(request: NextRequest) {
       const revenueTotal = milestones.filter(m => m.category === 'revenue').length;
       const salesTotal = milestones.filter(m => m.category === 'sales').length;
       const itemsTotal = milestones.filter(m => m.category === 'items').length;
+      const collectiblesTotal = milestones.filter(m => m.category === 'collectibles').length;
       
       const revenueCompleted = milestones.filter(m => m.category === 'revenue' && m.isCompleted).length;
       const salesCompleted = milestones.filter(m => m.category === 'sales' && m.isCompleted).length;
       const itemsCompleted = milestones.filter(m => m.category === 'items' && m.isCompleted).length;
+      const collectiblesCompleted = milestones.filter(m => m.category === 'collectibles' && m.isCompleted).length;
       
-      const totalCompleted = revenueCompleted + salesCompleted + itemsCompleted;
-      const totalMilestones = revenueTotal + salesTotal + itemsTotal;
+      const totalCompleted = revenueCompleted + salesCompleted + itemsCompleted + collectiblesCompleted;
+      const totalMilestones = revenueTotal + salesTotal + itemsTotal + collectiblesTotal;
       const completionPercentage = totalMilestones > 0 ? Math.round((totalCompleted / totalMilestones) * 100) : 0;
 
       return {
@@ -175,6 +191,8 @@ export async function POST(request: NextRequest) {
         sales_total: salesTotal,
         items_completed: itemsCompleted,
         items_total: itemsTotal,
+        collectibles_completed: collectiblesCompleted,
+        collectibles_total: collectiblesTotal,
         total_completed: totalCompleted,
         total_milestones: totalMilestones,
         completion_percentage: completionPercentage

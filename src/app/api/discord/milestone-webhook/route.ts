@@ -11,6 +11,27 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Fetch thumbnail for collectibles
+    let thumbnailUrl = null;
+    if (milestone.category === 'collectibles' && milestone.assetId) {
+      try {
+        console.log(`🖼️ Fetching thumbnail for collectible: ${milestone.description} (ID: ${milestone.assetId})`);
+        
+        const thumbnailResponse = await fetch(`${request.nextUrl.origin}/api/roblox?assetId=${milestone.assetId}`);
+        if (thumbnailResponse.ok) {
+          const thumbnailData = await thumbnailResponse.json();
+          if (thumbnailData.success && thumbnailData.thumbnail) {
+            thumbnailUrl = thumbnailData.thumbnail;
+            console.log(`✅ Got thumbnail for ${milestone.description}`);
+          } else {
+            console.log(`⚠️ No thumbnail available for ${milestone.description}`);
+          }
+        }
+      } catch (thumbnailError) {
+        console.error(`❌ Error fetching thumbnail for ${milestone.description}:`, thumbnailError);
+      }
+    }
+
     // Prepare data for PythonAnywhere webhook
     const webhookData = {
       milestone: {
@@ -18,7 +39,9 @@ export async function POST(request: NextRequest) {
         category: milestone.category,
         target: milestone.target,
         description: milestone.description,
-        isCompleted: milestone.isCompleted
+        isCompleted: milestone.isCompleted,
+        assetId: milestone.assetId || null,
+        thumbnailUrl: thumbnailUrl
       },
       progress: {
         revenue_completed: progress.revenue_completed,
@@ -27,6 +50,8 @@ export async function POST(request: NextRequest) {
         sales_total: progress.sales_total,
         items_completed: progress.items_completed,
         items_total: progress.items_total,
+        collectibles_completed: progress.collectibles_completed || 0,
+        collectibles_total: progress.collectibles_total || 0,
         total_completed: progress.total_completed,
         total_milestones: progress.total_milestones,
         completion_percentage: progress.completion_percentage
