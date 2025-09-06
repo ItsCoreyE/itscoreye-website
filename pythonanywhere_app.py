@@ -146,8 +146,13 @@ class CSVStatsNotifier:
         self.username = username
         self.ping_role_id = ping_role_id
         
-        # CSV stats color scheme
-        self.stats_color = 0x4169E1  # Royal Blue
+        # CSV stats color scheme - vibrant and playful colors
+        self.stats_colors = {
+            'high_growth': 0x00FF7F,    # Spring Green (positive growth)
+            'medium_growth': 0xFFD700,  # Gold (moderate growth)
+            'low_growth': 0xFF6347,     # Tomato (low/negative growth)
+            'default': 0x1E90FF        # Dodger Blue (no growth data)
+        }
 
     def format_number(self, num):
         """Format numbers with appropriate suffixes (K, M, etc.)"""
@@ -161,65 +166,81 @@ class CSVStatsNotifier:
     def create_csv_stats_embed(self, stats_data):
         """Create a rich Discord embed for CSV stats upload"""
         upload_type = stats_data.get('uploadType', 'single')
+        growth = stats_data.get('growthPercentage', 0)
         
-        # Determine title based on upload type
+        # Determine color based on performance
+        if growth >= 20:
+            color = self.stats_colors['high_growth']
+        elif growth >= 5:
+            color = self.stats_colors['medium_growth'] 
+        elif growth < 0:
+            color = self.stats_colors['low_growth']
+        else:
+            color = self.stats_colors['default']
+        
+        # Determine title and description based on upload type
         data_period = stats_data.get('dataPeriod', 'Current Period')
         
         if upload_type == 'growth':
-            title = f"📈 **{data_period} Monthly Stats!**"
-            description = f"**New sales data processed with growth analysis**\n\n*Month-over-month comparison calculated*"
+            title = f"🎉 **{data_period} Performance Report!**"
+            description = f"**✨ New monthly insights unlocked with growth analysis!**\n\n*Month-over-month magic calculated ⭐*"
         else:
-            title = f"📊 **{data_period} Monthly Stats!**"
-            description = f"**Fresh sales analytics uploaded**\n\n*Latest ROBLOX sales data processed*"
+            title = f"🎊 **{data_period} Monthly Update!**"
+            description = f"**🌟 Fresh monthly stats are in!**\n\n*Latest ROBLOX performance data processed 🚀*"
         
         # Format numbers
         revenue = self.format_number(stats_data.get('totalRevenue', 0))
         sales = self.format_number(stats_data.get('totalSales', 0))
-        growth = stats_data.get('growthPercentage', 0)
         
-        # Growth formatting
-        growth_display = f"+{growth}%" if growth > 0 else f"{growth}%"
+        # Enhanced growth formatting with celebration
         if growth > 0:
-            growth_emoji = "📈"
+            growth_display = f"+{growth}%"
+            growth_emoji = "🚀"
+            growth_celebration = "Crushing it!"
         elif growth < 0:
+            growth_display = f"{growth}%"
             growth_emoji = "📉"
+            growth_celebration = "Room to grow!"
         else:
+            growth_display = f"{growth}%"
             growth_emoji = "➡️"
+            growth_celebration = "Steady pace!"
         
-        # Top items summary
+        # Top items summary with more excitement
         top_items = stats_data.get('topItems', [])
-        top_items_text = "No items data"
+        top_items_text = "No superstar yet! 🌟"
         if top_items:
             top_item = top_items[0]
-            top_items_text = f"{top_item.get('name', 'Unknown')} ({top_item.get('sales', 0)} sales)"
+            item_sales = top_item.get('sales', 0)
+            top_items_text = f"🏆 {top_item.get('name', 'Mystery Item')} ({self.format_number(item_sales)} sales)"
         
         embed = {
             "title": title,
             "description": description,
-            "color": self.stats_color,
+            "color": color,
             "fields": [
                 {
                     "name": "💰 **Total Revenue**",
-                    "value": f"`{revenue} Robux`",
+                    "value": f"`{revenue} Robux`\n*Cha-ching! 💸*",
                     "inline": True
                 },
                 {
                     "name": "🛍️ **Total Sales**",
-                    "value": f"`{sales} sales`",
+                    "value": f"`{sales} sales`\n*Items flying off shelves! 📦*",
                     "inline": True
                 },
                 {
                     "name": f"{growth_emoji} **Growth**",
-                    "value": f"`{growth_display}`",
+                    "value": f"`{growth_display}`\n*{growth_celebration}*",
                     "inline": True
                 },
                 {
                     "name": "📅 **Data Period**",
-                    "value": f"`{stats_data.get('dataPeriod', 'Unknown')}`",
+                    "value": f"`{stats_data.get('dataPeriod', 'Unknown')}`\n*Time period tracked 📊*",
                     "inline": True
                 },
                 {
-                    "name": "🎨 **Top Item**",
+                    "name": "🎨 **Top Performer**",
                     "value": f"`{top_items_text}`",
                     "inline": True
                 }
@@ -239,13 +260,21 @@ class CSVStatsNotifier:
         """Post CSV stats to Discord"""
         embed = self.create_csv_stats_embed(stats_data)
         
-        # Create content with role ping
+        # Create celebratory content with role ping
         data_period = stats_data.get('dataPeriod', 'Current Period')
         upload_type = stats_data.get('uploadType', 'single')
+        growth = stats_data.get('growthPercentage', 0)
+        
+        # Dynamic content based on performance
         if upload_type == 'growth':
-            content = f"📈 **{data_period} Monthly Stats!**"
+            if growth > 15:
+                content = f"🎊 **{data_period} Results Are Incredible!**"
+            elif growth > 0:
+                content = f"🎉 **{data_period} Performance Update!**"
+            else:
+                content = f"📊 **{data_period} Monthly Report!**"
         else:
-            content = f"📊 **{data_period} Monthly Stats!**"
+            content = f"⭐ **{data_period} Stats Drop!**"
             
         if self.ping_role_id:
             content = f"<@&{self.ping_role_id}> {content}"
