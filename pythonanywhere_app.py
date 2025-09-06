@@ -221,22 +221,22 @@ class CSVStatsNotifier:
             "fields": [
                 {
                     "name": "💰 **Total Revenue**",
-                    "value": f"`{revenue} Robux`\n*Cha-ching! 💸*",
+                    "value": f"`{revenue} Robux`",
                     "inline": True
                 },
                 {
                     "name": "🛍️ **Total Sales**",
-                    "value": f"`{sales} sales`\n*Items flying off shelves! 📦*",
+                    "value": f"`{sales} sales`",
                     "inline": True
                 },
                 {
                     "name": f"{growth_emoji} **Growth**",
-                    "value": f"`{growth_display}`\n*{growth_celebration}*",
+                    "value": f"`{growth_display}`",
                     "inline": True
                 },
                 {
                     "name": "📅 **Data Period**",
-                    "value": f"`{stats_data.get('dataPeriod', 'Unknown')}`\n*Time period tracked 📊*",
+                    "value": f"`{stats_data.get('dataPeriod', 'Unknown')}`",
                     "inline": True
                 },
                 {
