@@ -14,7 +14,7 @@ export async function GET() {
         totalRevenue: 56799,
         totalSales: 2653,
         growthPercentage: 2579,
-        lastUpdated: new Date().toLocaleString(),
+        lastUpdated: new Date().toISOString(),
         dataPeriod: 'All Time',
         topItems: []
       });
@@ -23,7 +23,7 @@ export async function GET() {
     // Return data with current timestamp (live update)
     return NextResponse.json({
       ...data,
-      lastUpdated: new Date().toLocaleString()
+      lastUpdated: new Date().toISOString()
     });
   } catch (error) {
     console.error('Error fetching data:', error);
