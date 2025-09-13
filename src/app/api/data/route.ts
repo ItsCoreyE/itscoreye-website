@@ -14,13 +14,17 @@ export async function GET() {
         totalRevenue: 56799,
         totalSales: 2653,
         growthPercentage: 2579,
-        lastUpdated: 'Default Data',
+        lastUpdated: new Date().toLocaleString(),
         dataPeriod: 'All Time',
         topItems: []
       });
     }
     
-    return NextResponse.json(data);
+    // Return data with current timestamp (live update)
+    return NextResponse.json({
+      ...data,
+      lastUpdated: new Date().toLocaleString()
+    });
   } catch (error) {
     console.error('Error fetching data:', error);
     return NextResponse.json(
