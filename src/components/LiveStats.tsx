@@ -167,7 +167,7 @@ export default function LiveStats() {
       <div className="text-center mt-6">
         <div className="inline-flex items-center gap-2 text-gray-500 text-xs sm:text-sm">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="font-medium">Live • {statsData.lastUpdated}</span>
+          <span className="font-medium">Live • {new Date(statsData.lastUpdated).toLocaleString()}</span>
         </div>
       </div>
     </div>
