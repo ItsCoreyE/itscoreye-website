@@ -183,10 +183,10 @@ class CSVStatsNotifier:
         
         if upload_type == 'growth':
             title = f"🎉 **{data_period} Performance Report!**"
-            description = f"**✨ New monthly insights unlocked with growth analysis!**\n\n*Month-over-month magic calculated ⭐*"
+            description = ""
         else:
             title = f"🎊 **{data_period} Monthly Update!**"
-            description = f"**🌟 Fresh monthly stats are in!**\n\n*Latest ROBLOX performance data processed 🚀*"
+            description = ""
         
         # Format numbers
         revenue = self.format_number(stats_data.get('totalRevenue', 0))
