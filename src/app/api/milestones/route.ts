@@ -6,7 +6,7 @@ const redis = Redis.fromEnv();
 
 export interface Milestone {
   id: string;
-  category: 'revenue' | 'sales' | 'items' | 'collectibles';
+  category: 'revenue' | 'sales' | 'items' | 'collectibles' | 'verification';
   target: number;
   description: string;
   isCompleted: boolean;
@@ -15,6 +15,9 @@ export interface Milestone {
 
 // Default milestones data
 const defaultMilestones: Milestone[] = [
+  // Verification Milestone - Main Goal
+  { id: 'verify-roblox', category: 'verification', target: 1, description: 'Roblox Verified Creator (Blue Checkmark)', isCompleted: false },
+
   // Revenue Milestones (15 total)
   { id: 'rev-1k', category: 'revenue', target: 1000, description: 'Earned 1,000 Robux', isCompleted: false },
   { id: 'rev-5k', category: 'revenue', target: 5000, description: 'Earned 5,000 Robux', isCompleted: false },

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 interface Milestone {
   id: string;
-  category: 'revenue' | 'sales' | 'items' | 'collectibles';
+  category: 'revenue' | 'sales' | 'items' | 'collectibles' | 'verification';
   target: number;
   description: string;
   isCompleted: boolean;
@@ -180,6 +180,55 @@ export default function MilestoneAdmin() {
           <p className="text-green-400">{successMessage}</p>
         </motion.div>
       )}
+
+      {/* Verification Milestone First */}
+      {milestonesData && (() => {
+        const verificationMilestone = milestonesData.milestones.find(m => m.category === 'verification');
+        if (!verificationMilestone) return null;
+        
+        return (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`mb-8 p-6 rounded-xl border-2 ${
+              verificationMilestone.isCompleted
+                ? 'bg-blue-500/10 border-blue-400'
+                : 'bg-gray-800/30 border-blue-500/30'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4 flex-1">
+                <div className="text-4xl">🎯</div>
+                <div>
+                  <div className="text-sm text-blue-400 font-semibold mb-1">MAIN GOAL</div>
+                  <div className="text-xl font-bold text-gray-100">{verificationMilestone.description}</div>
+                  <div className="text-sm text-gray-400 mt-1">
+                    Requirements: 2M Robux (90 days) + 200K Sales
+                  </div>
+                </div>
+              </div>
+              
+              <label className="flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={verificationMilestone.isCompleted}
+                  onChange={() => handleMilestoneToggle(verificationMilestone.id)}
+                  className="sr-only"
+                />
+                <div className={`relative w-16 h-8 rounded-full transition-all duration-300 ${
+                  verificationMilestone.isCompleted ? 'bg-blue-500' : 'bg-gray-600'
+                }`}>
+                  <motion.div 
+                    className="absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md"
+                    animate={{ x: verificationMilestone.isCompleted ? 30 : 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                  />
+                </div>
+              </label>
+            </div>
+          </motion.div>
+        );
+      })()}
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">

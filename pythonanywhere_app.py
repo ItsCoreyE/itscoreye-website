@@ -16,7 +16,8 @@ class MilestoneNotifier:
             'revenue': 0xFFD700,    # Gold
             'sales': 0x00FF7F,      # Spring Green  
             'items': 0x1E90FF,      # Dodger Blue
-            'collectibles': 0x8A2BE2 # Blue Violet (Diamond theme)
+            'collectibles': 0x8A2BE2, # Blue Violet (Diamond theme)
+            'verification': 0x00D9FF # Bright Blue (Roblox Verified Blue)
         }
         
         # Category emojis and display names
@@ -44,6 +45,12 @@ class MilestoneNotifier:
                 'name': 'Collectible Achievement',
                 'unit': 'Item',
                 'celebration': 'Limited collectible acquired!'
+            },
+            'verification': {
+                'emoji': '✅',
+                'name': '🎊 ROBLOX VERIFIED CREATOR 🎊',
+                'unit': 'Verified',
+                'celebration': '🏆 MAIN GOAL ACHIEVED! THE BLUE CHECKMARK IS HERE! 🏆'
             }
         }
 
@@ -116,14 +123,20 @@ class MilestoneNotifier:
         
         return embed
 
-    def post_milestone_to_discord(self, milestone_data, progress_stats):
+    def post_milestone_to_discord(self, milestone_data, progress_stats, use_everyone_ping=False):
         """Post milestone completion to Discord"""
         embed = self.create_milestone_embed(milestone_data, progress_stats)
         
-        # Create content with role ping
-        content = "🎊 **Milestone Reached!**"
-        if self.ping_role_id:
-            content = f"<@&{self.ping_role_id}> {content}"
+        # Create content with appropriate ping
+        category = milestone_data.get('category', 'revenue')
+        
+        if category == 'verification':
+            # Special treatment for verification milestone
+            content = "🎊🎊🎊 @everyone 🎊🎊🎊\n\n**🏆 ROBLOX VERIFIED CREATOR ACHIEVED! 🏆**"
+        else:
+            content = "🎊 **Milestone Reached!**"
+            if self.ping_role_id and not use_everyone_ping:
+                content = f"<@&{self.ping_role_id}> {content}"
         
         payload = {
             "content": content,
