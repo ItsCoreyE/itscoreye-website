@@ -17,6 +17,14 @@ export default function FeaturedItems() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Format asset type from camelCase to readable format
+  const formatAssetType = (assetType: string): string => {
+    // Insert space before capital letters and trim
+    return assetType
+      .replace(/([A-Z])/g, ' $1')
+      .trim();
+  };
+
   useEffect(() => {
     // Function to fetch data from API
     const fetchData = async () => {
@@ -232,7 +240,7 @@ export default function FeaturedItems() {
               {item.assetType && (
                 <div className="text-center">
                   <span className="inline-block text-xs font-medium text-gray-400 bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-700/50">
-                    {item.assetType}
+                    {formatAssetType(item.assetType)}
                   </span>
                 </div>
               )}
