@@ -12,6 +12,18 @@ export const metadata: Metadata = {
   creator: 'ItsCoreyE',
   publisher: 'ItsCoreyE',
   
+  themeColor: '#0a0a0a',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'ItsCoreyE',
+  },
+  
   openGraph: {
     title: 'ItsCoreyE - UGC Creator',
     description: 'Official website of ItsCoreyE, a leading UGC creator on ROBLOX',
