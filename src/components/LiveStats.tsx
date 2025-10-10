@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { usePerformanceMode } from '@/hooks/usePerformanceMode';
 
 interface SalesData {
   totalRevenue: number;
@@ -23,6 +24,7 @@ export default function LiveStats() {
   const [statsData, setStatsData] = useState<SalesData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { duration, enableHover } = usePerformanceMode();
 
   useEffect(() => {
     // Function to fetch data from API
@@ -124,13 +126,15 @@ export default function LiveStats() {
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
         <motion.div
-          whileHover={{ scale: 1.02 }}
+          whileHover={enableHover ? { scale: 1.02 } : undefined}
           className="stats-card cursor-pointer group"
+          style={{ willChange: 'transform' }}
         >
           <motion.h3 
             key={statsData.totalRevenue}
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: duration * 0.5 }}
             className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text leading-tight mb-2"
           >
             {statsData.totalRevenue.toLocaleString()}
@@ -144,13 +148,15 @@ export default function LiveStats() {
         </motion.div>
         
         <motion.div
-          whileHover={{ scale: 1.02 }}
+          whileHover={enableHover ? { scale: 1.02 } : undefined}
           className="stats-card cursor-pointer group"
+          style={{ willChange: 'transform' }}
         >
           <motion.h3 
             key={statsData.totalSales}
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: duration * 0.5 }}
             className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text leading-tight mb-2"
           >
             {statsData.totalSales.toLocaleString()}

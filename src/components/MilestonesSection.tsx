@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePerformanceMode } from '@/hooks/usePerformanceMode';
 
 interface Milestone {
   id: string;
@@ -21,6 +22,7 @@ export default function MilestonesSection() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
+  const { duration, delay, staggerDelay, enableHover, enableComplex } = usePerformanceMode();
 
   useEffect(() => {
     const fetchMilestones = async () => {
@@ -166,7 +168,7 @@ export default function MilestonesSection() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration }}
           className="text-center mb-12 sm:mb-16"
         >
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 gradient-text">
@@ -185,22 +187,24 @@ export default function MilestonesSection() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration, delay }}
               className={`relative overflow-hidden rounded-2xl border-2 ${
                 verificationMilestone.isCompleted 
                   ? 'border-blue-400 bg-gradient-to-br from-blue-500/10 via-cyan-500/10 to-blue-500/10' 
                   : 'border-blue-500/30 bg-gradient-to-br from-gray-800/50 via-blue-900/20 to-gray-800/50'
               }`}
             >
-              {/* Animated background effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent shimmer-effect"></div>
+              {/* Animated background effect - only on desktop */}
+              {enableComplex && (
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent shimmer-effect"></div>
+              )}
               
               <div className="relative p-6 sm:p-8 md:p-10">
                 {/* Badge */}
                 <div className="flex items-center justify-center mb-6">
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30">
                     <motion.span 
-                      animate={{ rotate: [0, 10, -10, 0] }}
+                      animate={enableComplex ? { rotate: [0, 10, -10, 0] } : {}}
                       transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
                       className="text-2xl"
                     >
@@ -219,7 +223,7 @@ export default function MilestonesSection() {
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 200, delay: 0.3 }}
+                      transition={{ type: "spring", stiffness: 200, delay: delay * 1.5 }}
                       className="ml-3 text-blue-400"
                     >
                       ✓
@@ -254,7 +258,7 @@ export default function MilestonesSection() {
                     <motion.div
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.4 }}
+                      transition={{ delay: delay * 2 }}
                       className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-500/20 border-2 border-blue-400"
                     >
                       <span className="text-3xl">🎊</span>
@@ -284,8 +288,9 @@ export default function MilestonesSection() {
                   key={category}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                  transition={{ duration: duration * 0.625, delay: (delay * 2) + index * staggerDelay }}
                   className="glass-card rounded-xl overflow-hidden"
+                  style={{ willChange: 'transform' }}
                 >
                   {/* Category Header - Clickable */}
                   <button
@@ -294,8 +299,9 @@ export default function MilestonesSection() {
                   >
                     <div className="flex items-center gap-4 flex-1">
                       <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
+                        whileHover={enableHover ? { scale: 1.1, rotate: 5 } : undefined}
                         className="text-3xl sm:text-4xl"
+                        style={{ willChange: 'transform' }}
                       >
                         {getCategoryIcon(category)}
                       </motion.div>
@@ -341,7 +347,8 @@ export default function MilestonesSection() {
                         className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full"
                         initial={{ width: 0 }}
                         animate={{ width: `${progressPercentage}%` }}
-                        transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
+                        transition={{ duration, delay: (delay * 2.5) + index * staggerDelay }}
+                        style={{ willChange: 'width' }}
                       />
                     </div>
                   </div>
@@ -353,8 +360,9 @@ export default function MilestonesSection() {
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: duration * 0.375 }}
                         className="overflow-hidden"
+                        style={{ willChange: 'height, opacity' }}
                       >
                         <div className="p-6 pt-0 space-y-2">
                           {data.milestones.map((milestone, milestoneIndex) => (
@@ -362,7 +370,7 @@ export default function MilestonesSection() {
                               key={milestone.id}
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.3, delay: milestoneIndex * 0.05 }}
+                              transition={{ duration: duration * 0.375, delay: milestoneIndex * (staggerDelay * 0.5) }}
                               className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
                                 milestone.isCompleted
                                   ? 'bg-green-500/10 border-green-500/30'
@@ -402,7 +410,7 @@ export default function MilestonesSection() {
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration, delay: delay * 4 }}
             className="text-center mt-12"
           >
             <div className="inline-flex items-center gap-2 text-gray-500 text-sm">

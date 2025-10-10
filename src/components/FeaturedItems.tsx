@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { usePerformanceMode } from '@/hooks/usePerformanceMode';
 
 interface FeaturedItem {
   name: string;
@@ -16,6 +17,7 @@ export default function FeaturedItems() {
   const [featuredItems, setFeaturedItems] = useState<FeaturedItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { duration, staggerDelay, enableHover } = usePerformanceMode();
 
   // Format asset type from camelCase to readable format
   const formatAssetType = (assetType: string): string => {
@@ -62,12 +64,12 @@ export default function FeaturedItems() {
     return (
       <section className="min-h-screen modern-gradient-bg section-padding">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12 sm:mb-16 md:mb-20"
-          >
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration }}
+          className="text-center mb-12 sm:mb-16 md:mb-20"
+        >
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
               Best Sellers
             </h2>
@@ -197,9 +199,10 @@ export default function FeaturedItems() {
               key={`${item.name}-${index}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
+              transition={{ duration: duration * 0.625, delay: index * staggerDelay }}
+              whileHover={enableHover ? { y: -8 } : undefined}
               className="glass-card hover-lift p-6 rounded-xl group"
+              style={{ willChange: 'transform' }}
             >
               {/* Thumbnail */}
               <div className="relative aspect-square bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg mb-4 overflow-hidden">
@@ -208,8 +211,9 @@ export default function FeaturedItems() {
                     src={item.thumbnail}
                     alt={item.name}
                     className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
+                    whileHover={enableHover ? { scale: 1.05 } : undefined}
+                    transition={{ duration: duration * 0.375 }}
+                    style={{ willChange: 'transform' }}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">

@@ -1,10 +1,12 @@
 'use client';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { usePerformanceMode } from '@/hooks/usePerformanceMode';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
   const [inviteCopied, setInviteCopied] = useState(false);
+  const { duration, delay, enableHover } = usePerformanceMode();
 
   const handleCopyDiscord = async () => {
     try {
@@ -32,7 +34,7 @@ export default function Contact() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
@@ -49,16 +51,18 @@ export default function Contact() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            whileHover={{ y: -8 }}
+            transition={{ duration: duration * 0.625, delay }}
+            whileHover={enableHover ? { y: -8 } : undefined}
             className="glass-card hover-lift p-8 sm:p-10 rounded-xl flex-1 group"
+            style={{ willChange: 'transform' }}
           >
             <div className="text-center">
               {/* Discord Icon */}
               <motion.div 
                 className="mb-6"
-                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileHover={enableHover ? { scale: 1.1, rotate: 5 } : undefined}
                 transition={{ type: "spring", stiffness: 300 }}
+                style={{ willChange: 'transform' }}
               >
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 mb-4 group-hover:border-indigo-500/40 transition-colors">
                   <svg className="w-10 h-10 text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
@@ -72,9 +76,10 @@ export default function Contact() {
               {/* Discord Username */}
               <motion.button
                 onClick={handleCopyDiscord}
-                whileHover={{ scale: 1.05 }}
+                whileHover={enableHover ? { scale: 1.05 } : undefined}
                 whileTap={{ scale: 0.98 }}
                 className="relative modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-3 group"
+                style={{ willChange: 'transform' }}
               >
                 <span className="text-gray-900">itscoreye</span>
                 {copied ? (
@@ -113,16 +118,18 @@ export default function Contact() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            whileHover={{ y: -8 }}
+            transition={{ duration: duration * 0.625, delay: delay * 1.5 }}
+            whileHover={enableHover ? { y: -8 } : undefined}
             className="glass-card hover-lift p-8 sm:p-10 rounded-xl flex-1 group"
+            style={{ willChange: 'transform' }}
           >
             <div className="text-center">
               {/* Server Icon */}
               <motion.div 
                 className="mb-6"
-                whileHover={{ scale: 1.1, rotate: -5 }}
+                whileHover={enableHover ? { scale: 1.1, rotate: -5 } : undefined}
                 transition={{ type: "spring", stiffness: 300 }}
+                style={{ willChange: 'transform' }}
               >
                 <div className="inline-flex items-center justify-center w-20 h-20 bg-purple-500/10 rounded-2xl border border-purple-500/20 mb-4 group-hover:border-purple-500/40 transition-colors">
                   <svg className="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,9 +144,10 @@ export default function Contact() {
               <div className="flex flex-col items-center space-y-3">
                 <motion.button
                   onClick={handleCopyInvite}
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={enableHover ? { scale: 1.05 } : undefined}
                   whileTap={{ scale: 0.98 }}
                   className="relative modern-button px-6 py-3 text-base font-semibold flex items-center justify-center gap-3 group"
+                  style={{ willChange: 'transform' }}
                 >
                   <span className="text-gray-900">Copy Invite Link</span>
                   {inviteCopied ? (
@@ -174,12 +182,13 @@ export default function Contact() {
                 <motion.a 
                   href="https://discord.gg/bkY6wTseTS" 
                   target="_blank"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={enableHover ? { scale: 1.05 } : undefined}
                   whileTap={{ scale: 0.98 }}
                   className="modern-button px-6 py-3 text-base font-semibold flex items-center justify-center gap-3 group"
                   style={{
                     background: 'linear-gradient(135deg, #10B981, #059669)',
-                    color: '#ffffff'
+                    color: '#ffffff',
+                    willChange: 'transform'
                   }}
                 >
                   <span>Join Now</span>
@@ -198,7 +207,7 @@ export default function Contact() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration, delay: delay * 2 }}
           className="text-center mt-16"
         >
           <p className="text-gray-500 text-sm">
