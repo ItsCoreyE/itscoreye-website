@@ -370,7 +370,10 @@ export default function MilestonesSection() {
                               key={milestone.id}
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{ duration: duration * 0.375, delay: milestoneIndex * (staggerDelay * 0.5) }}
+                              transition={{ 
+                                duration: 0.3,
+                                delay: milestoneIndex * 0.05
+                              }}
                               className={`flex items-center gap-3 p-3 rounded-lg border transition-all ${
                                 milestone.isCompleted
                                   ? 'bg-green-500/10 border-green-500/30'
