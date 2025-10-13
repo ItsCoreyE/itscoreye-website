@@ -125,11 +125,6 @@ export default function MilestoneAdmin() {
     }
   };
 
-  const getCompletedCount = (category: string) => {
-    const categoryMilestones = getCategoryData(category);
-    return categoryMilestones.filter(m => m.isCompleted).length;
-  };
-
   const getOverallProgress = () => {
     if (!milestonesData) return { completed: 0, total: 0, percentage: 0 };
     const completed = milestonesData.milestones.filter(m => m.isCompleted).length;
