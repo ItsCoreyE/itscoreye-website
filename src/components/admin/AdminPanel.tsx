@@ -504,169 +504,154 @@ export default function AdminPanel() {
             <p className="text-xl text-gray-400">Manage Your UGC Business</p>
           </motion.div>
 
-          {/* Main Dashboard */}
+          {/* Current Stats at Top */}
+          {salesData && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
+            >
+              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
+                <div className="text-2xl sm:text-3xl font-bold text-green-400 mb-1">
+                  {salesData.totalRevenue.toLocaleString()}
+                </div>
+                <div className="text-gray-400 font-semibold text-xs sm:text-sm">💰 Revenue</div>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
+                <div className="text-2xl sm:text-3xl font-bold text-blue-400 mb-1">
+                  {salesData.totalSales.toLocaleString()}
+                </div>
+                <div className="text-gray-400 font-semibold text-xs sm:text-sm">🛍️ Sales</div>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
+                <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1">
+                  ↗ {salesData.growthPercentage}%
+                </div>
+                <div className="text-gray-400 font-semibold text-xs sm:text-sm">📈 Growth</div>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
+                <div className="text-xs sm:text-sm text-amber-400 mb-1 font-mono truncate">
+                  {salesData.dataPeriod || 'Current'}
+                </div>
+                <div className="text-gray-400 font-semibold text-xs sm:text-sm">📅 Period</div>
+              </motion.div>
+            </motion.div>
+          )}
+
+          {/* Quick Actions */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="glass-card p-8 mb-8"
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="glass-card p-6 mb-6"
           >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              {/* Quick Update */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="glass-card p-6"
-              >
-                <h3 className="text-2xl font-bold text-gray-100 mb-4 flex items-center">
-                  ⚡ Quick Update
-                </h3>
-                <p className="text-gray-400 mb-4">
-                  Instantly update your stats for milestone announcements
-                </p>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleManualUpdate}
-                  className="modern-button w-full py-4 text-lg font-bold"
-                >
-                  📊 Update Stats Manually
-                </motion.button>
-              </motion.div>
-
-              {/* CSV Upload */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="glass-card p-6"
-              >
-                <h3 className="text-2xl font-bold text-gray-100 mb-4 flex items-center">
-                  📁 CSV Upload
-                </h3>
-                <p className="text-gray-400 mb-4">
-                  Upload ROBLOX analytics data from Create Dashboard
-                </p>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".csv"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={isUploading}
-                  className="modern-button w-full py-4 text-lg font-bold disabled:opacity-50"
-                >
-                  {isUploading ? '⏳ Processing...' : '📈 Upload CSV File'}
-                </motion.button>
-              </motion.div>
-            </div>
-
-            {/* Growth Calculation Section */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="glass-card p-6 mb-8"
-            >
-              <h3 className="text-2xl font-bold text-gray-100 mb-4 flex items-center">
-                📊 Growth Calculation
-              </h3>
-              <p className="text-gray-400 mb-6">
-                Upload two CSV files to calculate real month-over-month growth percentage
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label className="block text-gray-300 font-semibold mb-2">
-                    📅 Previous Month CSV
-                  </label>
-                  <input
-                    id="previousFile"
-                    type="file"
-                    accept=".csv"
-                    className="modern-input w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white hover:file:bg-amber-700 transition-colors"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-gray-300 font-semibold mb-2">
-                    📅 Current Month CSV
-                  </label>
-                  <input
-                    id="currentFile"
-                    type="file"
-                    accept=".csv"
-                    className="modern-input w-full file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white hover:file:bg-amber-700 transition-colors"
-                  />
-                </div>
-              </div>
-              
+            <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
+              ⚡ Quick Actions
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleGrowthCalculation}
-                disabled={isUploading}
-                className="modern-button w-full py-4 text-lg font-bold disabled:opacity-50"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleManualUpdate}
+                className="bg-gradient-to-br from-blue-600/20 to-blue-500/10 border border-blue-500/30 hover:border-blue-500/50 p-4 rounded-lg text-left transition-all group"
               >
-                {isUploading ? '⏳ Calculating Growth...' : '🧮 Calculate Real Growth'}
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">📊</span>
+                  <span className="font-bold text-gray-100">Quick Update</span>
+                </div>
+                <p className="text-xs text-gray-400">Manual stats entry</p>
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+                className="bg-gradient-to-br from-green-600/20 to-green-500/10 border border-green-500/30 hover:border-green-500/50 p-4 rounded-lg text-left transition-all group disabled:opacity-50"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">📁</span>
+                  <span className="font-bold text-gray-100">
+                    {isUploading ? 'Processing...' : 'CSV Upload'}
+                  </span>
+                </div>
+                <p className="text-xs text-gray-400">
+                  {isUploading ? 'Please wait...' : 'Single month data'}
+                </p>
               </motion.button>
               
-              <div className="mt-4 p-4 bg-gray-800/30 rounded-lg border border-gray-700/50">
-                <p className="text-gray-400 text-sm">
-                  <strong>💡 How it works:</strong> Upload your previous and current month CSV files, and the system will automatically calculate the real revenue growth percentage between the two months.
-                </p>
-              </div>
-            </motion.div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv"
+                onChange={handleFileUpload}
+                className="hidden"
+              />
 
-            {/* Current Stats Display */}
-            {salesData && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="glass-card p-6"
+              <motion.a
+                href="/"
+                target="_blank"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-gradient-to-br from-purple-600/20 to-purple-500/10 border border-purple-500/30 hover:border-purple-500/50 p-4 rounded-lg text-left transition-all group block"
               >
-                <h3 className="text-3xl font-bold text-gray-100 mb-6 text-center">
-                  📊 Current Live Stats
-                </h3>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center mb-6">
-                  <motion.div whileHover={{ scale: 1.05 }} className="stats-card">
-                    <div className="text-3xl font-bold text-green-400 mb-2">
-                      {salesData.totalRevenue.toLocaleString()}
-                    </div>
-                    <div className="text-gray-400 font-semibold">💰 Total Revenue</div>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} className="stats-card">
-                    <div className="text-3xl font-bold text-blue-400 mb-2">
-                      {salesData.totalSales.toLocaleString()}
-                    </div>
-                    <div className="text-gray-400 font-semibold">🛍️ Total Sales</div>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} className="stats-card">
-                    <div className="text-2xl font-bold text-purple-400 mb-2">
-                      ↗ {salesData.growthPercentage}%
-                    </div>
-                    <div className="text-gray-400 font-semibold">📈 Growth</div>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.05 }} className="stats-card">
-                    <div className="text-sm text-amber-400 mb-2 font-mono">
-                      {salesData.lastUpdated}
-                    </div>
-                    <div className="text-gray-400 font-semibold">🕒 Last Updated</div>
-                  </motion.div>
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">🏠</span>
+                  <span className="font-bold text-gray-100">View Site</span>
                 </div>
-                
-                <div className="text-center">
-                  <motion.a
-                    href="/"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="modern-button px-8 py-3 inline-block"
-                  >
-                    🏠 View Live Website
-                  </motion.a>
-                </div>
-              </motion.div>
-            )}
+                <p className="text-xs text-gray-400">See live changes</p>
+              </motion.a>
+            </div>
+          </motion.div>
+
+          {/* Growth Calculation - Collapsible */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="glass-card p-6 mb-6"
+          >
+            <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
+              📊 Growth Calculation
+            </h3>
+              
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block text-gray-300 font-medium mb-2 text-sm">
+                  📅 Previous Month
+                </label>
+                <input
+                  id="previousFile"
+                  type="file"
+                  accept=".csv"
+                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white file:font-semibold hover:file:bg-amber-700 transition-colors"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-gray-300 font-medium mb-2 text-sm">
+                  📅 Current Month
+                </label>
+                <input
+                  id="currentFile"
+                  type="file"
+                  accept=".csv"
+                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white file:font-semibold hover:file:bg-amber-700 transition-colors"
+                />
+              </div>
+            </div>
+            
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleGrowthCalculation}
+              disabled={isUploading}
+              className="modern-button w-full py-3 font-bold disabled:opacity-50"
+            >
+              {isUploading ? '⏳ Calculating...' : '🧮 Calculate Growth'}
+            </motion.button>
           </motion.div>
 
           {/* Milestone Management Section */}
