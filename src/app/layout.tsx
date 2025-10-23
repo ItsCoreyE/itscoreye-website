@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'ItsCoreyE - UGC Creator',
+  title: 'Home of ItsCoreyE',
   description: 'Official website of ItsCoreyE, a leading UGC creator on ROBLOX. Discover amazing accessories and items, view live sales stats, and explore creative designs across all categories.',
   keywords: ['ItsCoreyE', 'ROBLOX', 'UGC', 'Creator', 'Accessories', 'Virtual Items', 'Designer'],
   authors: [{ name: 'ItsCoreyE' }],
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   
   openGraph: {
-    title: 'ItsCoreyE - UGC Creator',
+    title: 'Home of ItsCoreyE',
     description: 'Official website of ItsCoreyE, a leading UGC creator on ROBLOX',
     url: 'https://itscoreye.co.uk',
     siteName: 'ItsCoreyE',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   
   twitter: {
     card: 'summary_large_image',
-    title: 'ItsCoreyE - UGC Creator',
+    title: 'Home of ItsCoreyE',
     description: 'Official website of ItsCoreyE, a leading UGC creator on ROBLOX',
     creator: '@itscoreye',
     images: ['/og-image.png']
