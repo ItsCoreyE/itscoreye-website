@@ -20,7 +20,7 @@ export default function Contact() {
 
   const handleCopyInvite = async () => {
     try {
-      await navigator.clipboard.writeText('https://discord.gg/bkY6wTseTS');
+      await navigator.clipboard.writeText('https://discord.gg/nbQArRaq8m');
       setInviteCopied(true);
       setTimeout(() => setInviteCopied(false), 2000);
     } catch (err) {
@@ -180,7 +180,7 @@ export default function Contact() {
 
                 {/* Direct Join Button */}
                 <motion.a 
-                  href="https://discord.gg/bkY6wTseTS" 
+                  href="https://discord.gg/nbQArRaq8m" 
                   target="_blank"
                   whileHover={enableHover ? { scale: 1.05 } : undefined}
                   whileTap={{ scale: 0.98 }}
@@ -198,7 +198,7 @@ export default function Contact() {
                 </motion.a>
               </div>
               
-              <p className="text-gray-500 text-xs sm:text-sm mt-3">discord.gg/bkY6wTseTS</p>
+              <p className="text-gray-500 text-xs sm:text-sm mt-3">discord.gg/nbQArRaq8m</p>
             </div>
           </motion.div>
         </div>

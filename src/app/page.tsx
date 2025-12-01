@@ -69,7 +69,7 @@ export default function Home() {
             Follow on TikTok
           </a>
           <a 
-            href="https://discord.gg/bkY6wTseTS" 
+            href="https://discord.gg/nbQArRaq8m" 
             target="_blank" 
             className="modern-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group hover:scale-105 transition-transform"
           >
