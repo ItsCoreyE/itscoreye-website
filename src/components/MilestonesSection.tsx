@@ -133,7 +133,6 @@ export default function MilestonesSection() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 gradient-text">
               Achievement Milestones
             </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
           </motion.div>
 
           <div className="max-w-6xl mx-auto space-y-8">
@@ -183,7 +182,6 @@ export default function MilestonesSection() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 gradient-text">
             Achievement Milestones
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
             Track my verified progress and achievements in the UGC marketplace. 
             All milestones are manually verified for complete transparency.

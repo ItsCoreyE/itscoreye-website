@@ -98,10 +98,9 @@ export default function VenturesOverview() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 gradient-text">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 gradient-text">
             My Ventures
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-4"></div>
           <p className="text-base sm:text-lg text-gray-200 max-w-2xl mx-auto">
             Three businesses focused on transparency, quality, and customer satisfaction
           </p>

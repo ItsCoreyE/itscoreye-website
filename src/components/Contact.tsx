@@ -40,7 +40,6 @@ export default function Contact() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Get In Touch
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
             Interested in my ventures, UGC collaborations, or just want to connect? Reach out on Discord
           </p>

@@ -56,10 +56,9 @@ export default function AboutSection() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 gradient-text">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 gradient-text">
             About Me
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
         </motion.div>
 
         {/* Bio Section */}

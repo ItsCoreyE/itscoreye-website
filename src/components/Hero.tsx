@@ -16,13 +16,9 @@ export default function Hero() {
         </h1>
         
         {/* Role/Title */}
-        <div className="flex items-center justify-center gap-4 mb-6">
-          <div className="h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent w-16 sm:w-24"></div>
-          <p className="text-xl sm:text-2xl md:text-3xl text-cyan-300 font-light">
-            Entrepreneur & Creator
-          </p>
-          <div className="h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent w-16 sm:w-24"></div>
-        </div>
+        <p className="text-xl sm:text-2xl md:text-3xl text-cyan-300 font-light mb-6">
+          Entrepreneur & Creator
+        </p>
         
         {/* Tagline */}
         <motion.p

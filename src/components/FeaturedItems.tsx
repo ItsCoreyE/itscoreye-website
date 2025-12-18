@@ -74,8 +74,7 @@ export default function FeaturedItems() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Best Sellers
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
-            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
           </motion.div>
@@ -125,7 +124,6 @@ export default function FeaturedItems() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
               Best Sellers
             </h2>
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
             <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
@@ -160,7 +158,6 @@ export default function FeaturedItems() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
               Best Sellers
             </h2>
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
             <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
@@ -188,7 +185,6 @@ export default function FeaturedItems() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Best Sellers
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
             Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
           </p>
