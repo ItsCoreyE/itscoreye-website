@@ -1,23 +1,25 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const viewport: Viewport = {
+  themeColor: '#0a0e27',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+}
+
 export const metadata: Metadata = {
+  metadataBase: new URL('https://itscoreye.co.uk'),
   title: 'ItsCoreyE - Entrepreneur & Creator',
-  description: 'Results-driven entrepreneur with 5+ years experience. Founder of ItsCoreyE (Roblox UGC Creator), Odds Up (fair prize competitions), and Fix My Rig (remote IT support). Building transparent businesses across gaming, tech, and customer service.',
+  description: 'Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions) and Fix My Rig (remote IT support). Building transparent businesses across gaming, tech, and customer service.',
   keywords: ['ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
   authors: [{ name: 'ItsCoreyE' }],
   creator: 'ItsCoreyE',
   publisher: 'ItsCoreyE',
   
-  themeColor: '#0a0e27',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
@@ -25,8 +27,8 @@ export const metadata: Metadata = {
   },
   
   openGraph: {
-    title: 'ItsCoreyE - Entrepreneur | 3 Active Ventures',
-    description: 'Building transparent businesses in gaming, tech, and customer service. Founder of ItsCoreyE (Roblox UGC), Odds Up (competitions), and Fix My Rig (IT support).',
+    title: 'ItsCoreyE - Entrepreneur & Creator',
+    description: 'Roblox UGC Creator and entrepreneur building transparent businesses. Operating three ventures: UGC digital items, Odds Up (competitions), and Fix My Rig (IT support).',
     url: 'https://itscoreye.co.uk',
     siteName: 'ItsCoreyE Portfolio',
     type: 'website',
@@ -42,8 +44,8 @@ export const metadata: Metadata = {
   
   twitter: {
     card: 'summary_large_image',
-    title: 'ItsCoreyE - Entrepreneur | 3 Active Ventures',
-    description: 'Building transparent businesses in gaming, tech, and customer service. ItsCoreyE | Odds Up | Fix My Rig',
+    title: 'ItsCoreyE - Entrepreneur & Creator',
+    description: 'Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, and Fix My Rig IT support.',
     creator: '@itscoreye',
     images: ['/og-image.png']
   },
@@ -67,18 +69,11 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "ItsCoreyE",
-    "description": "Entrepreneur and customer professional with 5+ years experience building transparent businesses",
-    "jobTitle": "Founder & Entrepreneur",
+    "description": "Roblox UGC Creator and entrepreneur with 5+ years experience building transparent businesses across gaming, tech, and customer service",
+    "jobTitle": "Entrepreneur & UGC Creator",
     "url": "https://itscoreye.co.uk",
     "knowsAbout": ["UGC Design", "IT Support", "Customer Service", "Web Development", "Operations Management", "Roblox Development"],
     "owns": [
-      {
-        "@type": "Organization",
-        "name": "ItsCoreyE",
-        "description": "Roblox UGC Creator - Quality digital items for Roblox avatars",
-        "url": "https://itscoreye.co.uk",
-        "foundingDate": "2025"
-      },
       {
         "@type": "Organization",
         "name": "Odds Up",
