@@ -72,10 +72,10 @@ export default function AboutSection() {
         >
           <div className="prose prose-invert max-w-none">
             <p className="text-lg sm:text-xl text-gray-100 leading-relaxed mb-6">
-              A results-driven entrepreneur with over <span className="text-purple-400 font-semibold">5 years of experience</span> in customer operations and service roles. I'm passionate about building transparent businesses that solve real problems and deliver measurable value.
+              A results-driven entrepreneur with over <span className="text-purple-400 font-semibold">5 years of experience</span> in customer operations and service roles. I&apos;m passionate about building transparent businesses that solve real problems and deliver measurable value.
             </p>
             <p className="text-base sm:text-lg text-gray-200 leading-relaxed">
-              Whether it's creating digital items for millions of Roblox users, building fair competition platforms, or providing reliable IT support - I focus on <span className="text-cyan-400 font-semibold">trust, quality, and customer satisfaction</span>. I thrive in fast-paced environments and demonstrate a consistent commitment to professional development and operational excellence.
+              Whether it&apos;s creating digital items for millions of Roblox users, building fair competition platforms, or providing reliable IT support - I focus on <span className="text-cyan-400 font-semibold">trust, quality, and customer satisfaction</span>. I thrive in fast-paced environments and demonstrate a consistent commitment to professional development and operational excellence.
             </p>
           </div>
         </motion.div>
