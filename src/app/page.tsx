@@ -1,10 +1,15 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { StarIcon } from '@heroicons/react/24/solid';
+import { DevicePhoneMobileIcon, ChatBubbleLeftRightIcon, Squares2X2Icon } from '@heroicons/react/24/outline';
+import Hero from '@/components/Hero';
+import VenturesOverview from '@/components/VenturesOverview';
 import LiveStats from '@/components/LiveStats';
 import FeaturedItems from '@/components/FeaturedItems';
-import Contact from '@/components/Contact';
 import MilestonesSection from '@/components/MilestonesSection';
+import AboutSection from '@/components/AboutSection';
+import Contact from '@/components/Contact';
 
 export default function Home() {
   return (
@@ -14,79 +19,98 @@ export default function Home() {
         <ModernBackground />
       </div>
       
-      {/* Hero Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-4 sm:px-6 lg:px-8 py-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mb-8 sm:mb-12 lg:mb-16"
-        >
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold mb-4 sm:mb-6 gradient-text leading-tight">
-            ItsCoreyE
-          </h1>
-          <div className="flex items-center justify-center gap-4 mb-6 sm:mb-8">
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent w-16 sm:w-24"></div>
-            <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl text-gray-300 font-light">
-              UGC Creator
-            </p>
-            <div className="h-px bg-gradient-to-r from-transparent via-amber-500/50 to-transparent w-16 sm:w-24"></div>
-          </div>
-          <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            Crafting quality UGC items for your Roblox avatar
-          </p>
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <LiveStats />
-        </motion.div>
-
-        {/* Call to Action */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-sm sm:max-w-2xl mt-8 sm:mt-12"
-        >
-          <a 
-            href="https://www.roblox.com/users/3504185/profile" 
-            target="_blank" 
-            className="modern-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group hover:scale-105 transition-transform"
-          >
-            <span className="mr-2">🎮</span>
-            View ROBLOX Profile
-          </a>
-          <a 
-            href="https://www.tiktok.com/@itscoreye" 
-            target="_blank" 
-            className="modern-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group hover:scale-105 transition-transform"
-          >
-            <span className="mr-2">📱</span>
-            Follow on TikTok
-          </a>
-          <a 
-            href="https://discord.gg/nbQArRaq8m" 
-            target="_blank" 
-            className="modern-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center group hover:scale-105 transition-transform"
-          >
-            <span className="mr-2">💬</span>
-            Join Discord Server
-          </a>
-        </motion.div>
+      {/* NEW: Portfolio Hero */}
+      <div className="relative z-10">
+        <Hero />
       </div>
       
-      {/* Featured Items Section */}
-      <FeaturedItems />
+      {/* NEW: Ventures Overview */}
+      <div className="relative z-10">
+        <VenturesOverview />
+      </div>
       
-      {/* Milestones Section */}
-      <MilestonesSection />
+      {/* UGC Business Section - Featured Venture */}
+      <section id="ugc-business" className="relative z-10 scroll-mt-20 section-padding px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto max-w-7xl">
+          {/* Section Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/30 mb-6">
+              <StarIcon className="w-5 h-5 text-yellow-400" />
+              <span className="text-purple-300 font-bold text-sm sm:text-base">FEATURED VENTURE</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 gradient-text">
+              ItsCoreyE - UGC Creator
+            </h2>
+            <p className="text-base sm:text-lg text-gray-200 max-w-2xl mx-auto">
+              Verified success in the Roblox marketplace with transparent, real-time metrics
+            </p>
+          </motion.div>
+
+          {/* Live Stats */}
+          <div className="flex flex-col items-center justify-center">
+            <LiveStats />
+            
+            {/* Social Links */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full max-w-sm sm:max-w-2xl mt-8 mb-16 sm:mb-20"
+            >
+              <a 
+                href="https://www.roblox.com/users/3504185/profile" 
+                target="_blank" 
+                className="modern-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center gap-2 group hover:scale-105 transition-transform whitespace-nowrap"
+                style={{ color: '#ffffff' }}
+              >
+                <Squares2X2Icon className="w-5 h-5 flex-shrink-0" />
+                <span>View ROBLOX Profile</span>
+              </a>
+              <a 
+                href="https://www.tiktok.com/@itscoreye" 
+                target="_blank" 
+                className="modern-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center gap-2 group hover:scale-105 transition-transform whitespace-nowrap"
+                style={{ color: '#ffffff' }}
+              >
+                <DevicePhoneMobileIcon className="w-5 h-5 flex-shrink-0" />
+                <span>Follow on TikTok</span>
+              </a>
+              <a 
+                href="https://discord.gg/nbQArRaq8m" 
+                target="_blank" 
+                className="modern-button px-6 sm:px-8 py-4 text-sm sm:text-base font-medium min-h-[52px] flex items-center justify-center gap-2 group hover:scale-105 transition-transform whitespace-nowrap"
+                style={{ color: '#ffffff' }}
+              >
+                <ChatBubbleLeftRightIcon className="w-5 h-5 flex-shrink-0" />
+                <span>Join Discord Server</span>
+              </a>
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Featured Items */}
+        <FeaturedItems />
+        
+        {/* Milestones */}
+        <MilestonesSection />
+      </section>
+      
+      {/* NEW: About Section */}
+      <div className="relative z-10">
+        <AboutSection />
+      </div>
       
       {/* Contact Section */}
-      <Contact />
+      <div className="relative z-10">
+        <Contact />
+      </div>
     </main>
   );
 }
@@ -108,8 +132,8 @@ function ModernBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Subtle gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
       
       {/* Floating particles */}
       {particles.map((particle) => (

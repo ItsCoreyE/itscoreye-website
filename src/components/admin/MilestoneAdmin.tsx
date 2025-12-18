@@ -1,6 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  BanknotesIcon, 
+  ShoppingBagIcon, 
+  PaintBrushIcon, 
+  SparklesIcon,
+  TrophyIcon,
+  DocumentCheckIcon
+} from '@heroicons/react/24/outline';
 
 interface Milestone {
   id: string;
@@ -104,13 +112,14 @@ export default function MilestoneAdmin() {
   };
 
   const getCategoryIcon = (category: string) => {
+    const iconClass = "w-6 h-6";
     switch (category) {
-      case 'verification': return '🎯';
-      case 'revenue': return '💰';
-      case 'sales': return '🛍️';
-      case 'items': return '🎨';
-      case 'collectibles': return '💎';
-      default: return '⭐';
+      case 'verification': return <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>;
+      case 'revenue': return <BanknotesIcon className={iconClass} />;
+      case 'sales': return <ShoppingBagIcon className={iconClass} />;
+      case 'items': return <PaintBrushIcon className={iconClass} />;
+      case 'collectibles': return <SparklesIcon className={iconClass} />;
+      default: return <SparklesIcon className={iconClass} />;
     }
   };
 
@@ -161,9 +170,10 @@ export default function MilestoneAdmin() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
           <h3 className="text-2xl sm:text-3xl font-bold text-gray-100 flex items-center gap-2">
-            🏆 Milestone Manager
+            <TrophyIcon className="w-7 h-7 text-amber-400" />
+            Milestone Manager
           </h3>
-          <p className="text-sm text-gray-400 mt-1">
+          <p className="text-sm text-gray-300 mt-1">
             {progress.completed} of {progress.total} completed ({progress.percentage}%)
           </p>
         </div>
@@ -173,9 +183,22 @@ export default function MilestoneAdmin() {
           whileTap={{ scale: 0.95 }}
           onClick={saveMilestones}
           disabled={isSaving}
-          className="modern-button px-6 py-3 font-bold disabled:opacity-50 w-full sm:w-auto"
+          className="modern-button px-6 py-3 font-bold disabled:opacity-50 w-full sm:w-auto flex items-center gap-2 justify-center"
+          style={{ color: '#ffffff' }}
         >
-          {isSaving ? '⏳ Saving...' : '💾 Save Changes'}
+          {isSaving ? (
+            <>
+              <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Saving...
+            </>
+          ) : (
+            <>
+              <DocumentCheckIcon className="w-5 h-5" />
+              Save Changes
+            </>
+          )}
         </motion.button>
       </div>
 
@@ -228,7 +251,7 @@ export default function MilestoneAdmin() {
                 <span className="text-xl">{getCategoryIcon(tab)}</span>
                 <span className="hidden sm:inline">{getCategoryTitle(tab)}</span>
                 {tab !== 'verification' && (
-                  <span className={`text-xs ${isActive ? 'text-amber-100' : 'text-gray-500'}`}>
+                  <span className={`text-xs ${isActive ? 'text-amber-100' : 'text-gray-300'}`}>
                     {completed}/{total}
                   </span>
                 )}
@@ -262,17 +285,27 @@ export default function MilestoneAdmin() {
                   }`}>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                       <div className="flex items-start gap-4 flex-1">
-                        <div className="text-5xl">🎯</div>
+                        <svg className="w-12 h-12 sm:w-14 sm:h-14 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
                         <div>
-                          <div className="text-xs text-blue-400 font-bold mb-2 tracking-wide">
-                            🏆 MAIN GOAL 🏆
+                          <div className="text-xs text-blue-400 font-bold mb-2 tracking-wide flex items-center gap-2">
+                            <TrophyIcon className="w-4 h-4" />
+                            MAIN GOAL
+                            <TrophyIcon className="w-4 h-4" />
                           </div>
                           <div className="text-2xl font-bold text-gray-100 mb-2">
                             {verificationMilestone.description}
                           </div>
-                          <div className="text-sm text-gray-400 space-y-1">
-                            <div>💰 2,000,000 Robux revenue (90 days)</div>
-                            <div>🛍️ 200,000 items sold</div>
+                          <div className="text-sm text-gray-300 space-y-1">
+                            <div className="flex items-center gap-2">
+                              <BanknotesIcon className="w-4 h-4" />
+                              2,000,000 Robux revenue (90 days)
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <ShoppingBagIcon className="w-4 h-4" />
+                              200,000 items sold
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -350,7 +383,7 @@ export default function MilestoneAdmin() {
                     }`}>
                       {milestone.description}
                     </p>
-                    <p className="text-xs text-gray-500 mt-0.5">
+                    <p className="text-xs text-gray-400 mt-0.5">
                       Target: {milestone.target.toLocaleString()}
                     </p>
                   </div>
@@ -359,7 +392,7 @@ export default function MilestoneAdmin() {
                   <div className={`hidden sm:block px-3 py-1 rounded-full text-xs font-bold ${
                     milestone.isCompleted 
                       ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-gray-700/50 text-gray-400'
+                      : 'bg-gray-700/50 text-gray-300'
                   }`}>
                     {milestone.isCompleted ? '✓' : '○'}
                   </div>
@@ -372,7 +405,7 @@ export default function MilestoneAdmin() {
 
       {/* Footer with Last Updated */}
       {milestonesData && (
-        <div className="mt-6 pt-6 border-t border-gray-700/50 flex items-center justify-between text-xs text-gray-500">
+        <div className="mt-6 pt-6 border-t border-gray-700/50 flex items-center justify-between text-xs text-gray-300">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
             <span>Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}</span>

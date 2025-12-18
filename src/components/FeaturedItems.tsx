@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { ExclamationTriangleIcon, ArchiveBoxIcon } from '@heroicons/react/24/outline';
 import { usePerformanceMode } from '@/hooks/usePerformanceMode';
 
 interface FeaturedItem {
@@ -70,11 +71,11 @@ export default function FeaturedItems() {
           transition={{ duration }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
-              Best Sellers
-            </h2>
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500 via-orange-400 to-transparent mx-auto mb-6"></div>
-            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 leading-relaxed">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+            Best Sellers
+          </h2>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
+            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
           </motion.div>
@@ -124,14 +125,14 @@ export default function FeaturedItems() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
               Best Sellers
             </h2>
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500 via-orange-400 to-transparent mx-auto mb-6"></div>
-            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 leading-relaxed">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
+            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
           </motion.div>
 
           <div className="text-center">
-            <div className="text-red-400 text-4xl mb-4">⚠️</div>
+            <ExclamationTriangleIcon className="w-16 h-16 text-red-400 mb-4 mx-auto" />
             <p className="text-gray-300 mb-6 text-lg">{error}</p>
             <button 
               onClick={() => window.location.reload()} 
@@ -159,14 +160,14 @@ export default function FeaturedItems() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
               Best Sellers
             </h2>
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500 via-orange-400 to-transparent mx-auto mb-6"></div>
-            <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 leading-relaxed">
+            <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
+            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
           </motion.div>
 
           <div className="text-center">
-            <div className="text-amber-400 text-4xl mb-4">📦</div>
+            <ArchiveBoxIcon className="w-16 h-16 text-amber-400 mb-4 mx-auto" />
             <p className="text-gray-300 text-lg">No featured items available at the moment.</p>
           </div>
         </div>
@@ -187,8 +188,8 @@ export default function FeaturedItems() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Best Sellers
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500 via-orange-400 to-transparent mx-auto mb-6"></div>
-          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 leading-relaxed">
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
             Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
           </p>
         </motion.div>
@@ -217,9 +218,11 @@ export default function FeaturedItems() {
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-4xl sm:text-5xl opacity-30 group-hover:opacity-50 transition-opacity">
-                      🎮
-                    </span>
+                    <svg className="w-16 h-16 sm:w-20 sm:h-20 opacity-30 group-hover:opacity-50 transition-opacity" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                      <path d="M14 2v6h6"/>
+                      <rect x="8" y="12" width="8" height="6" rx="1"/>
+                    </svg>
                   </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -232,10 +235,10 @@ export default function FeaturedItems() {
               
               {/* Stats */}
               <div className="flex justify-between items-center gap-3 mb-4">
-                <span className="text-green-400 font-semibold text-sm modern-badge bg-green-500/10 border-green-500/20">
+                <span className="text-white font-semibold text-sm bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full">
                   {typeof item.sales === 'number' ? item.sales.toLocaleString() : item.sales} sold
                 </span>
-                <span className="text-amber-400 text-sm font-semibold modern-badge">
+                <span className="text-white text-sm font-semibold bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full">
                   {item.price} R$
                 </span>
               </div>
@@ -243,7 +246,7 @@ export default function FeaturedItems() {
               {/* Asset Type Badge */}
               {item.assetType && (
                 <div className="text-center">
-                  <span className="inline-block text-xs font-medium text-gray-400 bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-700/50">
+                  <span className="inline-block text-xs font-medium text-gray-200 bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-700/50">
                     {formatAssetType(item.assetType)}
                   </span>
                 </div>

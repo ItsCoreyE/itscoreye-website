@@ -1,6 +1,19 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { 
+  LockClosedIcon, 
+  LockOpenIcon, 
+  BoltIcon, 
+  ChartBarIcon, 
+  FolderIcon, 
+  HomeIcon,
+  CalendarIcon,
+  ClockIcon,
+  BanknotesIcon,
+  ShoppingBagIcon,
+  ArrowTrendingUpIcon
+} from '@heroicons/react/24/outline';
 import MilestoneAdmin from './MilestoneAdmin';
 
 interface SalesData {
@@ -35,13 +48,24 @@ export default function AdminPanel() {
     }
   }, []);
 
-  const ADMIN_PASSWORD = 'steampunk2024';
-
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-    } else {
-      alert('❌ Incorrect password!');
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('/api/admin/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setIsAuthenticated(true);
+      } else {
+        alert('❌ Incorrect password!');
+      }
+    } catch (error) {
+      console.error('Authentication error:', error);
+      alert('❌ Authentication failed. Please try again.');
     }
   };
 
@@ -431,31 +455,33 @@ export default function AdminPanel() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen modern-gradient-bg flex items-center justify-center relative overflow-hidden">
-        {/* Background Effects */}
+        {/* Background Effects - Purple/Cyan Theme */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
         </div>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 50 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="glass-card p-8 max-w-md w-full mx-4 relative z-10"
+          className="glass-card p-8 sm:p-10 max-w-md w-full mx-4 relative z-10 border-purple-500/20"
         >
-          <div className="text-center mb-6">
+          <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.3, type: "spring" }}
-              className="text-6xl mb-4"
+              className="flex justify-center mb-6"
             >
-              🔐
+              <div className="p-6 bg-purple-500/10 rounded-2xl border-2 border-purple-500/30">
+                <LockClosedIcon className="w-16 h-16 text-purple-400" />
+              </div>
             </motion.div>
-            <h2 className="text-3xl font-bold gradient-text mb-2">
+            <h2 className="text-4xl font-bold gradient-text mb-3">
               Admin Access
             </h2>
-            <p className="text-gray-400 mt-2">ItsCoreyE Control Panel</p>
+            <p className="text-gray-200 text-lg">ItsCoreyE Control Panel</p>
           </div>
           
           <div className="space-y-4">
@@ -471,9 +497,10 @@ export default function AdminPanel() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleLogin}
-              className="modern-button w-full py-4 text-lg font-bold"
+              className="modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-2"
             >
-              🔓 Login to Dashboard
+              <LockOpenIcon className="w-5 h-5" />
+              <span>Login to Dashboard</span>
             </motion.button>
           </div>
         </motion.div>
@@ -483,10 +510,10 @@ export default function AdminPanel() {
 
   return (
     <div className="min-h-screen modern-gradient-bg relative overflow-hidden">
-      {/* Background Effects */}
+      {/* Background Effects - Purple/Cyan Theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative z-10 p-8">
@@ -501,7 +528,7 @@ export default function AdminPanel() {
             <h1 className="text-5xl md:text-6xl font-bold gradient-text mb-4">
               Admin Dashboard
             </h1>
-            <p className="text-xl text-gray-400">Manage Your UGC Business</p>
+            <p className="text-xl text-gray-200">Manage Your UGC Business</p>
           </motion.div>
 
           {/* Current Stats at Top */}
@@ -516,25 +543,38 @@ export default function AdminPanel() {
                 <div className="text-2xl sm:text-3xl font-bold text-green-400 mb-1">
                   {salesData.totalRevenue.toLocaleString()}
                 </div>
-                <div className="text-gray-400 font-semibold text-xs sm:text-sm">💰 Revenue</div>
+                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
+                  <BanknotesIcon className="w-4 h-4" />
+                  Revenue
+                </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
                 <div className="text-2xl sm:text-3xl font-bold text-blue-400 mb-1">
                   {salesData.totalSales.toLocaleString()}
                 </div>
-                <div className="text-gray-400 font-semibold text-xs sm:text-sm">🛍️ Sales</div>
+                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
+                  <ShoppingBagIcon className="w-4 h-4" />
+                  Sales
+                </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1">
-                  ↗ {salesData.growthPercentage}%
+                <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1 flex items-center gap-1.5 justify-center">
+                  <ArrowTrendingUpIcon className="w-5 h-5" />
+                  {salesData.growthPercentage}%
                 </div>
-                <div className="text-gray-400 font-semibold text-xs sm:text-sm">📈 Growth</div>
+                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
+                  <ChartBarIcon className="w-4 h-4" />
+                  Growth
+                </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
                 <div className="text-xs sm:text-sm text-amber-400 mb-1 font-mono truncate">
                   {salesData.dataPeriod || 'Current'}
                 </div>
-                <div className="text-gray-400 font-semibold text-xs sm:text-sm">📅 Period</div>
+                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
+                  <CalendarIcon className="w-4 h-4" />
+                  Period
+                </div>
               </motion.div>
             </motion.div>
           )}
@@ -547,7 +587,8 @@ export default function AdminPanel() {
             className="glass-card p-6 mb-6"
           >
             <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
-              ⚡ Quick Actions
+              <BoltIcon className="w-6 h-6 text-purple-400" />
+              Quick Actions
             </h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -558,10 +599,12 @@ export default function AdminPanel() {
                 className="bg-gradient-to-br from-blue-600/20 to-blue-500/10 border border-blue-500/30 hover:border-blue-500/50 p-4 rounded-lg text-left transition-all group"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">📊</span>
+                  <div className="p-2 bg-blue-500/10 rounded-lg">
+                    <ChartBarIcon className="w-6 h-6 text-blue-400" />
+                  </div>
                   <span className="font-bold text-gray-100">Quick Update</span>
                 </div>
-                <p className="text-xs text-gray-400">Manual stats entry</p>
+                <p className="text-xs text-gray-300">Manual stats entry</p>
               </motion.button>
 
               <motion.button
@@ -572,12 +615,14 @@ export default function AdminPanel() {
                 className="bg-gradient-to-br from-green-600/20 to-green-500/10 border border-green-500/30 hover:border-green-500/50 p-4 rounded-lg text-left transition-all group disabled:opacity-50"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">📁</span>
+                  <div className="p-2 bg-green-500/10 rounded-lg">
+                    <FolderIcon className="w-6 h-6 text-green-400" />
+                  </div>
                   <span className="font-bold text-gray-100">
                     {isUploading ? 'Processing...' : 'CSV Upload'}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-300">
                   {isUploading ? 'Please wait...' : 'Single month data'}
                 </p>
               </motion.button>
@@ -598,10 +643,12 @@ export default function AdminPanel() {
                 className="bg-gradient-to-br from-purple-600/20 to-purple-500/10 border border-purple-500/30 hover:border-purple-500/50 p-4 rounded-lg text-left transition-all group block"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-2xl">🏠</span>
+                  <div className="p-2 bg-purple-500/10 rounded-lg">
+                    <HomeIcon className="w-6 h-6 text-purple-400" />
+                  </div>
                   <span className="font-bold text-gray-100">View Site</span>
                 </div>
-                <p className="text-xs text-gray-400">See live changes</p>
+                <p className="text-xs text-gray-300">See live changes</p>
               </motion.a>
             </div>
           </motion.div>
@@ -614,31 +661,34 @@ export default function AdminPanel() {
             className="glass-card p-6 mb-6"
           >
             <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
-              📊 Growth Calculation
+              <ChartBarIcon className="w-6 h-6 text-cyan-400" />
+              Growth Calculation
             </h3>
               
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-gray-300 font-medium mb-2 text-sm">
-                  📅 Previous Month
+                <label className="block text-gray-300 font-medium mb-2 text-sm flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4 text-purple-400" />
+                  Previous Month
                 </label>
                 <input
                   id="previousFile"
                   type="file"
                   accept=".csv"
-                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white file:font-semibold hover:file:bg-amber-700 transition-colors"
+                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:font-semibold hover:file:bg-purple-700 transition-colors"
                 />
               </div>
               
               <div>
-                <label className="block text-gray-300 font-medium mb-2 text-sm">
-                  📅 Current Month
+                <label className="block text-gray-300 font-medium mb-2 text-sm flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4 text-cyan-400" />
+                  Current Month
                 </label>
                 <input
                   id="currentFile"
                   type="file"
                   accept=".csv"
-                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white file:font-semibold hover:file:bg-amber-700 transition-colors"
+                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-600 file:text-white file:font-semibold hover:file:bg-cyan-700 transition-colors"
                 />
               </div>
             </div>
@@ -648,9 +698,20 @@ export default function AdminPanel() {
               whileTap={{ scale: 0.98 }}
               onClick={handleGrowthCalculation}
               disabled={isUploading}
-              className="modern-button w-full py-3 font-bold disabled:opacity-50"
+              className="modern-button w-full py-3 font-bold disabled:opacity-50 flex items-center justify-center gap-2"
+              style={{ color: '#ffffff' }}
             >
-              {isUploading ? '⏳ Calculating...' : '🧮 Calculate Growth'}
+              {isUploading ? (
+                <>
+                  <ClockIcon className="w-5 h-5 animate-spin" />
+                  <span>Calculating...</span>
+                </>
+              ) : (
+                <>
+                  <ChartBarIcon className="w-5 h-5" />
+                  <span>Calculate Growth</span>
+                </>
+              )}
             </motion.button>
           </motion.div>
 
@@ -659,51 +720,8 @@ export default function AdminPanel() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mb-8"
           >
             <MilestoneAdmin />
-          </motion.div>
-
-          {/* Instructions */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="glass-card p-8"
-          >
-            <h2 className="text-3xl font-bold text-gray-100 mb-6 text-center">
-              📋 Dashboard Instructions
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-400">
-              <div className="space-y-3">
-                <div className="flex items-start space-x-3">
-                  <span className="text-2xl">📊</span>
-                  <div>
-                    <strong className="text-gray-300">Quick Update:</strong> Perfect for milestone announcements and instant updates
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-2xl">📁</span>
-                  <div>
-                    <strong className="text-gray-300">CSV Upload:</strong> Go to create.roblox.com → Analytics → Sales → Download Data
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-start space-x-3">
-                  <span className="text-2xl">🔄</span>
-                  <div>
-                    <strong className="text-gray-300">Update Frequency:</strong> ROBLOX updates CSV files every 48 hours
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <span className="text-2xl">🔒</span>
-                  <div>
-                    <strong className="text-gray-300">Security:</strong> All data stored securely in the cloud
-                  </div>
-                </div>
-              </div>
-            </div>
           </motion.div>
         </div>
       </div>

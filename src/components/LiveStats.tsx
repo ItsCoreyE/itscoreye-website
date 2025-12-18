@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { ExclamationTriangleIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/outline';
 import { usePerformanceMode } from '@/hooks/usePerformanceMode';
 
 interface SalesData {
@@ -95,7 +96,7 @@ export default function LiveStats() {
     return (
       <div className="glass-card subtle-glow rounded-xl p-6 sm:p-8 w-full max-w-2xl mx-auto">
         <div className="text-center">
-          <div className="text-red-400 text-lg mb-4">⚠️</div>
+          <ExclamationTriangleIcon className="w-12 h-12 text-red-400 mb-4 mx-auto" />
           <p className="text-gray-300 mb-4">{error}</p>
           <button 
             onClick={() => window.location.reload()} 
@@ -116,10 +117,8 @@ export default function LiveStats() {
       {/* Data Period Header */}
       {statsData.dataPeriod && (
         <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 modern-badge">
-            <span className="text-sm sm:text-base font-semibold">
-              {statsData.dataPeriod}
-            </span>
+          <div className="inline-flex items-center gap-2 bg-purple-500/10 text-white px-3 py-1.5 rounded-full text-sm sm:text-base font-semibold border border-purple-500/20">
+            {statsData.dataPeriod}
           </div>
         </div>
       )}
@@ -127,7 +126,7 @@ export default function LiveStats() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
         <motion.div
           whileHover={enableHover ? { scale: 1.02 } : undefined}
-          className="stats-card cursor-pointer group"
+          className="stats-card cursor-pointer group text-center"
           style={{ willChange: 'transform' }}
         >
           <motion.h3 
@@ -139,17 +138,18 @@ export default function LiveStats() {
           >
             {statsData.totalRevenue.toLocaleString()}
           </motion.h3>
-          <p className="text-gray-400 text-sm sm:text-base font-medium">Total Revenue</p>
+          <p className="text-white text-sm sm:text-base font-medium">Total Revenue</p>
           <div className="flex items-center justify-center mt-2">
-            <span className="text-green-400 text-xs sm:text-sm font-bold modern-badge bg-green-500/10 border-green-500/20">
-              ↗ {statsData.growthPercentage}% Growth
+            <span className="text-white text-xs sm:text-sm font-bold bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full flex items-center gap-1">
+              <ArrowTrendingUpIcon className="w-3 h-3" />
+              {statsData.growthPercentage}% Growth
             </span>
           </div>
         </motion.div>
         
         <motion.div
           whileHover={enableHover ? { scale: 1.02 } : undefined}
-          className="stats-card cursor-pointer group"
+          className="stats-card cursor-pointer group text-center"
           style={{ willChange: 'transform' }}
         >
           <motion.h3 
@@ -161,9 +161,9 @@ export default function LiveStats() {
           >
             {statsData.totalSales.toLocaleString()}
           </motion.h3>
-          <p className="text-gray-400 text-sm sm:text-base font-medium">Total Sales</p>
+          <p className="text-white text-sm sm:text-base font-medium">Total Sales</p>
           <div className="flex items-center justify-center mt-2">
-            <span className="text-blue-400 text-xs sm:text-sm font-bold modern-badge bg-blue-500/10 border-blue-500/20">
+            <span className="text-white text-xs sm:text-sm font-bold bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-full">
               Items Sold
             </span>
           </div>
@@ -171,7 +171,7 @@ export default function LiveStats() {
       </div>
       
       <div className="text-center mt-6">
-        <div className="inline-flex items-center gap-2 text-gray-500 text-xs sm:text-sm">
+        <div className="inline-flex items-center gap-2 text-gray-300 text-xs sm:text-sm">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
           <span className="font-medium">Last updated: {new Date(statsData.lastUpdated).toLocaleString()}</span>
         </div>

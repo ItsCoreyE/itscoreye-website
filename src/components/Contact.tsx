@@ -40,9 +40,9 @@ export default function Contact() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Get In Touch
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500 via-orange-400 to-transparent mx-auto mb-6"></div>
-          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-4 leading-relaxed">
-            Got questions or want to chat? Drop me a message on Discord
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
+            Interested in my ventures, UGC collaborations, or just want to connect? Reach out on Discord
           </p>
         </motion.div>
 
@@ -81,7 +81,7 @@ export default function Contact() {
                 className="relative modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-3 group"
                 style={{ willChange: 'transform' }}
               >
-                <span className="text-gray-900">itscoreye</span>
+                <span className="text-white">itscoreye</span>
                 {copied ? (
                   <motion.svg 
                     initial={{ scale: 0 }}
@@ -110,7 +110,7 @@ export default function Contact() {
                 )}
               </motion.button>
               
-              <p className="text-gray-500 text-xs sm:text-sm mt-3">Click to copy username</p>
+              <p className="text-gray-300 text-xs sm:text-sm mt-3">Click to copy username</p>
             </div>
           </motion.div>
 
@@ -149,7 +149,7 @@ export default function Contact() {
                   className="relative modern-button px-6 py-3 text-base font-semibold flex items-center justify-center gap-3 group"
                   style={{ willChange: 'transform' }}
                 >
-                  <span className="text-gray-900">Copy Invite Link</span>
+                  <span className="text-white">Copy Invite Link</span>
                   {inviteCopied ? (
                     <motion.svg 
                       initial={{ scale: 0 }}
@@ -198,7 +198,7 @@ export default function Contact() {
                 </motion.a>
               </div>
               
-              <p className="text-gray-500 text-xs sm:text-sm mt-3">discord.gg/nbQArRaq8m</p>
+              <p className="text-gray-300 text-xs sm:text-sm mt-3">discord.gg/nbQArRaq8m</p>
             </div>
           </motion.div>
         </div>
@@ -210,7 +210,7 @@ export default function Contact() {
           transition={{ duration, delay: delay * 2 }}
           className="text-center mt-16"
         >
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-300 text-sm">
             Response time: Usually within 24 hours
           </p>
         </motion.div>

@@ -1,6 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ExclamationTriangleIcon,
+  BanknotesIcon,
+  ShoppingBagIcon,
+  PaintBrushIcon,
+  SparklesIcon,
+  ClockIcon
+} from '@heroicons/react/24/outline';
 import { usePerformanceMode } from '@/hooks/usePerformanceMode';
 
 interface Milestone {
@@ -83,12 +91,13 @@ export default function MilestonesSection() {
   };
 
   const getCategoryIcon = (category: string) => {
+    const iconClass = "w-8 h-8 sm:w-10 sm:h-10";
     switch (category) {
-      case 'revenue': return '💰';
-      case 'sales': return '🛍️';
-      case 'items': return '🎨';
-      case 'collectibles': return '💎';
-      default: return '⭐';
+      case 'revenue': return <BanknotesIcon className={iconClass} />;
+      case 'sales': return <ShoppingBagIcon className={iconClass} />;
+      case 'items': return <PaintBrushIcon className={iconClass} />;
+      case 'collectibles': return <SparklesIcon className={iconClass} />;
+      default: return <SparklesIcon className={iconClass} />;
     }
   };
 
@@ -124,7 +133,7 @@ export default function MilestonesSection() {
             <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 gradient-text">
               Achievement Milestones
             </h2>
-            <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mb-6"></div>
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
           </motion.div>
 
           <div className="max-w-6xl mx-auto space-y-8">
@@ -150,7 +159,7 @@ export default function MilestonesSection() {
       <section className="modern-gradient-bg section-padding">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="glass-card p-8 rounded-xl text-center max-w-2xl mx-auto">
-            <div className="text-red-400 text-4xl mb-4">⚠️</div>
+            <ExclamationTriangleIcon className="w-16 h-16 text-red-400 mb-4 mx-auto" />
             <p className="text-gray-300 text-lg">{error}</p>
           </div>
         </div>
@@ -174,8 +183,8 @@ export default function MilestonesSection() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 gradient-text">
             Achievement Milestones
           </h2>
-          <div className="w-24 h-px bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mb-6"></div>
-          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+          <div className="w-24 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mb-6"></div>
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
             Track my verified progress and achievements in the UGC marketplace. 
             All milestones are manually verified for complete transparency.
           </p>
@@ -203,13 +212,16 @@ export default function MilestonesSection() {
                 {/* Badge */}
                 <div className="flex items-center justify-center mb-6">
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30">
-                    <motion.span 
+                    <motion.svg 
                       animate={enableComplex ? { rotate: [0, 10, -10, 0] } : {}}
                       transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                      className="text-2xl"
+                      className="w-6 h-6 text-blue-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      🎯
-                    </motion.span>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </motion.svg>
                     <span className="text-blue-300 font-bold text-sm sm:text-base">MAIN GOAL</span>
                   </div>
                 </div>
@@ -236,14 +248,14 @@ export default function MilestonesSection() {
                   <p className="text-gray-300 text-center mb-4 font-semibold">Requirements for Verification:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/50">
-                      <div className="text-2xl">💰</div>
+                      <BanknotesIcon className="w-8 h-8 text-amber-400" />
                       <div>
                         <div className="text-sm text-gray-400">Revenue (90 days)</div>
                         <div className="text-lg font-bold text-amber-400">2,000,000 Robux</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/50">
-                      <div className="text-2xl">🛍️</div>
+                      <ShoppingBagIcon className="w-8 h-8 text-green-400" />
                       <div>
                         <div className="text-sm text-gray-400">Items Sold</div>
                         <div className="text-lg font-bold text-green-400">200,000 Sales</div>
@@ -261,13 +273,25 @@ export default function MilestonesSection() {
                       transition={{ delay: delay * 2 }}
                       className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-500/20 border-2 border-blue-400"
                     >
-                      <span className="text-3xl">🎊</span>
+                      <svg className="w-8 h-8 text-blue-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" opacity="0.5"/>
+                        <path d="M12 12L2 7L12 2L22 7L12 12Z"/>
+                        <path d="M12 12V22"/>
+                        <path d="M2 7V17"/>
+                        <path d="M22 7V17"/>
+                      </svg>
                       <span className="text-xl font-bold text-blue-300">VERIFIED CREATOR!</span>
-                      <span className="text-3xl">🎊</span>
+                      <svg className="w-8 h-8 text-blue-300" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" opacity="0.5"/>
+                        <path d="M12 12L2 7L12 2L22 7L12 12Z"/>
+                        <path d="M12 12V22"/>
+                        <path d="M2 7V17"/>
+                        <path d="M22 7V17"/>
+                      </svg>
                     </motion.div>
                   ) : (
                     <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gray-700/50 border border-gray-600">
-                      <span className="text-xl">⏳</span>
+                      <ClockIcon className="w-6 h-6 text-gray-300" />
                       <span className="text-lg font-semibold text-gray-300">In Progress</span>
                     </div>
                   )}
@@ -310,7 +334,7 @@ export default function MilestonesSection() {
                         <h3 className="text-xl sm:text-2xl font-bold text-gray-100 mb-1">
                           {getCategoryTitle(category)}
                         </h3>
-                        <p className="text-sm text-gray-400 hidden sm:block">
+                        <p className="text-sm text-gray-300 hidden sm:block">
                           {getCategorySubtitle(category)}
                         </p>
                       </div>
@@ -416,13 +440,13 @@ export default function MilestonesSection() {
             transition={{ duration, delay: delay * 4 }}
             className="text-center mt-12"
           >
-            <div className="inline-flex items-center gap-2 text-gray-500 text-sm">
+            <div className="inline-flex items-center gap-2 text-gray-300 text-sm">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="font-medium">
                 Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}
               </span>
             </div>
-            <p className="text-gray-600 text-xs mt-2">
+            <p className="text-gray-300 text-xs mt-2">
               All milestones are manually verified for transparency and credibility
             </p>
           </motion.div>
