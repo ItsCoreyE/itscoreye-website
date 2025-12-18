@@ -245,24 +245,6 @@ html {
   transform: translateY(-8px);
 }
 
-/* Clean Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--dark-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--dark-elevated);
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-gold);
-}
-
 /* Selection */
 ::selection {
   background: rgba(245, 158, 11, 0.3);
