@@ -128,7 +128,9 @@ export default function VenturesOverview() {
               {/* Animated glow effect */}
               <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r ${venture.borderGradient} blur-xl -z-10`}></div>
               
-              <div className={`relative p-6 sm:p-8 bg-gradient-to-br ${venture.gradient} backdrop-blur-sm h-full flex flex-col rounded-2xl`}>
+              <div className="relative p-6 sm:p-8 bg-gray-900/95 backdrop-blur-sm h-full flex flex-col rounded-2xl">
+                {/* Subtle gradient overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${venture.gradient} rounded-2xl -z-10`}></div>
                 {/* Icon */}
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 5 }}
