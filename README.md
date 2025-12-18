@@ -1,37 +1,167 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ItsCoreyE - Portfolio Website
 
-## Getting Started
+![ItsCoreyE Banner](public/og-image.png)
 
-First, run the development server:
+Professional portfolio website for ItsCoreyE - Entrepreneur & Creator. Showcasing three active ventures: Roblox UGC Creation, Odds Up (Prize Competitions), and Fix My Rig (IT Support).
 
+🌐 **Live Site:** [www.itscoreye.com](https://www.itscoreye.com)
+
+## 🚀 About
+
+This portfolio website showcases ItsCoreyE's entrepreneurial journey and active ventures with a focus on transparency and real-time metrics. Built with modern web technologies for optimal performance and user experience.
+
+### Featured Ventures
+
+- **ItsCoreyE UGC** - Roblox UGC Creator building quality digital items
+- **Odds Up** - Fair prize competition platform with realistic odds
+- **Fix My Rig** - Remote IT support service providing expert tech assistance
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Animations:** Framer Motion
+- **Icons:** Heroicons
+- **Build Tool:** Turbopack
+
+## ✨ Features
+
+- 🎨 Modern, responsive design with purple-cyan gradient theme
+- 📱 Fully optimized for mobile devices
+- 📊 Real-time Roblox UGC statistics integration
+- 🎯 Live milestone tracking with Discord webhooks
+- 🔐 Protected admin panel for content management
+- ⚡ Performance-optimized with lazy loading
+- 🌐 SEO-ready with proper metadata and sitemap
+- 🎭 Smooth animations and transitions
+- 📈 Schema.org structured data for rich search results
+
+## 🏃‍♂️ Getting Started
+
+### Prerequisites
+
+- Node.js 18.0 or higher
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ItsCoreyE/itscoreye-website.git
+cd itscoreye-website
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Create a `.env.local` file with required environment variables:
+```env
+ADMIN_PASSWORD=your_admin_password
+DISCORD_WEBHOOK_URL=your_discord_webhook_url
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+itscoreye-website/
+├── public/              # Static assets
+│   ├── icons/          # Favicon and app icons
+│   ├── og-image.png    # Social media preview image
+│   └── sitemap.xml     # SEO sitemap
+├── src/
+│   ├── app/            # Next.js App Router pages
+│   │   ├── api/        # API routes
+│   │   ├── admin/      # Admin panel page
+│   │   ├── layout.tsx  # Root layout with metadata
+│   │   └── page.tsx    # Homepage
+│   ├── components/     # React components
+│   │   ├── admin/      # Admin-specific components
+│   │   └── ...         # Main site components
+│   └── hooks/          # Custom React hooks
+└── ...
+```
 
-## Learn More
+## 🎯 Key Components
 
-To learn more about Next.js, take a look at the following resources:
+- **Hero** - Landing section with gradient branding
+- **VenturesOverview** - Three venture cards with live status
+- **LiveStats** - Real-time Roblox UGC metrics
+- **FeaturedItems** - Showcase of best-selling UGC items
+- **MilestonesSection** - Achievement timeline
+- **AboutSection** - Professional background and skills
+- **Contact** - Multi-channel contact options
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔧 Configuration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Environment Variables
 
-## Deploy on Vercel
+- `ADMIN_PASSWORD` - Password for admin panel access
+- `DISCORD_WEBHOOK_URL` - Discord webhook for milestone notifications
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Metadata Configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-"# itscoreye-website" 
+SEO and social media metadata can be updated in `src/app/layout.tsx`:
+- Page titles and descriptions
+- OpenGraph and Twitter Card settings
+- Structured data (Schema.org)
+
+## 📱 Mobile Optimization
+
+- Hero section: 40vh on mobile, 50vh+ on larger screens
+- Section padding: 2rem on mobile, 5rem on desktop
+- Responsive typography scaling
+- Touch-friendly button sizes (44px minimum)
+
+## 🚢 Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Import project on [Vercel](https://vercel.com)
+3. Add environment variables
+4. Deploy!
+
+### Other Platforms
+
+The site can be deployed on any platform supporting Next.js:
+- Netlify
+- Railway
+- AWS Amplify
+- Self-hosted with Node.js
+
+## 🤝 Contributing
+
+This is a personal portfolio website. For bug reports or suggestions, please open an issue on GitHub.
+
+## 📄 License
+
+© 2025 ItsCoreyE. All rights reserved.
+
+## 🔗 Links
+
+- **Website:** [www.itscoreye.com](https://www.itscoreye.com)
+- **Roblox:** [@ItsCoreyE](https://www.roblox.com/users/3504185/profile)
+- **TikTok:** [@itscoreye](https://www.tiktok.com/@itscoreye)
+- **Discord:** [Join Server](https://discord.gg/nbQArRaq8m)
+
+---
+
+Built with ❤️ by ItsCoreyE
