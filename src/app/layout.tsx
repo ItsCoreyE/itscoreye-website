@@ -12,7 +12,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://www.itscoreye.co.uk'),
+  metadataBase: new URL('https://www.itscoreye.com'),
   title: 'ItsCoreyE - Entrepreneur & Creator',
   description: 'Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions) and Fix My Rig (remote IT support). Building transparent businesses across gaming, tech, and customer service.',
   keywords: ['ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'ItsCoreyE - Entrepreneur & Creator',
     description: 'Roblox UGC Creator and entrepreneur building transparent businesses. Operating three ventures: UGC digital items, Odds Up (competitions), and Fix My Rig (IT support).',
-    url: 'https://www.itscoreye.co.uk',
+    url: 'https://www.itscoreye.com',
     siteName: 'ItsCoreyE Portfolio',
     type: 'website',
     images: [
@@ -71,7 +71,7 @@ export default function RootLayout({
     "name": "ItsCoreyE",
     "description": "Roblox UGC Creator and entrepreneur with 5+ years experience building transparent businesses across gaming, tech, and customer service",
     "jobTitle": "Entrepreneur & UGC Creator",
-    "url": "https://www.itscoreye.co.uk",
+    "url": "https://www.itscoreye.com",
     "knowsAbout": ["UGC Design", "IT Support", "Customer Service", "Web Development", "Operations Management", "Roblox Development"],
     "owns": [
       {
