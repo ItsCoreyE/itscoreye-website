@@ -5,7 +5,6 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const viewport: Viewport = {
-  themeColor: '#0a0e27',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -15,6 +14,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.itscoreye.com'),
   title: 'ItsCoreyE - Entrepreneur & Creator',
+  themeColor: '#0a0e27',
   description: 'Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions) and Fix My Rig (remote IT support). Building transparent businesses across gaming, tech, and customer service.',
   keywords: ['ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
   authors: [{ name: 'ItsCoreyE' }],
