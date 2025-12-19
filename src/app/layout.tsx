@@ -5,10 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#0a0e27' },
-    { media: '(prefers-color-scheme: dark)', color: '#0a0e27' }
-  ],
+  themeColor: '#0a0e27',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -22,6 +19,10 @@ export const metadata: Metadata = {
   authors: [{ name: 'ItsCoreyE' }],
   creator: 'ItsCoreyE',
   publisher: 'ItsCoreyE',
+  
+  other: {
+    'theme-color': '#0a0e27',
+  },
   
   appleWebApp: {
     capable: true,
