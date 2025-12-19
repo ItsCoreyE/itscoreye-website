@@ -9,6 +9,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: 'cover',
 }
 
 export const metadata: Metadata = {
@@ -20,9 +21,6 @@ export const metadata: Metadata = {
   creator: 'ItsCoreyE',
   publisher: 'ItsCoreyE',
   
-  other: {
-    'theme-color': '#0a0e27',
-  },
   
   appleWebApp: {
     capable: true,
