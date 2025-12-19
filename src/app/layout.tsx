@@ -5,7 +5,10 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const viewport: Viewport = {
-  themeColor: '#0a0e27',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#0a0e27' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0e27' }
+  ],
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -22,7 +25,7 @@ export const metadata: Metadata = {
   
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'black-translucent',
+    statusBarStyle: 'black',
     title: 'ItsCoreyE',
   },
   
@@ -94,7 +97,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <meta name="theme-color" content="#0a0e27" />
         <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
         <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
