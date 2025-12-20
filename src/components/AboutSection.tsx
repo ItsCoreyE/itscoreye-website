@@ -22,7 +22,7 @@ export default function AboutSection() {
       Icon: CogIcon,
       skills: [
         'Web Development',
-        'Payment Integration (Stripe)',
+        'Payment Integration',
         'API Design & Management',
         'Database Management',
         'IT Support & Troubleshooting',
@@ -34,7 +34,7 @@ export default function AboutSection() {
       title: 'Creative & Marketing',
       Icon: PaintBrushIcon,
       skills: [
-        'UGC Design (Roblox)',
+        'UGC Design',
         'Marketing Strategy',
         'Social Media Management',
         'Community Building',
