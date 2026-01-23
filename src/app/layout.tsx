@@ -9,49 +9,49 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: 'cover',
+  themeColor: '#0a0e27',
 }
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.itscoreye.com'),
-  title: 'ItsCoreyE - Entrepreneur & Creator',
-  themeColor: '#0a0e27',
-  description: 'Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions) and Fix My Rig (remote IT support). Building transparent businesses across gaming, tech, and customer service.',
-  keywords: ['ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
-  authors: [{ name: 'ItsCoreyE' }],
-  creator: 'ItsCoreyE',
-  publisher: 'ItsCoreyE',
-  
-  
+  title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
+  description: 'Corey Edwards (ItsCoreyE) - Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions) and Fix My Rig (remote IT support). Building transparent businesses across gaming, tech, and customer service.',
+  keywords: ['Corey Edwards', 'ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
+  authors: [{ name: 'Corey Edwards' }],
+  creator: 'Corey Edwards',
+  publisher: 'Corey Edwards',
+
+
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black',
-    title: 'ItsCoreyE',
+    title: 'Corey Edwards',
   },
-  
+
   openGraph: {
-    title: 'ItsCoreyE - Entrepreneur & Creator',
-    description: 'Roblox UGC Creator and entrepreneur building transparent businesses. Operating three ventures: UGC digital items, Odds Up (competitions), and Fix My Rig (IT support).',
+    title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
+    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur building transparent businesses. Operating three ventures: UGC digital items, Odds Up (competitions), and Fix My Rig (IT support).',
     url: 'https://www.itscoreye.com',
-    siteName: 'ItsCoreyE Portfolio',
+    siteName: 'Corey Edwards Portfolio',
     type: 'website',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'ItsCoreyE - Entrepreneur & Creator'
+        alt: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator'
       }
     ]
   },
-  
+
   twitter: {
     card: 'summary_large_image',
-    title: 'ItsCoreyE - Entrepreneur & Creator',
-    description: 'Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, and Fix My Rig IT support.',
+    title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
+    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, and Fix My Rig IT support.',
     creator: '@itscoreye',
     images: ['/og-image.png']
   },
-  
+
   robots: {
     index: true,
     follow: true,
@@ -70,7 +70,8 @@ export default function RootLayout({
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "ItsCoreyE",
+    "name": "Corey Edwards",
+    "alternateName": "ItsCoreyE",
     "description": "Roblox UGC Creator and entrepreneur with 5+ years experience building transparent businesses across gaming, tech, and customer service",
     "jobTitle": "Entrepreneur & UGC Creator",
     "url": "https://www.itscoreye.com",
