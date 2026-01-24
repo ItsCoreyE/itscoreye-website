@@ -123,9 +123,9 @@ export default function MilestonesSection() {
 
   if (isLoading) {
     return (
-      <section className="modern-gradient-bg section-padding">
+      <section className="section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-8 sm:mb-10"
@@ -155,7 +155,7 @@ export default function MilestonesSection() {
 
   if (error) {
     return (
-      <section className="modern-gradient-bg section-padding">
+      <section className="section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <div className="glass-card p-8 rounded-xl text-center max-w-2xl mx-auto">
             <ExclamationTriangleIcon className="w-16 h-16 text-red-400 mb-4 mx-auto" />
@@ -170,7 +170,7 @@ export default function MilestonesSection() {
   const categories = ['revenue', 'sales', 'items', 'collectibles'];
 
   return (
-    <section className="modern-gradient-bg section-padding">
+    <section className="section-padding">
       <div className="container mx-auto px-5 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div 

@@ -63,9 +63,9 @@ export default function FeaturedItems() {
   // Loading state
   if (isLoading) {
     return (
-      <section className="modern-gradient-bg section-padding">
+      <section className="section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration }}
@@ -113,9 +113,9 @@ export default function FeaturedItems() {
   // Error state
   if (error) {
     return (
-      <section className="modern-gradient-bg section-padding">
+      <section className="section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -147,9 +147,9 @@ export default function FeaturedItems() {
   // No items found
   if (featuredItems.length === 0) {
     return (
-      <section className="modern-gradient-bg section-padding">
+      <section className="section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -174,7 +174,7 @@ export default function FeaturedItems() {
 
   // Data loaded successfully
   return (
-    <section className="min-h-screen modern-gradient-bg section-padding">
+    <section className="section-padding">
       <div className="container mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
