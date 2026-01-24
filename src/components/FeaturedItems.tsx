@@ -63,15 +63,15 @@ export default function FeaturedItems() {
   // Loading state
   if (isLoading) {
     return (
-      <section className="min-h-screen modern-gradient-bg section-padding">
+      <section className="modern-gradient-bg section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration }}
-          className="text-center mb-12 sm:mb-16 md:mb-20"
+          className="text-center mb-8 sm:mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 leading-tight gradient-text">
             Best Sellers
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
@@ -80,7 +80,7 @@ export default function FeaturedItems() {
           </motion.div>
 
           {/* Loading skeleton grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
             {Array.from({ length: 6 }).map((_, index) => (
               <div
                 key={index}
@@ -113,15 +113,15 @@ export default function FeaturedItems() {
   // Error state
   if (error) {
     return (
-      <section className="min-h-screen modern-gradient-bg section-padding">
+      <section className="modern-gradient-bg section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-12 sm:mb-16 md:mb-20"
+            className="text-center mb-8 sm:mb-10"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 leading-tight gradient-text">
               Best Sellers
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
@@ -147,15 +147,15 @@ export default function FeaturedItems() {
   // No items found
   if (featuredItems.length === 0) {
     return (
-      <section className="min-h-screen modern-gradient-bg section-padding">
+      <section className="modern-gradient-bg section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-12 sm:mb-16 md:mb-20"
+            className="text-center mb-8 sm:mb-10"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 leading-tight gradient-text">
               Best Sellers
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
@@ -180,9 +180,9 @@ export default function FeaturedItems() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-12 sm:mb-16 md:mb-20"
+          className="text-center mb-8 sm:mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 leading-tight gradient-text">
             Best Sellers
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
@@ -190,7 +190,7 @@ export default function FeaturedItems() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
           {featuredItems.map((item, index) => (
             <motion.div
               key={`${item.name}-${index}`}
@@ -198,7 +198,7 @@ export default function FeaturedItems() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: duration * 0.625, delay: index * staggerDelay }}
               whileHover={enableHover ? { y: -8 } : undefined}
-              className="glass-card hover-lift p-6 rounded-xl group"
+              className="glass-card hover-lift p-5 sm:p-6 rounded-xl group"
               style={{ willChange: 'transform' }}
             >
               {/* Thumbnail */}
@@ -242,7 +242,7 @@ export default function FeaturedItems() {
               {/* Asset Type Badge */}
               {item.assetType && (
                 <div className="text-center">
-                  <span className="inline-block text-[10px] sm:text-xs font-medium text-gray-200 bg-gray-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-gray-700/50">
+                  <span className="inline-block text-xs font-medium text-gray-200 bg-gray-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-gray-700/50">
                     {formatAssetType(item.assetType)}
                   </span>
                 </div>

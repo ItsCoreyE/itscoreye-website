@@ -43,7 +43,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-10 sm:mb-14"
+          className="text-center mb-8 sm:mb-10"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 gradient-text">
             Get In Touch
@@ -54,7 +54,7 @@ export default function Contact() {
         </motion.div>
 
         {/* Contact Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6">
           {contactOptions.map((option, index) => (
             <motion.div
               key={option.id}
@@ -62,7 +62,7 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="contact-card p-5 sm:p-6 text-center"
+              className="contact-card p-5 sm:p-6 md:p-7 text-center"
             >
               {/* Icon */}
               <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${option.iconBg} flex items-center justify-center mx-auto mb-4`}>

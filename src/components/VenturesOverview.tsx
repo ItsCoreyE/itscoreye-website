@@ -89,7 +89,7 @@ export default function VenturesOverview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-8 sm:mb-12"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 gradient-text">
             My Ventures
@@ -100,7 +100,7 @@ export default function VenturesOverview() {
         </motion.div>
 
         {/* Venture Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
           {ventures.map((venture, index) => (
             <motion.a
               key={venture.id}
@@ -111,7 +111,7 @@ export default function VenturesOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="professional-card p-6 sm:p-7 cursor-pointer group flex flex-col"
+              className="professional-card p-5 sm:p-6 md:p-7 cursor-pointer group flex flex-col"
             >
               {/* Icon */}
               <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${venture.iconBg} flex items-center justify-center mb-4 sm:mb-5 group-hover:scale-105 transition-transform`}>
@@ -122,10 +122,10 @@ export default function VenturesOverview() {
               <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1">
                 {venture.name}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-400 mb-2 sm:mb-3">
+              <p className="text-sm text-gray-400 mb-2 sm:mb-3">
                 {venture.subtitle}
               </p>
-              <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-5 flex-grow leading-relaxed">
+              <p className="text-sm text-gray-500 mb-4 sm:mb-5 flex-grow leading-relaxed">
                 {venture.description}
               </p>
 

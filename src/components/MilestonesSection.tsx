@@ -123,19 +123,19 @@ export default function MilestonesSection() {
 
   if (isLoading) {
     return (
-      <section className="min-h-screen modern-gradient-bg section-padding">
+      <section className="modern-gradient-bg section-padding">
         <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 gradient-text">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 gradient-text">
               Achievement Milestones
             </h2>
           </motion.div>
 
-          <div className="max-w-6xl mx-auto space-y-8">
+          <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
             {/* Hero skeleton */}
             <div className="glass-card p-8 rounded-xl animate-pulse">
               <div className="h-32 bg-gray-700/50 rounded"></div>
@@ -177,9 +177,9 @@ export default function MilestonesSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-8 sm:mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 gradient-text">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 gradient-text">
             Achievement Milestones
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
@@ -188,7 +188,7 @@ export default function MilestonesSection() {
           </p>
         </motion.div>
 
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
           {/* Verification Milestone Hero Section */}
           {verificationMilestone && (
             <motion.div
@@ -299,7 +299,7 @@ export default function MilestonesSection() {
           )}
 
           {/* Category Milestones - Collapsible */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {categories.map((category, index) => {
               const data = getCategoryData(category);
               const isExpanded = expandedCategories.has(category);
