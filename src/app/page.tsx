@@ -31,7 +31,19 @@ export default function Home() {
         </div>
 
         {/* Section Divider */}
-        <div className="section-divider mx-auto max-w-4xl" />
+        <div className="flex justify-center px-5 sm:px-6 lg:px-8">
+          <div className="section-divider w-full max-w-4xl" />
+        </div>
+
+        {/* About Section */}
+        <div className="relative z-10">
+          <AboutSection />
+        </div>
+
+        {/* Section Divider */}
+        <div className="flex justify-center px-5 sm:px-6 lg:px-8">
+          <div className="section-divider w-full max-w-4xl" />
+        </div>
 
         {/* Ventures Overview */}
         <div className="relative z-10">
@@ -39,7 +51,9 @@ export default function Home() {
         </div>
 
         {/* Section Divider */}
-        <div className="section-divider mx-auto max-w-4xl" />
+        <div className="flex justify-center px-5 sm:px-6 lg:px-8">
+          <div className="section-divider w-full max-w-4xl" />
+        </div>
 
         {/* UGC Business Section - Featured Venture */}
         <section id="ugc-business" className="relative z-10 scroll-mt-20 section-padding px-5 sm:px-6 lg:px-8">
@@ -50,7 +64,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="text-center mb-12 sm:mb-16"
+              className="text-center mb-8 sm:mb-12"
             >
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
                 <StarIcon className="w-4 h-4 text-yellow-400" />
@@ -74,7 +88,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-sm sm:max-w-2xl mt-8 mb-16 sm:mb-20"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full max-w-sm sm:max-w-2xl mt-6 mb-8 sm:mt-8 sm:mb-12"
               >
                 <a
                   href="https://www.roblox.com/users/3504185/profile"
@@ -115,15 +129,9 @@ export default function Home() {
         </section>
 
         {/* Section Divider */}
-        <div className="section-divider mx-auto max-w-4xl" />
-
-        {/* About Section */}
-        <div className="relative z-10">
-          <AboutSection />
+        <div className="flex justify-center px-5 sm:px-6 lg:px-8">
+          <div className="section-divider w-full max-w-4xl" />
         </div>
-
-        {/* Section Divider */}
-        <div className="section-divider mx-auto max-w-4xl" />
 
         {/* Contact Section */}
         <div className="relative z-10">
