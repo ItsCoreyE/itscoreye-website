@@ -43,7 +43,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12 sm:mb-16"
+          className="text-center mb-10 sm:mb-14"
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 gradient-text">
             Get In Touch
@@ -54,7 +54,7 @@ export default function Contact() {
         </motion.div>
 
         {/* Contact Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
           {contactOptions.map((option, index) => (
             <motion.div
               key={option.id}
@@ -62,10 +62,10 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="contact-card p-6 sm:p-7 text-center"
+              className="contact-card p-5 sm:p-6 text-center"
             >
               {/* Icon */}
-              <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl ${option.iconBg} flex items-center justify-center mx-auto mb-4 sm:mb-5`}>
+              <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${option.iconBg} flex items-center justify-center mx-auto mb-4`}>
                 {option.icon}
               </div>
 
@@ -73,7 +73,7 @@ export default function Contact() {
               <h3 className="text-lg sm:text-xl font-bold text-white mb-1">
                 {option.title}
               </h3>
-              <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">
+              <p className="text-sm text-gray-500 mb-4 sm:mb-5">
                 {option.subtitle}
               </p>
 
@@ -82,7 +82,7 @@ export default function Contact() {
                 href={option.href}
                 target={option.id === 'discord-server' ? '_blank' : undefined}
                 rel={option.id === 'discord-server' ? 'noopener noreferrer' : undefined}
-                className={`inline-flex items-center justify-center gap-2 w-full px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg font-medium text-xs sm:text-sm transition-all ${
+                className={`inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 sm:py-3 rounded-lg font-medium text-sm transition-all ${
                   option.buttonStyle === 'primary'
                     ? 'bg-gradient-to-r from-purple-500 to-cyan-500 text-white hover:opacity-90'
                     : option.buttonStyle === 'green'
@@ -90,9 +90,9 @@ export default function Contact() {
                     : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
                 }`}
               >
-                {option.buttonText}
+                <span className="truncate">{option.buttonText}</span>
                 {option.id === 'discord-server' && (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 )}
@@ -107,7 +107,7 @@ export default function Contact() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center text-gray-500 text-sm mt-10"
+          className="text-center text-gray-500 text-sm mt-8"
         >
           Response time: Usually within 24 hours
         </motion.p>
