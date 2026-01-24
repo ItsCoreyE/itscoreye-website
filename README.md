@@ -125,10 +125,11 @@ SEO and social media metadata can be updated in `src/app/layout.tsx`:
 
 ## 📱 Mobile Optimization
 
-- Hero section: 40vh on mobile, 50vh+ on larger screens
-- Section padding: 2rem on mobile, 5rem on desktop
+- Hero section: 70vh on mobile, 75vh on larger screens
+- Section padding: 2.5rem mobile → 4rem tablet → 5rem desktop
 - Responsive typography scaling
 - Touch-friendly button sizes (44px minimum)
+- Progressive grid breakpoints (1 col → 2 col → 3 col)
 
 ## 🚢 Deployment
 
