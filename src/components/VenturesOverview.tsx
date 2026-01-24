@@ -71,7 +71,7 @@ export default function VenturesOverview() {
       subtitle: 'Remote IT Support',
       description: 'Expert tech assistance from anywhere in the world',
       stats: [
-        { label: 'Status', value: 'Active', color: 'text-green-400' },
+        { label: 'Status', value: 'Coming Soon', color: 'text-amber-400' },
         { label: 'Founded', value: 'Feb 2025', color: 'text-pink-400' }
       ],
       accentColor: 'pink',
