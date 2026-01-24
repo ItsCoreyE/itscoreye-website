@@ -71,7 +71,7 @@ export default function FeaturedItems() {
           transition={{ duration }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Best Sellers
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
@@ -182,7 +182,7 @@ export default function FeaturedItems() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Best Sellers
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
@@ -225,16 +225,16 @@ export default function FeaturedItems() {
               </div>
 
               {/* Item Details */}
-              <h3 className="text-lg sm:text-xl font-semibold text-gray-100 mb-4 leading-tight line-clamp-2">
+              <h3 className="text-base sm:text-lg md:text-xl font-semibold text-gray-100 mb-3 sm:mb-4 leading-tight line-clamp-2">
                 {item.name}
               </h3>
-              
+
               {/* Stats */}
-              <div className="flex justify-between items-center gap-3 mb-4">
-                <span className="text-white font-semibold text-sm bg-green-500/10 border border-green-500/20 px-3 py-1.5 rounded-full">
+              <div className="flex justify-between items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                <span className="text-white font-semibold text-xs sm:text-sm bg-green-500/10 border border-green-500/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
                   {typeof item.sales === 'number' ? item.sales.toLocaleString() : item.sales} sold
                 </span>
-                <span className="text-white text-sm font-semibold bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-full">
+                <span className="text-white text-xs sm:text-sm font-semibold bg-amber-500/10 border border-amber-500/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
                   {item.price} R$
                 </span>
               </div>
@@ -242,7 +242,7 @@ export default function FeaturedItems() {
               {/* Asset Type Badge */}
               {item.assetType && (
                 <div className="text-center">
-                  <span className="inline-block text-xs font-medium text-gray-200 bg-gray-800/50 px-3 py-1.5 rounded-full border border-gray-700/50">
+                  <span className="inline-block text-[10px] sm:text-xs font-medium text-gray-200 bg-gray-800/50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-gray-700/50">
                     {formatAssetType(item.assetType)}
                   </span>
                 </div>

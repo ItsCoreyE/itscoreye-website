@@ -179,7 +179,7 @@ export default function MilestonesSection() {
           transition={{ duration }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 gradient-text">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 gradient-text">
             Achievement Milestones
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
@@ -225,7 +225,7 @@ export default function MilestonesSection() {
                 </div>
 
                 {/* Title */}
-                <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4">
+                <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4">
                   <span className={`${verificationMilestone.isCompleted ? 'text-blue-400' : 'text-gray-100'}`}>
                     Roblox Verified Creator
                   </span>
@@ -242,21 +242,21 @@ export default function MilestonesSection() {
                 </h3>
 
                 {/* Requirements */}
-                <div className="bg-gray-900/50 rounded-xl p-6 mb-6 border border-gray-700/50">
+                <div className="bg-gray-900/50 rounded-xl p-4 sm:p-6 mb-6 border border-gray-700/50">
                   <p className="text-gray-300 text-center mb-4 font-semibold">Requirements for Verification:</p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/50">
-                      <BanknotesIcon className="w-8 h-8 text-amber-400" />
-                      <div>
-                        <div className="text-sm text-gray-400">Revenue (90 days)</div>
-                        <div className="text-lg font-bold text-amber-400">2,000,000 Robux</div>
+                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg bg-gray-800/50">
+                      <BanknotesIcon className="w-6 h-6 sm:w-8 sm:h-8 text-amber-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="text-xs sm:text-sm text-gray-400">Revenue (90 days)</div>
+                        <div className="text-sm sm:text-lg font-bold text-amber-400">2,000,000 Robux</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-800/50">
-                      <ShoppingBagIcon className="w-8 h-8 text-green-400" />
-                      <div>
-                        <div className="text-sm text-gray-400">Items Sold</div>
-                        <div className="text-lg font-bold text-green-400">200,000 Sales</div>
+                    <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg bg-gray-800/50">
+                      <ShoppingBagIcon className="w-6 h-6 sm:w-8 sm:h-8 text-green-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <div className="text-xs sm:text-sm text-gray-400">Items Sold</div>
+                        <div className="text-sm sm:text-lg font-bold text-green-400">200,000 Sales</div>
                       </div>
                     </div>
                   </div>
@@ -328,11 +328,11 @@ export default function MilestonesSection() {
                         {getCategoryIcon(category)}
                       </motion.div>
                       
-                      <div className="text-left flex-1">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-100 mb-1">
+                      <div className="text-left flex-1 min-w-0">
+                        <h3 className="text-base sm:text-xl md:text-2xl font-bold text-gray-100 mb-1 truncate">
                           {getCategoryTitle(category)}
                         </h3>
-                        <p className="text-sm text-gray-300 hidden sm:block">
+                        <p className="text-xs sm:text-sm text-gray-300 hidden sm:block">
                           {getCategorySubtitle(category)}
                         </p>
                       </div>
@@ -340,7 +340,7 @@ export default function MilestonesSection() {
                       <div className="flex items-center gap-4">
                         {/* Progress Badge */}
                         <div className="text-right">
-                          <div className="text-lg font-bold text-amber-400">
+                          <div className="text-base sm:text-lg font-bold text-amber-400">
                             {data.completed}/{data.total}
                           </div>
                           <div className="text-xs text-gray-500">

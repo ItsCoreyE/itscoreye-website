@@ -145,23 +145,25 @@ export default function AboutSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.3 + catIndex * 0.1 }}
-                className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center"
+                className="text-center"
               >
-                <span className={`text-sm font-medium text-${category.color}-400 mr-2`}>
+                <span className={`text-sm font-medium text-${category.color}-400 block mb-2 sm:inline sm:mb-0 sm:mr-2`}>
                   {category.title}:
                 </span>
-                {category.skills.map((skill, skillIndex) => (
-                  <motion.span
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: 0.4 + catIndex * 0.1 + skillIndex * 0.05 }}
-                    className="skill-tag"
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 justify-center sm:inline-flex">
+                  {category.skills.map((skill, skillIndex) => (
+                    <motion.span
+                      key={skill}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: 0.4 + catIndex * 0.1 + skillIndex * 0.05 }}
+                      className="skill-tag text-xs sm:text-sm"
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
               </motion.div>
             ))}
           </div>

@@ -114,18 +114,18 @@ export default function VenturesOverview() {
               className="professional-card p-6 sm:p-7 cursor-pointer group flex flex-col"
             >
               {/* Icon */}
-              <div className={`w-14 h-14 rounded-xl ${venture.iconBg} flex items-center justify-center mb-5 group-hover:scale-105 transition-transform`}>
-                <venture.Icon className={`w-7 h-7 ${venture.iconColor}`} />
+              <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl ${venture.iconBg} flex items-center justify-center mb-4 sm:mb-5 group-hover:scale-105 transition-transform`}>
+                <venture.Icon className={`w-6 h-6 sm:w-7 sm:h-7 ${venture.iconColor}`} />
               </div>
 
               {/* Name & Subtitle */}
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1">
                 {venture.name}
               </h3>
-              <p className="text-sm text-gray-400 mb-3">
+              <p className="text-xs sm:text-sm text-gray-400 mb-2 sm:mb-3">
                 {venture.subtitle}
               </p>
-              <p className="text-sm text-gray-500 mb-5 flex-grow leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-500 mb-4 sm:mb-5 flex-grow leading-relaxed">
                 {venture.description}
               </p>
 

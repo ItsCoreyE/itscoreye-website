@@ -134,7 +134,7 @@ export default function LiveStats() {
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: duration * 0.5 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text leading-tight mb-2"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-text leading-tight mb-2"
           >
             {statsData.totalRevenue.toLocaleString()}
           </motion.h3>
@@ -157,7 +157,7 @@ export default function LiveStats() {
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: duration * 0.5 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold gradient-text leading-tight mb-2"
+            className="text-2xl sm:text-3xl md:text-4xl font-bold gradient-text leading-tight mb-2"
           >
             {statsData.totalSales.toLocaleString()}
           </motion.h3>

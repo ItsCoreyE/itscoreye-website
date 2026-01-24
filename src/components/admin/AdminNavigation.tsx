@@ -29,14 +29,14 @@ export default function AdminNavigation({ onLogout }: AdminNavigationProps) {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
             ? 'bg-gray-900/80 backdrop-blur-lg border-b border-white/5 shadow-lg'
-            : 'bg-gray-900/60 backdrop-blur-sm'
+            : 'bg-transparent'
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo/Name */}
             <div className="flex items-center gap-3">
-              <span className="text-xl sm:text-2xl font-bold gradient-text">
+              <span className="text-xl sm:text-2xl font-bold gradient-text-animated">
                 Corey Edwards
               </span>
               <span className="hidden sm:inline-flex items-center px-2.5 py-1 rounded-md bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium">
