@@ -1,12 +1,12 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  LockClosedIcon, 
-  LockOpenIcon, 
-  BoltIcon, 
-  ChartBarIcon, 
-  FolderIcon, 
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  LockClosedIcon,
+  LockOpenIcon,
+  BoltIcon,
+  ChartBarIcon,
+  FolderIcon,
   HomeIcon,
   CalendarIcon,
   ClockIcon,
@@ -15,6 +15,7 @@ import {
   ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 import MilestoneAdmin from './MilestoneAdmin';
+import AdminNavigation from './AdminNavigation';
 
 interface SalesData {
   totalRevenue: number;
@@ -36,9 +37,23 @@ interface SalesData {
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState<string | null>(null);
   const [salesData, setSalesData] = useState<SalesData | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setPassword('');
+    setSalesData(null);
+    setStatusMessage(null);
+  };
+
+  const showStatus = (type: 'success' | 'error', text: string) => {
+    setStatusMessage({ type, text });
+    setTimeout(() => setStatusMessage(null), 5000);
+  };
 
   // Load existing data on component mount (client-side only)
   useEffect(() => {
@@ -49,23 +64,25 @@ export default function AdminPanel() {
   }, []);
 
   const handleLogin = async () => {
+    setLoginError(null);
     try {
       const response = await fetch('/api/admin/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password })
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setIsAuthenticated(true);
+        setLoginError(null);
       } else {
-        alert('❌ Incorrect password!');
+        setLoginError('Incorrect password. Please try again.');
       }
     } catch (error) {
       console.error('Authentication error:', error);
-      alert('❌ Authentication failed. Please try again.');
+      setLoginError('Authentication failed. Please try again.');
     }
   };
 
@@ -104,16 +121,16 @@ export default function AdminPanel() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(manualData)
         });
-        
+
         if (response.ok) {
           setSalesData(manualData);
-          alert(`✅ Stats updated automatically for all visitors!\n💰 Revenue: ${revenueNum.toLocaleString()}\n📊 Sales: ${salesNum.toLocaleString()}\n📅 Period: ${period}`);
+          showStatus('success', `Stats updated! Revenue: ${revenueNum.toLocaleString()} | Sales: ${salesNum.toLocaleString()} | Period: ${period}`);
         } else {
-          alert('❌ Failed to save data');
+          showStatus('error', 'Failed to save data');
         }
       } catch (error) {
         console.error('Error saving data:', error);
-        alert('❌ Failed to save data');
+        showStatus('error', 'Failed to save data');
       }
     }
   };
@@ -138,36 +155,36 @@ export default function AdminPanel() {
       
       if (response.ok) {
         setSalesData(processedData);
-        
+
         // Trigger CSV stats webhook
         try {
           const webhookData = {
             ...processedData,
             uploadType: 'single'
           };
-          
+
           const webhookResponse = await fetch('/api/discord/csv-stats-webhook', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ statsData: webhookData })
           });
-          
+
           if (webhookResponse.ok) {
-            console.log('✅ CSV stats webhook sent successfully');
+            console.log('CSV stats webhook sent successfully');
           } else {
-            console.log('⚠️ CSV stats webhook failed, but data was saved');
+            console.log('CSV stats webhook failed, but data was saved');
           }
         } catch (webhookError) {
-          console.log('⚠️ CSV stats webhook error:', webhookError);
+          console.log('CSV stats webhook error:', webhookError);
         }
-        
-        alert(`✅ CSV processed and saved automatically!\n🎨 ${processedData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!\n📢 Discord notification sent!`);
+
+        showStatus('success', `CSV processed! ${processedData.topItems.length} featured items loaded. Data is now live!`);
       } else {
-        alert('❌ Failed to save processed data');
+        showStatus('error', 'Failed to save processed data');
       }
     } catch (error) {
       console.error('Error processing CSV:', error);
-      alert('❌ Error processing file. Please check the CSV format.');
+      showStatus('error', 'Error processing file. Please check the CSV format.');
     } finally {
       setIsUploading(false);
     }
@@ -178,7 +195,7 @@ export default function AdminPanel() {
     const currentFile = document.getElementById('currentFile') as HTMLInputElement;
     
     if (!previousFile.files?.[0] || !currentFile.files?.[0]) {
-      alert('❌ Please select both previous month and current month CSV files');
+      showStatus('error', 'Please select both previous month and current month CSV files');
       return;
     }
 
@@ -195,17 +212,11 @@ export default function AdminPanel() {
       const currentText = await currentFile.files[0].text();
       const currentData = await processCSVData(currentText);
       
-      // Calculate growth
-      const revenueGrowth = previousData.totalRevenue > 0 
+      // Calculate growth (revenue growth as the main metric)
+      const revenueGrowth = previousData.totalRevenue > 0
         ? ((currentData.totalRevenue - previousData.totalRevenue) / previousData.totalRevenue) * 100
         : 0;
-      
-      const salesGrowth = previousData.totalSales > 0
-        ? ((currentData.totalSales - previousData.totalSales) / previousData.totalSales) * 100  
-        : 0;
-      
-      // Use revenue growth as the main growth metric
-      const growthPercentage = Math.round(revenueGrowth * 10) / 10; // Round to 1 decimal
+      const growthPercentage = Math.round(revenueGrowth * 10) / 10;
       
       // Create final data with growth calculation and featured items
       const finalData = {
@@ -239,21 +250,21 @@ export default function AdminPanel() {
           });
           
           if (webhookResponse.ok) {
-            console.log('✅ Growth calculation webhook sent successfully');
+            console.log('Growth calculation webhook sent successfully');
           } else {
-            console.log('⚠️ Growth calculation webhook failed, but data was saved');
+            console.log('Growth calculation webhook failed, but data was saved');
           }
         } catch (webhookError) {
-          console.log('⚠️ Growth calculation webhook error:', webhookError);
+          console.log('Growth calculation webhook error:', webhookError);
         }
-        
-        alert(`✅ Growth calculation complete!\n📈 Revenue Growth: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}%\n📊 Sales Growth: ${salesGrowth > 0 ? '+' : ''}${Math.round(salesGrowth * 10) / 10}%\n🎨 ${finalData.topItems.length} featured items loaded with thumbnails!\n🌐 Data is now live for all visitors!\n📢 Discord notification sent!`);
+
+        showStatus('success', `Growth calculation complete! Revenue: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}% | ${finalData.topItems.length} featured items loaded`);
       } else {
-        alert('❌ Failed to save processed data');
+        showStatus('error', 'Failed to save processed data');
       }
     } catch (error) {
       console.error('Error processing growth calculation:', error);
-      alert('❌ Error processing files. Please check the CSV format.');
+      showStatus('error', 'Error processing files. Please check the CSV format.');
     } finally {
       setIsUploading(false);
     }
@@ -489,10 +500,25 @@ export default function AdminPanel() {
               type="password"
               placeholder="Enter admin password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setLoginError(null);
+              }}
               onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
               className="modern-input w-full"
             />
+            <AnimatePresence>
+              {loginError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="bg-red-500/10 border border-red-500/30 rounded-lg p-3"
+                >
+                  <p className="text-red-400 text-sm text-center">{loginError}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -510,13 +536,16 @@ export default function AdminPanel() {
 
   return (
     <div className="min-h-screen modern-gradient-bg relative overflow-hidden">
+      {/* Admin Navigation */}
+      <AdminNavigation onLogout={handleLogout} />
+
       {/* Background Effects - Purple/Cyan Theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 p-8">
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8 pb-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <motion.div
@@ -525,11 +554,33 @@ export default function AdminPanel() {
             transition={{ duration: 0.8 }}
             className="text-center mb-8"
           >
-            <h1 className="text-5xl md:text-6xl font-bold gradient-text mb-4">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold gradient-text mb-4">
               Admin Dashboard
             </h1>
-            <p className="text-xl text-gray-200">Manage Your UGC Business</p>
+            <p className="text-lg sm:text-xl text-gray-200">Manage Your UGC Business</p>
           </motion.div>
+
+          {/* Status Messages */}
+          <AnimatePresence>
+            {statusMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className={`mb-6 p-4 rounded-lg border ${
+                  statusMessage.type === 'success'
+                    ? 'bg-green-500/10 border-green-500/30'
+                    : 'bg-red-500/10 border-red-500/30'
+                }`}
+              >
+                <p className={`text-sm text-center ${
+                  statusMessage.type === 'success' ? 'text-green-400' : 'text-red-400'
+                }`}>
+                  {statusMessage.text}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Current Stats at Top */}
           {salesData && (

@@ -147,12 +147,9 @@ export default function Footer() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-12 pt-8 border-t border-white/5"
         >
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex justify-center items-center">
             <p className="text-gray-500 text-sm">
               &copy; {currentYear} Corey Edwards. All rights reserved.
-            </p>
-            <p className="text-gray-600 text-xs">
-              Built with Next.js & Tailwind CSS
             </p>
           </div>
         </motion.div>

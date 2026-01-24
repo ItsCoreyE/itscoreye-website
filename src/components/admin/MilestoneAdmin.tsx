@@ -243,7 +243,7 @@ export default function MilestoneAdmin() {
               onClick={() => setActiveTab(tab)}
               className={`relative flex-1 min-w-[100px] px-4 py-3 rounded-lg font-semibold text-sm transition-all ${
                 isActive
-                  ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow-lg'
                   : 'bg-gray-800/50 text-gray-300 hover:bg-gray-800'
               }`}
             >
@@ -251,7 +251,7 @@ export default function MilestoneAdmin() {
                 <span className="text-xl">{getCategoryIcon(tab)}</span>
                 <span className="hidden sm:inline">{getCategoryTitle(tab)}</span>
                 {tab !== 'verification' && (
-                  <span className={`text-xs ${isActive ? 'text-amber-100' : 'text-gray-300'}`}>
+                  <span className={`text-xs ${isActive ? 'text-white/80' : 'text-gray-300'}`}>
                     {completed}/{total}
                   </span>
                 )}

@@ -10,7 +10,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[70vh] sm:min-h-[80vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+    <section className="relative min-h-[60vh] sm:min-h-[70vh] lg:min-h-[80vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -66,14 +66,14 @@ export default function Hero() {
         >
           <button
             onClick={() => scrollToSection('#ventures')}
-            className="modern-button px-8 py-3.5 text-base font-semibold min-w-[180px]"
+            className="modern-button px-8 py-3.5 text-base font-semibold min-w-[180px] w-full sm:w-auto"
             style={{ color: '#ffffff' }}
           >
             View My Work
           </button>
           <button
             onClick={() => scrollToSection('#contact')}
-            className="modern-button-secondary px-8 py-3.5 text-base font-semibold min-w-[180px]"
+            className="modern-button-secondary px-8 py-3.5 text-base font-semibold min-w-[180px] w-full sm:w-auto"
           >
             Get In Touch
           </button>

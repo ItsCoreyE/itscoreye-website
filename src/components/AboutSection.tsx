@@ -59,7 +59,7 @@ export default function AboutSection() {
           >
             {/* Profile Photo with Gradient Border */}
             <div className="profile-frame mb-6">
-              <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-full bg-gray-800 overflow-hidden">
+              <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gray-800 overflow-hidden">
                 <Image
                   src="/profile.png"
                   alt="Corey Edwards"
@@ -83,7 +83,7 @@ export default function AboutSection() {
             </div>
 
             {/* Quick Stats */}
-            <div className="flex gap-4 sm:gap-6">
+            <div className="flex gap-3 sm:gap-4 md:gap-6">
               {highlights.map((stat, index) => (
                 <motion.div
                   key={stat.label}
@@ -93,7 +93,7 @@ export default function AboutSection() {
                   transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
                   className="text-center"
                 >
-                  <div className={`text-2xl sm:text-3xl font-bold ${stat.color}`}>
+                  <div className={`text-xl sm:text-2xl md:text-3xl font-bold ${stat.color}`}>
                     {stat.value}
                   </div>
                   <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
@@ -145,7 +145,7 @@ export default function AboutSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.3 + catIndex * 0.1 }}
-                className="flex flex-wrap items-center gap-2 justify-center"
+                className="flex flex-wrap items-center gap-2 sm:gap-3 justify-center"
               >
                 <span className={`text-sm font-medium text-${category.color}-400 mr-2`}>
                   {category.title}:
