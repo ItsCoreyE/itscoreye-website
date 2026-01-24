@@ -42,7 +42,7 @@ export default function Home() {
         <div className="section-divider mx-auto max-w-4xl" />
 
         {/* UGC Business Section - Featured Venture */}
-        <section id="ugc-business" className="relative z-10 scroll-mt-20 section-padding px-4 sm:px-6 lg:px-8">
+        <section id="ugc-business" className="relative z-10 scroll-mt-20 section-padding px-5 sm:px-6 lg:px-8">
           <div className="container mx-auto max-w-7xl">
             {/* Section Header */}
             <motion.div

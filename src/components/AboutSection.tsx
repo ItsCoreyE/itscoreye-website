@@ -32,7 +32,7 @@ export default function AboutSection() {
   ];
 
   return (
-    <section id="about" className="section-padding px-4 sm:px-6 lg:px-8 scroll-mt-20">
+    <section id="about" className="section-padding px-5 sm:px-6 lg:px-8 scroll-mt-20">
       <div className="container mx-auto max-w-5xl">
         {/* Section Header */}
         <motion.div

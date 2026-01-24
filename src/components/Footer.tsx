@@ -54,7 +54,7 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-gray-900/50 border-t border-white/5">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div className="container mx-auto px-5 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
           {/* Brand Section */}
           <motion.div

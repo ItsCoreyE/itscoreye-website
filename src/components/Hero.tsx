@@ -10,7 +10,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative min-h-[85vh] sm:min-h-[80vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:py-20">
+    <section className="relative min-h-[85vh] sm:min-h-[80vh] flex items-center justify-center px-5 sm:px-6 lg:px-8 pt-16 pb-20 sm:py-20">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -22,7 +22,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 gradient-text-animated leading-tight tracking-tight"
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 gradient-text-animated leading-tight tracking-tight"
         >
           Corey Edwards
         </motion.h1>

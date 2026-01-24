@@ -64,7 +64,7 @@ export default function FeaturedItems() {
   if (isLoading) {
     return (
       <section className="min-h-screen modern-gradient-bg section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ export default function FeaturedItems() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Best Sellers
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
           </motion.div>
@@ -114,17 +114,17 @@ export default function FeaturedItems() {
   if (error) {
     return (
       <section className="min-h-screen modern-gradient-bg section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center mb-12 sm:mb-16 md:mb-20"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
               Best Sellers
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
           </motion.div>
@@ -148,17 +148,17 @@ export default function FeaturedItems() {
   if (featuredItems.length === 0) {
     return (
       <section className="min-h-screen modern-gradient-bg section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center mb-12 sm:mb-16 md:mb-20"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
               Best Sellers
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
               Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
             </p>
           </motion.div>
@@ -175,7 +175,7 @@ export default function FeaturedItems() {
   // Data loaded successfully
   return (
     <section className="min-h-screen modern-gradient-bg section-padding">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-5 sm:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -185,7 +185,7 @@ export default function FeaturedItems() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 leading-tight gradient-text">
             Best Sellers
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto px-4 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
             Discover this month&apos;s top-performing designs that have captured the community&apos;s attention
           </p>
         </motion.div>

@@ -81,7 +81,7 @@ export default function VenturesOverview() {
   ];
 
   return (
-    <section id="ventures" className="section-padding px-4 sm:px-6 lg:px-8 scroll-mt-20">
+    <section id="ventures" className="section-padding px-5 sm:px-6 lg:px-8 scroll-mt-20">
       <div className="container mx-auto max-w-6xl">
         {/* Section Header */}
         <motion.div

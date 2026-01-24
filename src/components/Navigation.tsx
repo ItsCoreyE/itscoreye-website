@@ -43,7 +43,7 @@ export default function Navigation() {
             : 'bg-transparent'
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo/Name */}
             <a
@@ -114,7 +114,7 @@ export default function Navigation() {
             className="fixed inset-x-0 top-16 z-40 md:hidden"
           >
             <div className="bg-gray-900/95 backdrop-blur-lg border-b border-white/5 shadow-xl">
-              <div className="container mx-auto px-4 py-4">
+              <div className="container mx-auto px-5 py-4">
                 <div className="flex flex-col gap-2">
                   {navLinks.map((link) => (
                     <a

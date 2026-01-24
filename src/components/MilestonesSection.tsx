@@ -124,13 +124,13 @@ export default function MilestonesSection() {
   if (isLoading) {
     return (
       <section className="min-h-screen modern-gradient-bg section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12 sm:mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 gradient-text">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 gradient-text">
               Achievement Milestones
             </h2>
           </motion.div>
@@ -156,7 +156,7 @@ export default function MilestonesSection() {
   if (error) {
     return (
       <section className="modern-gradient-bg section-padding">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-5 sm:px-6 lg:px-8">
           <div className="glass-card p-8 rounded-xl text-center max-w-2xl mx-auto">
             <ExclamationTriangleIcon className="w-16 h-16 text-red-400 mb-4 mx-auto" />
             <p className="text-gray-300 text-lg">{error}</p>
@@ -171,7 +171,7 @@ export default function MilestonesSection() {
 
   return (
     <section className="modern-gradient-bg section-padding">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-5 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
