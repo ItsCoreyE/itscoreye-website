@@ -17,9 +17,9 @@ export default function Navigation() {
   }, []);
 
   const navLinks = [
+    { name: 'About', href: '#about' },
     { name: 'Ventures', href: '#ventures' },
     { name: 'UGC', href: '#ugc-business' },
-    { name: 'About', href: '#about' },
     { name: 'Contact', href: '#contact' },
   ];
 
