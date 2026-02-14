@@ -173,7 +173,7 @@ const buildDiscordPayload = (statsData: StatsData) => {
             },
           ],
     footer: {
-      text: 'Source: itscoreye.com featured items logic',
+      text: 'ItsCoreyE Featured Sellers',
     },
     thumbnail: topSeller?.thumbnail ? { url: topSeller.thumbnail } : undefined,
   };
