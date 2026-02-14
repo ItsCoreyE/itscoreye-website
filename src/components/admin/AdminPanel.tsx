@@ -12,7 +12,6 @@ import {
   ClockIcon,
   BanknotesIcon,
   ShoppingBagIcon,
-  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 import MilestoneAdmin from './MilestoneAdmin';
 import AdminNavigation from './AdminNavigation';
@@ -591,16 +590,16 @@ export default function AdminPanel() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6"
             >
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-2xl sm:text-3xl font-bold text-green-400 mb-1">
+                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-green-400 mb-1 text-center">
                   {salesData.totalRevenue.toLocaleString()}
                 </div>
                 <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
                   <BanknotesIcon className="w-4 h-4" />
-                  Revenue
+                  Revenue (R$)
                 </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-2xl sm:text-3xl font-bold text-blue-400 mb-1">
+                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-blue-400 mb-1 text-center">
                   {salesData.totalSales.toLocaleString()}
                 </div>
                 <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
@@ -609,8 +608,8 @@ export default function AdminPanel() {
                 </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1 flex items-center gap-1.5 justify-center">
-                  <ArrowTrendingUpIcon className="w-5 h-5" />
+                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-purple-400 mb-1 text-center">
+                  {salesData.growthPercentage > 0 ? '+' : ''}
                   {salesData.growthPercentage}%
                 </div>
                 <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
@@ -619,7 +618,7 @@ export default function AdminPanel() {
                 </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-xs sm:text-sm text-amber-400 mb-1 font-mono break-words leading-tight">
+                <div className="text-sm sm:text-base font-semibold text-amber-300 mb-1 break-words leading-snug text-center">
                   {salesData.dataPeriod || 'Current'}
                 </div>
                 <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">

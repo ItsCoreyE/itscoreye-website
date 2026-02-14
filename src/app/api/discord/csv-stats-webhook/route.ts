@@ -70,7 +70,7 @@ const normalizeStats = (statsData: StatsData) => {
   };
 };
 
-const buildDiscordPayload = (statsData: StatsData) => {
+const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
   const normalized = normalizeStats(statsData);
   const { totalRevenue, totalSales, growthPercentage, dataPeriod, uploadType, lastUpdated, topItems } = normalized;
 
@@ -152,7 +152,6 @@ const buildDiscordPayload = (statsData: StatsData) => {
       text: 'ItsCoreyE Monthly Analytics',
     },
     url: 'https://www.itscoreye.com',
-    timestamp: new Date(timestamp * 1000).toISOString(),
   };
 
   const topSellersEmbed = {
@@ -178,23 +177,24 @@ const buildDiscordPayload = (statsData: StatsData) => {
     thumbnail: topSeller?.thumbnail ? { url: topSeller.thumbnail } : undefined,
   };
 
+  const contentPrefix = roleId ? `<@&${roleId}> ` : '';
   const content =
     uploadType === 'growth'
-      ? '🚀 **Monthly Growth Report is live**'
-      : '⭐ **Monthly stats update is live**';
+      ? `${contentPrefix}🚀 **Monthly Growth Report is live**`
+      : `${contentPrefix}⭐ **Monthly stats update is live**`;
 
   return {
     payload: {
       content,
       embeds: [summaryEmbed, topSellersEmbed],
-      allowed_mentions: { parse: [] as string[] },
+      allowed_mentions: roleId ? { roles: [roleId] } : { parse: [] as string[] },
     },
     normalized,
   };
 };
 
-const sendDirectDiscordWebhook = async (webhookUrl: string, statsData: StatsData) => {
-  const { payload, normalized } = buildDiscordPayload(statsData);
+const sendDirectDiscordWebhook = async (webhookUrl: string, statsData: StatsData, roleId?: string) => {
+  const { payload, normalized } = buildDiscordPayload(statsData, roleId);
 
   const response = await fetch(webhookUrl, {
     method: 'POST',
@@ -231,6 +231,7 @@ export async function POST(request: NextRequest) {
 
     const discordWebhookUrl =
       process.env.DISCORD_CSV_WEBHOOK_URL || process.env.DISCORD_WEBHOOK_URL;
+    const roleId = process.env.DISCORD_CSV_PING_ROLE_ID || process.env.DISCORD_PING_ROLE_ID;
     if (!discordWebhookUrl) {
       return NextResponse.json(
         {
@@ -243,7 +244,7 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const normalizedStats = await sendDirectDiscordWebhook(discordWebhookUrl, statsData);
+      const normalizedStats = await sendDirectDiscordWebhook(discordWebhookUrl, statsData, roleId);
 
       console.log('✅ Monthly stats notification sent directly to Discord');
 

@@ -417,6 +417,10 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 1rem;
   padding: 1.5rem;
+  min-height: 136px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   overflow: hidden;
   transition: all 0.2s ease;
