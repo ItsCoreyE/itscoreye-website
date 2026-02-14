@@ -476,7 +476,7 @@ export default function AdminPanel() {
           initial={{ opacity: 0, scale: 0.9, y: 50 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="glass-card p-8 sm:p-10 max-w-md w-full mx-4 relative z-10 border-purple-500/20"
+          className="glass-card p-6 sm:p-10 max-w-md w-full mx-3 sm:mx-4 relative z-10 border-purple-500/20"
         >
           <div className="text-center mb-8">
             <motion.div
@@ -489,10 +489,10 @@ export default function AdminPanel() {
                 <LockClosedIcon className="w-16 h-16 text-purple-400" />
               </div>
             </motion.div>
-            <h2 className="text-4xl font-bold gradient-text mb-3">
+            <h2 className="text-3xl sm:text-4xl font-bold gradient-text mb-3">
               Admin Access
             </h2>
-            <p className="text-gray-200 text-lg">ItsCoreyE Control Panel</p>
+            <p className="text-gray-200 text-base sm:text-lg">ItsCoreyE Control Panel</p>
           </div>
           
           <div className="space-y-4">
@@ -523,7 +523,7 @@ export default function AdminPanel() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleLogin}
-              className="modern-button w-full py-4 text-lg font-bold flex items-center justify-center gap-2"
+              className="modern-button w-full py-3 sm:py-4 text-base sm:text-lg font-bold flex items-center justify-center gap-2"
             >
               <LockOpenIcon className="w-5 h-5" />
               <span>Login to Dashboard</span>
@@ -545,7 +545,7 @@ export default function AdminPanel() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="relative z-10 px-4 sm:px-6 lg:px-8 pb-8">
+      <div className="relative z-10 px-3 sm:px-6 lg:px-8 pb-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <motion.div
@@ -554,10 +554,10 @@ export default function AdminPanel() {
             transition={{ duration: 0.8 }}
             className="text-center mb-8"
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold gradient-text mb-4">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold gradient-text mb-3 sm:mb-4">
               Admin Dashboard
             </h1>
-            <p className="text-lg sm:text-xl text-gray-200">Manage Your UGC Business</p>
+            <p className="text-base sm:text-xl text-gray-200">Manage Your UGC Business</p>
           </motion.div>
 
           {/* Status Messages */}
@@ -575,7 +575,7 @@ export default function AdminPanel() {
               >
                 <p className={`text-sm text-center ${
                   statusMessage.type === 'success' ? 'text-green-400' : 'text-red-400'
-                }`}>
+                } break-words`}>
                   {statusMessage.text}
                 </p>
               </motion.div>
@@ -588,7 +588,7 @@ export default function AdminPanel() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6"
             >
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
                 <div className="text-2xl sm:text-3xl font-bold text-green-400 mb-1">
@@ -619,7 +619,7 @@ export default function AdminPanel() {
                 </div>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-xs sm:text-sm text-amber-400 mb-1 font-mono truncate">
+                <div className="text-xs sm:text-sm text-amber-400 mb-1 font-mono break-words leading-tight">
                   {salesData.dataPeriod || 'Current'}
                 </div>
                 <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
@@ -635,9 +635,9 @@ export default function AdminPanel() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="glass-card p-6 mb-6"
+            className="glass-card p-4 sm:p-6 mb-6"
           >
-            <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
               <BoltIcon className="w-6 h-6 text-purple-400" />
               Quick Actions
             </h3>
@@ -649,11 +649,11 @@ export default function AdminPanel() {
                 onClick={handleManualUpdate}
                 className="bg-gradient-to-br from-blue-600/20 to-blue-500/10 border border-blue-500/30 hover:border-blue-500/50 p-4 rounded-lg text-left transition-all group"
               >
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-2 min-w-0">
                   <div className="p-2 bg-blue-500/10 rounded-lg">
                     <ChartBarIcon className="w-6 h-6 text-blue-400" />
                   </div>
-                  <span className="font-bold text-gray-100">Quick Update</span>
+                  <span className="font-bold text-gray-100 break-words">Quick Update</span>
                 </div>
                 <p className="text-xs text-gray-300">Manual stats entry</p>
               </motion.button>
@@ -665,11 +665,11 @@ export default function AdminPanel() {
                 disabled={isUploading}
                 className="bg-gradient-to-br from-green-600/20 to-green-500/10 border border-green-500/30 hover:border-green-500/50 p-4 rounded-lg text-left transition-all group disabled:opacity-50"
               >
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-2 min-w-0">
                   <div className="p-2 bg-green-500/10 rounded-lg">
                     <FolderIcon className="w-6 h-6 text-green-400" />
                   </div>
-                  <span className="font-bold text-gray-100">
+                  <span className="font-bold text-gray-100 break-words">
                     {isUploading ? 'Processing...' : 'CSV Upload'}
                   </span>
                 </div>
@@ -693,11 +693,11 @@ export default function AdminPanel() {
                 whileTap={{ scale: 0.98 }}
                 className="bg-gradient-to-br from-purple-600/20 to-purple-500/10 border border-purple-500/30 hover:border-purple-500/50 p-4 rounded-lg text-left transition-all group block"
               >
-                <div className="flex items-center gap-3 mb-2">
+                <div className="flex items-center gap-3 mb-2 min-w-0">
                   <div className="p-2 bg-purple-500/10 rounded-lg">
                     <HomeIcon className="w-6 h-6 text-purple-400" />
                   </div>
-                  <span className="font-bold text-gray-100">View Site</span>
+                  <span className="font-bold text-gray-100 break-words">View Site</span>
                 </div>
                 <p className="text-xs text-gray-300">See live changes</p>
               </motion.a>
@@ -709,9 +709,9 @@ export default function AdminPanel() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
-            className="glass-card p-6 mb-6"
+            className="glass-card p-4 sm:p-6 mb-6"
           >
-            <h3 className="text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
+            <h3 className="text-lg sm:text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
               <ChartBarIcon className="w-6 h-6 text-cyan-400" />
               Growth Calculation
             </h3>
@@ -726,7 +726,7 @@ export default function AdminPanel() {
                   id="previousFile"
                   type="file"
                   accept=".csv"
-                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:font-semibold hover:file:bg-purple-700 transition-colors"
+                  className="block w-full min-w-0 max-w-full overflow-hidden text-xs sm:text-sm text-gray-400 file:mr-2 sm:file:mr-3 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:font-semibold file:text-xs sm:file:text-sm hover:file:bg-purple-700 transition-colors"
                 />
               </div>
               
@@ -739,7 +739,7 @@ export default function AdminPanel() {
                   id="currentFile"
                   type="file"
                   accept=".csv"
-                  className="w-full text-sm text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-600 file:text-white file:font-semibold hover:file:bg-cyan-700 transition-colors"
+                  className="block w-full min-w-0 max-w-full overflow-hidden text-xs sm:text-sm text-gray-400 file:mr-2 sm:file:mr-3 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:bg-cyan-600 file:text-white file:font-semibold file:text-xs sm:file:text-sm hover:file:bg-cyan-700 transition-colors"
                 />
               </div>
             </div>

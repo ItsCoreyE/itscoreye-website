@@ -32,11 +32,11 @@ export default function AdminNavigation({ onLogout }: AdminNavigationProps) {
             : 'bg-transparent'
         }`}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo/Name */}
-            <div className="flex items-center gap-3">
-              <span className="text-xl sm:text-2xl font-bold gradient-text-animated">
+            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+              <span className="text-lg sm:text-2xl font-bold gradient-text-animated truncate max-w-[11rem] sm:max-w-none">
                 Corey Edwards
               </span>
               <span className="hidden sm:inline-flex items-center px-2.5 py-1 rounded-md bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-medium">

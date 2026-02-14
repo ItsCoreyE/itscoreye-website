@@ -165,11 +165,11 @@ export default function MilestoneAdmin() {
   const progress = getOverallProgress();
 
   return (
-    <div className="glass-card p-6 sm:p-8">
+    <div className="glass-card p-4 sm:p-8 overflow-hidden">
       {/* Header with Save Button */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h3 className="text-2xl sm:text-3xl font-bold text-gray-100 flex items-center gap-2">
+          <h3 className="text-xl sm:text-3xl font-bold text-gray-100 flex items-center gap-2 break-words">
             <TrophyIcon className="w-7 h-7 text-amber-400" />
             Milestone Manager
           </h3>
@@ -211,7 +211,7 @@ export default function MilestoneAdmin() {
             exit={{ opacity: 0, y: -10 }}
             className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6"
           >
-            <p className="text-red-400 text-sm">{error}</p>
+            <p className="text-red-400 text-sm break-words">{error}</p>
           </motion.div>
         )}
 
@@ -222,13 +222,13 @@ export default function MilestoneAdmin() {
             exit={{ opacity: 0, y: -10 }}
             className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6"
           >
-            <p className="text-green-400 text-sm">{successMessage}</p>
+            <p className="text-green-400 text-sm break-words">{successMessage}</p>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Tab Navigation */}
-      <div className="flex flex-wrap gap-2 mb-6 p-2 bg-gray-900/50 rounded-lg">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mb-6 p-2 bg-gray-900/50 rounded-lg">
         {tabs.map((tab) => {
           const categoryData = getCategoryData(tab);
           const completed = categoryData.filter(m => m.isCompleted).length;
@@ -241,7 +241,7 @@ export default function MilestoneAdmin() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setActiveTab(tab)}
-              className={`relative flex-1 min-w-[100px] px-4 py-3 rounded-lg font-semibold text-sm transition-all ${
+              className={`relative w-full px-3 sm:px-4 py-3 rounded-lg font-semibold transition-all ${
                 isActive
                   ? 'bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow-lg'
                   : 'bg-gray-800/50 text-gray-300 hover:bg-gray-800'
@@ -249,7 +249,9 @@ export default function MilestoneAdmin() {
             >
               <div className="flex flex-col items-center gap-1">
                 <span className="text-xl">{getCategoryIcon(tab)}</span>
-                <span className="hidden sm:inline">{getCategoryTitle(tab)}</span>
+                <span className="text-[11px] sm:text-sm leading-tight text-center break-words">
+                  {getCategoryTitle(tab)}
+                </span>
                 {tab !== 'verification' && (
                   <span className={`text-xs ${isActive ? 'text-white/80' : 'text-gray-300'}`}>
                     {completed}/{total}
@@ -278,26 +280,26 @@ export default function MilestoneAdmin() {
                 if (!verificationMilestone) return null;
                 
                 return (
-                  <div className={`p-6 sm:p-8 rounded-xl border-2 ${
+                  <div className={`p-4 sm:p-8 rounded-xl border-2 ${
                     verificationMilestone.isCompleted
                       ? 'bg-blue-500/10 border-blue-400'
                       : 'bg-gray-800/30 border-blue-500/30'
                   }`}>
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div className="flex items-start gap-4 flex-1">
+                      <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
                         <svg className="w-12 h-12 sm:w-14 sm:h-14 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                         </svg>
-                        <div>
+                        <div className="min-w-0">
                           <div className="text-xs text-blue-400 font-bold mb-2 tracking-wide flex items-center gap-2">
                             <TrophyIcon className="w-4 h-4" />
                             MAIN GOAL
                             <TrophyIcon className="w-4 h-4" />
                           </div>
-                          <div className="text-2xl font-bold text-gray-100 mb-2">
+                          <div className="text-lg sm:text-2xl font-bold text-gray-100 mb-2 break-words">
                             {verificationMilestone.description}
                           </div>
-                          <div className="text-sm text-gray-300 space-y-1">
+                          <div className="text-sm text-gray-300 space-y-1 break-words">
                             <div className="flex items-center gap-2">
                               <BanknotesIcon className="w-4 h-4" />
                               2,000,000 Robux revenue (90 days)
@@ -336,8 +338,8 @@ export default function MilestoneAdmin() {
                 );
               })()}
               
-              <div className="p-6 bg-blue-900/10 border border-blue-500/20 rounded-lg">
-                <p className="text-blue-300 text-sm text-center">
+              <div className="p-4 sm:p-6 bg-blue-900/10 border border-blue-500/20 rounded-lg">
+                <p className="text-blue-300 text-sm text-center break-words">
                   <strong>Note:</strong> When you toggle this milestone and save, an @everyone notification will be sent to Discord #milestones channel!
                 </p>
               </div>
@@ -351,7 +353,7 @@ export default function MilestoneAdmin() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.03 }}
-                  className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border transition-all ${
+                  className={`flex items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border transition-all ${
                     milestone.isCompleted
                       ? 'bg-green-500/10 border-green-500/30'
                       : 'bg-gray-800/30 border-gray-700/50 hover:border-gray-600'
@@ -380,7 +382,7 @@ export default function MilestoneAdmin() {
                   <div className="flex-1 min-w-0">
                     <p className={`font-medium text-sm sm:text-base ${
                       milestone.isCompleted ? 'text-green-400' : 'text-gray-300'
-                    }`}>
+                    } break-words`}>
                       {milestone.description}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
@@ -405,10 +407,10 @@ export default function MilestoneAdmin() {
 
       {/* Footer with Last Updated */}
       {milestonesData && (
-        <div className="mt-6 pt-6 border-t border-gray-700/50 flex items-center justify-between text-xs text-gray-300">
-          <div className="flex items-center gap-2">
+        <div className="mt-6 pt-6 border-t border-gray-700/50 flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 text-xs text-gray-300">
+          <div className="flex items-center gap-2 min-w-0">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span>Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}</span>
+            <span className="break-words">Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}</span>
           </div>
           <span className="hidden sm:inline">Press Save to update live website</span>
         </div>

@@ -65,6 +65,10 @@ pnpm install
 ```env
 ADMIN_PASSWORD=your_admin_password
 DISCORD_WEBHOOK_URL=your_discord_webhook_url
+DISCORD_PING_ROLE_ID=your_milestone_ping_role_id
+# Optional: dedicated monthly stats webhook and ping role
+DISCORD_CSV_WEBHOOK_URL=your_csv_discord_webhook_url
+DISCORD_CSV_PING_ROLE_ID=your_discord_role_id
 ```
 
 4. Run the development server:
@@ -114,7 +118,10 @@ itscoreye-website/
 ### Environment Variables
 
 - `ADMIN_PASSWORD` - Password for admin panel access
-- `DISCORD_WEBHOOK_URL` - Discord webhook for milestone notifications
+- `DISCORD_WEBHOOK_URL` - Discord webhook for milestone notifications (also used for CSV stats if dedicated CSV webhook is not set)
+- `DISCORD_PING_ROLE_ID` - (Optional) role ID to ping for milestone notifications
+- `DISCORD_CSV_WEBHOOK_URL` - (Optional) dedicated Discord webhook for monthly CSV/growth notifications
+- `DISCORD_CSV_PING_ROLE_ID` - (Optional) role ID to ping for monthly CSV/growth notifications
 
 ### Metadata Configuration
 
