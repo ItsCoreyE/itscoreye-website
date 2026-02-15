@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
 import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
 import { fetchWithRetry } from '@/lib/server/httpClient';
 import { WEBHOOK_PINGS_ENABLED } from '@/lib/server/webhookSettings';
@@ -24,8 +23,6 @@ interface StatsData {
   uploadType?: 'single' | 'growth' | string;
 }
 
-const redis = Redis.fromEnv();
-
 const DISCORD_LIMITS = {
   content: 2000,
   embedTitle: 256,
@@ -45,39 +42,11 @@ const truncate = (value: string, maxLength: number) => {
   return `${value.slice(0, maxLength - 1)}…`;
 };
 
-const getItemKey = (item: TopItem) => {
-  const assetId = (item.assetId || '').replace(/[^\d]/g, '');
-  if (assetId) return `asset:${assetId}`;
-  return `name:${(item.name || '').toLowerCase().trim()}`;
-};
-
 const toSafeField = (name: string, value: string, inline = false) => ({
   name: truncate(name, DISCORD_LIMITS.fieldName),
   value: truncate(value || '—', DISCORD_LIMITS.fieldValue),
   inline,
 });
-
-const getSeverityBadge = (sales: number, topSales: number) => {
-  if (sales <= 0) return '⚪';
-  const ratio = topSales > 0 ? sales / topSales : 0;
-  if (ratio >= 0.75) return '🟢';
-  if (ratio >= 0.4) return '🟡';
-  return '🔴';
-};
-
-const getTrendBadge = (current: TopItem, previous?: TopItem) => {
-  if (!previous) return { emoji: '🆕', label: 'new' };
-
-  const salesDelta = (current.sales || 0) - (previous.sales || 0);
-  if (salesDelta > 0) return { emoji: '⬆️', label: `+${formatNumber(salesDelta)} sales` };
-  if (salesDelta < 0) return { emoji: '⬇️', label: `${formatNumber(salesDelta)} sales` };
-
-  const revenueDelta = Math.round((current.revenue || 0) - (previous.revenue || 0));
-  if (revenueDelta > 0) return { emoji: '📈', label: `+${formatNumber(revenueDelta)} R$` };
-  if (revenueDelta < 0) return { emoji: '📉', label: `${formatNumber(revenueDelta)} R$` };
-
-  return { emoji: '➖', label: 'steady' };
-};
 
 const toTimestamp = (value?: string) => {
   if (!value) return Math.floor(Date.now() / 1000);
@@ -118,9 +87,8 @@ const normalizeStats = (statsData: StatsData) => {
   };
 };
 
-const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStats?: StatsData) => {
+const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
   const normalized = normalizeStats(statsData);
-  const previousNormalized = previousStats ? normalizeStats(previousStats) : null;
   const {
     totalRevenue,
     totalSales,
@@ -154,43 +122,25 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStat
   const topSellerName = topSeller
     ? truncate(escapeDiscordMarkdown(topSeller.name), 80)
     : 'No item data';
-
-  const previousByItem = new Map<string, TopItem>();
-  if (previousNormalized) {
-    for (const previousItem of previousNormalized.topItems) {
-      previousByItem.set(getItemKey(previousItem), previousItem);
-    }
-  }
-
-  const topSalesLeader = topItems[0]?.sales || 0;
   const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '6️⃣'];
   const topSellerLines = topItems.map((item, index) => {
     const safeName = truncate(escapeDiscordMarkdown(item.name), 72);
     const assetId = item.assetId.replace(/[^\d]/g, '');
     const itemLink = assetId ? `https://www.roblox.com/catalog/${assetId}` : '';
     const itemLabel = itemLink ? `[${safeName}](${itemLink})` : `**${safeName}**`;
-    const trend = getTrendBadge(item, previousByItem.get(getItemKey(item)));
-    const severity = getSeverityBadge(item.sales, topSalesLeader);
 
     return truncate(
-      `${medals[index] || `#${index + 1}`} ${severity} ${trend.emoji} ${itemLabel}\n\`Sales ${formatNumber(
+      `${medals[index] || `#${index + 1}`} ${itemLabel}\n\`Sales ${formatNumber(
         item.sales
       )}\` • \`Revenue ${formatNumber(Math.round(item.revenue))} R$\` • \`Price ${formatNumber(
         Math.round(item.price)
-      )} R$\` • \`Trend ${trend.label}\``,
+      )} R$\``,
       560
     );
   });
 
-  const topSellerAssetId = (topSeller?.assetId || '').replace(/[^\d]/g, '');
-  const topSellerLink = topSellerAssetId
-    ? `https://www.roblox.com/catalog/${topSellerAssetId}`
-    : '';
-
-  const quickLinks = topSellerLink
-    ? '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)\n[Top Item](https://www.roblox.com/catalog/' +
-      `${topSellerAssetId})`
-    : '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
+  const quickLinks =
+    '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
 
   const summaryEmbed = {
     title: truncate(`📊 ${uploadLabel}`, DISCORD_LIMITS.embedTitle),
@@ -224,9 +174,7 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStat
     title: truncate('🔥 Top 6 Best Sellers', DISCORD_LIMITS.embedTitle),
     description: truncate(
       topSellerLines.length > 0
-        ? `Legend: 🟢 strong • 🟡 medium • 🔴 watchlist • ⚪ low • 🆕 new\n\n${topSellerLines.join(
-            '\n\n'
-          )}`
+        ? topSellerLines.join('\n\n')
         : 'No featured items were detected in this upload.',
       DISCORD_LIMITS.embedDescription
     ),
@@ -243,10 +191,7 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStat
     uploadType === 'growth'
       ? `${contentPrefix}🚀 **Monthly Growth Report is live**`
       : `${contentPrefix}⭐ **Monthly stats update is live**`;
-  const snapshotLine = `\`R$ ${formatNumber(Math.round(totalRevenue))}\` • \`${formatNumber(
-    totalSales
-  )} sales\` • \`${growthLabel}\``;
-  const content = truncate(`${headline}\n${snapshotLine}`, DISCORD_LIMITS.content);
+  const content = truncate(headline, DISCORD_LIMITS.content);
 
   return {
     payload: {
@@ -261,10 +206,9 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStat
 const sendDirectDiscordWebhook = async (
   webhookUrl: string,
   statsData: StatsData,
-  roleId?: string,
-  previousStats?: StatsData
+  roleId?: string
 ) => {
-  const { payload, normalized } = buildDiscordPayload(statsData, roleId, previousStats);
+  const { payload, normalized } = buildDiscordPayload(statsData, roleId);
 
   const response = await fetchWithRetry(
     webhookUrl,
@@ -284,19 +228,6 @@ const sendDirectDiscordWebhook = async (
   }
 
   return normalized;
-};
-
-const loadPreviousStatsSnapshot = async () => {
-  try {
-    const previousData = await redis.get<StatsData>('ugc-sales-data-previous');
-    if (!previousData || typeof previousData !== 'object') {
-      return undefined;
-    }
-    return previousData;
-  } catch (error) {
-    console.error('⚠️ Unable to load previous sales snapshot for trend analysis:', error);
-    return undefined;
-  }
 };
 
 export async function POST(request: NextRequest) {
@@ -338,13 +269,7 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const previousStats = await loadPreviousStatsSnapshot();
-      const normalizedStats = await sendDirectDiscordWebhook(
-        discordWebhookUrl,
-        statsData,
-        roleId,
-        previousStats
-      );
+      const normalizedStats = await sendDirectDiscordWebhook(discordWebhookUrl, statsData, roleId);
 
       console.log('✅ Monthly stats notification sent directly to Discord');
 
