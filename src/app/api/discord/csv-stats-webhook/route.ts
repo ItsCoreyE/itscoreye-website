@@ -188,9 +188,9 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStat
     : '';
 
   const quickLinks = topSellerLink
-    ? '[Dashboard](https://www.itscoreye.com/admin) • [Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)\n[Top Item](https://www.roblox.com/catalog/' +
+    ? '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)\n[Top Item](https://www.roblox.com/catalog/' +
       `${topSellerAssetId})`
-    : '[Dashboard](https://www.itscoreye.com/admin) • [Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
+    : '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
 
   const summaryEmbed = {
     title: truncate(`📊 ${uploadLabel}`, DISCORD_LIMITS.embedTitle),

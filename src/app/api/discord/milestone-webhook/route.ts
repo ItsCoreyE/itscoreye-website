@@ -86,6 +86,13 @@ const formatNumberCompact = (value: number) => {
   return `${value}`;
 };
 
+const buildProgressBar = (completed: number, total: number, length = 10) => {
+  if (total <= 0) return '░'.repeat(length);
+  const ratio = Math.max(0, Math.min(1, completed / total));
+  const filled = Math.round(ratio * length);
+  return `${'█'.repeat(filled)}${'░'.repeat(Math.max(0, length - filled))}`;
+};
+
 const truncate = (value: string, maxLength: number) => {
   if (value.length <= maxLength) return value;
   return `${value.slice(0, maxLength - 1)}…`;
@@ -116,8 +123,21 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
       : category === 'verification'
       ? '✅ **Goal:** `Verified Creator`'
       : `${config.emoji} **Target:** \`${formatNumberCompact(target)} ${config.unit}\``;
+  const totalCompleted = Number(progress.total_completed) || 0;
+  const totalMilestones = Number(progress.total_milestones) || 0;
+  const completionPercentage = Number(progress.completion_percentage) || 0;
+  const categoryLeft = Math.max(0, categoryTotal - categoryCompleted);
+  const categoryBar = buildProgressBar(categoryCompleted, categoryTotal);
+  const overallBar = buildProgressBar(totalCompleted, totalMilestones);
+  const spotlightLabel =
+    category === 'collectibles'
+      ? 'Collectible Added'
+      : category === 'verification'
+      ? 'Creator Verification'
+      : `${config.name} Target Hit`;
+
   const quickLinksBase =
-    '[Dashboard](https://www.itscoreye.com/admin) • [Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
+    '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
   const collectibleAssetId = (milestone.assetId || '').replace(/[^\d]/g, '');
   const quickLinks =
     category === 'collectibles' && collectibleAssetId
@@ -125,21 +145,31 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
       : quickLinksBase;
 
   const embed: Record<string, unknown> = {
-    title: truncate(`🎉 ${config.name} Unlocked`, DISCORD_LIMITS.embedTitle),
+    title: truncate(`${config.emoji} ${config.name} Complete`, DISCORD_LIMITS.embedTitle),
     description: truncate(
-      `**${safeDescription}**\n${achievementLine}\n\n*${config.celebration}*\n🕒 Updated <t:${timestamp}:R>`,
+      `## ${spotlightLabel}\n**${safeDescription}**\n\n${achievementLine}\n*${config.celebration}*`,
       DISCORD_LIMITS.embedDescription
     ),
     color: colour,
     fields: [
       toSafeField(
-        '📊 Progress',
-        `Category: \`${categoryCompleted}/${categoryTotal}\`\nOverall: \`${Number(progress.total_completed) || 0}/${Number(progress.total_milestones) || 0} milestones (${Number(progress.completion_percentage) || 0}%)\``
+        '🧩 Category Progress',
+        `\`${categoryCompleted}/${categoryTotal}\` (${categoryLeft} left)\n\`${categoryBar}\``,
+        true
+      ),
+      toSafeField(
+        '🏁 Overall Progress',
+        `\`${totalCompleted}/${totalMilestones}\` milestones (\`${completionPercentage}%\`)\n\`${overallBar}\``,
+        true
+      ),
+      toSafeField(
+        '🕒 Updated',
+        `<t:${timestamp}:R> • <t:${timestamp}:F>`
       ),
       toSafeField('🔗 Quick Links', quickLinks),
     ],
     footer: {
-      text: 'Milestone Tracker • ItsCoreyE',
+      text: 'ItsCoreyE Milestone Tracker',
     },
     author: {
       name: 'ItsCoreyE (3504185)',
@@ -172,8 +202,8 @@ const postToDiscord = async (
       : isVerification
       ? '🎊 **🏆 ROBLOX VERIFIED CREATOR ACHIEVED! 🏆**'
       : pingRoleId
-      ? `<@&${pingRoleId}> 🎊 **Milestone Reached!**`
-      : '🎊 **Milestone Reached!**',
+      ? `<@&${pingRoleId}> ✨ **Milestone Unlocked**`
+      : '✨ **Milestone Unlocked**',
     DISCORD_LIMITS.content
   );
 
