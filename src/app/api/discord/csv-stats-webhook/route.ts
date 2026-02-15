@@ -215,7 +215,7 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStat
       toSafeField('🔗 Quick Links', quickLinks),
     ],
     footer: {
-      text: 'ItsCoreyE Monthly Analytics',
+      text: 'Monthly Analytics',
     },
     url: 'https://www.itscoreye.com',
   };
@@ -232,7 +232,7 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStat
     ),
     color,
     footer: {
-      text: 'ItsCoreyE Featured Sellers',
+      text: 'Featured Sellers',
     },
     thumbnail: topSeller?.thumbnail ? { url: topSeller.thumbnail } : undefined,
   };

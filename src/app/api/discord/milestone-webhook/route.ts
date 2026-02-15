@@ -169,7 +169,7 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
       toSafeField('🔗 Quick Links', quickLinks),
     ],
     footer: {
-      text: 'ItsCoreyE Milestone Tracker',
+      text: 'Milestone Tracker',
     },
     author: {
       name: 'ItsCoreyE (3504185)',
