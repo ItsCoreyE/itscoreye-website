@@ -46,37 +46,32 @@ const milestoneColours: Record<string, number> = {
 
 const categoryConfig: Record<
   string,
-  { emoji: string; name: string; unit: string; celebration: string }
+  { emoji: string; name: string; unit: string }
 > = {
   revenue: {
     emoji: '💰',
     name: 'Revenue Milestone',
     unit: 'Robux',
-    celebration: 'Money milestone achieved!',
   },
   sales: {
     emoji: '🛍️',
     name: 'Sales Milestone',
     unit: 'Sales',
-    celebration: 'Sales target smashed!',
   },
   items: {
     emoji: '🎨',
     name: 'Item Release Milestone',
     unit: 'Items',
-    celebration: 'Creation milestone unlocked!',
   },
   collectibles: {
     emoji: '💎',
     name: 'Collectible Achievement',
     unit: 'Item',
-    celebration: 'Limited collectible acquired!',
   },
   verification: {
     emoji: '✅',
     name: 'ROBLOX Verified Creator',
     unit: 'Verified',
-    celebration: 'Main goal achieved. The blue checkmark is here!',
   },
 };
 
@@ -147,7 +142,7 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
   const embed: Record<string, unknown> = {
     title: truncate(`${config.emoji} ${config.name} Complete`, DISCORD_LIMITS.embedTitle),
     description: truncate(
-      `## ${spotlightLabel}\n**${safeDescription}**\n\n${achievementLine}\n*${config.celebration}*`,
+      `## ${spotlightLabel}\n**${safeDescription}**\n\n${achievementLine}`,
       DISCORD_LIMITS.embedDescription
     ),
     color: colour,
