@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
 import { fetchWithRetry } from '@/lib/server/httpClient';
+import { WEBHOOK_PINGS_ENABLED } from '@/lib/server/webhookSettings';
 
 interface MilestoneData {
   id?: string;
@@ -26,6 +27,14 @@ interface ProgressData {
   total_milestones?: number;
   completion_percentage?: number;
 }
+
+const DISCORD_LIMITS = {
+  content: 2000,
+  embedTitle: 256,
+  embedDescription: 4096,
+  fieldName: 256,
+  fieldValue: 1024,
+};
 
 const milestoneColours: Record<string, number> = {
   revenue: 0xffd700,
@@ -77,6 +86,20 @@ const formatNumberCompact = (value: number) => {
   return `${value}`;
 };
 
+const truncate = (value: string, maxLength: number) => {
+  if (value.length <= maxLength) return value;
+  return `${value.slice(0, maxLength - 1)}…`;
+};
+
+const escapeDiscordMarkdown = (input: string) =>
+  input.replace(/[\\`*_{}[\]()#+\-.!|>~]/g, '\\$&');
+
+const toSafeField = (name: string, value: string, inline = false) => ({
+  name: truncate(name, DISCORD_LIMITS.fieldName),
+  value: truncate(value || '—', DISCORD_LIMITS.fieldValue),
+  inline,
+});
+
 const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, thumbnailUrl: string | null) => {
   const category = (milestone.category || 'revenue').toString();
   const config = categoryConfig[category] || categoryConfig.revenue;
@@ -85,32 +108,35 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
   const target = Number(milestone.target) || 0;
   const categoryCompleted = Number(progress[`${category}_completed` as keyof ProgressData]) || 0;
   const categoryTotal = Number(progress[`${category}_total` as keyof ProgressData]) || 0;
-
-  const achievementValue =
+  const safeDescription = truncate(escapeDiscordMarkdown(description), 140);
+  const timestamp = Math.floor(Date.now() / 1000);
+  const achievementLine =
     category === 'collectibles'
-      ? `\`${description}\``
-      : `\`${formatNumberCompact(target)} ${config.unit}\``;
+      ? `💎 **Collectible:** \`${safeDescription}\``
+      : category === 'verification'
+      ? '✅ **Goal:** `Verified Creator`'
+      : `${config.emoji} **Target:** \`${formatNumberCompact(target)} ${config.unit}\``;
+  const quickLinksBase =
+    '[Dashboard](https://www.itscoreye.com/admin) • [Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
+  const collectibleAssetId = (milestone.assetId || '').replace(/[^\d]/g, '');
+  const quickLinks =
+    category === 'collectibles' && collectibleAssetId
+      ? `${quickLinksBase}\n[View Collectible](https://www.roblox.com/catalog/${collectibleAssetId})`
+      : quickLinksBase;
 
   const embed: Record<string, unknown> = {
-    title: `🎉 ${config.name} Unlocked`,
-    description: `**${description}**\n\n*${config.celebration}*`,
+    title: truncate(`🎉 ${config.name} Unlocked`, DISCORD_LIMITS.embedTitle),
+    description: truncate(
+      `**${safeDescription}**\n${achievementLine}\n\n*${config.celebration}*\n🕒 Updated <t:${timestamp}:R>`,
+      DISCORD_LIMITS.embedDescription
+    ),
     color: colour,
     fields: [
-      {
-        name: `${config.emoji} Achievement`,
-        value: achievementValue,
-        inline: true,
-      },
-      {
-        name: '📊 Category Progress',
-        value: `\`${categoryCompleted}/${categoryTotal} completed\``,
-        inline: true,
-      },
-      {
-        name: '🏆 Overall Progress',
-        value: `\`${Number(progress.total_completed) || 0}/${Number(progress.total_milestones) || 0} milestones (${Number(progress.completion_percentage) || 0}%)\``,
-        inline: false,
-      },
+      toSafeField(
+        '📊 Progress',
+        `Category: \`${categoryCompleted}/${categoryTotal}\`\nOverall: \`${Number(progress.total_completed) || 0}/${Number(progress.total_milestones) || 0} milestones (${Number(progress.completion_percentage) || 0}%)\``
+      ),
+      toSafeField('🔗 Quick Links', quickLinks),
     ],
     footer: {
       text: 'Milestone Tracker • ItsCoreyE',
@@ -119,7 +145,6 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
       name: 'ItsCoreyE (3504185)',
       url: 'https://www.roblox.com/users/3504185/profile',
     },
-    timestamp: new Date().toISOString(),
   };
 
   if (category === 'collectibles' && thumbnailUrl) {
@@ -138,20 +163,27 @@ const postToDiscord = async (
 ) => {
   const category = (milestone.category || 'revenue').toString();
   const isVerification = category === 'verification';
+  const pingRoleId = WEBHOOK_PINGS_ENABLED ? roleId : undefined;
+  const shouldPingEveryone = WEBHOOK_PINGS_ENABLED && isVerification;
 
-  const content = isVerification
-    ? '🎊🎊🎊 @everyone 🎊🎊🎊\n\n**🏆 ROBLOX VERIFIED CREATOR ACHIEVED! 🏆**'
-    : roleId
-    ? `<@&${roleId}> 🎊 **Milestone Reached!**`
-    : '🎊 **Milestone Reached!**';
+  const content = truncate(
+    shouldPingEveryone
+      ? '🎊🎊🎊 @everyone 🎊🎊🎊\n\n**🏆 ROBLOX VERIFIED CREATOR ACHIEVED! 🏆**'
+      : isVerification
+      ? '🎊 **🏆 ROBLOX VERIFIED CREATOR ACHIEVED! 🏆**'
+      : pingRoleId
+      ? `<@&${pingRoleId}> 🎊 **Milestone Reached!**`
+      : '🎊 **Milestone Reached!**',
+    DISCORD_LIMITS.content
+  );
 
   const payload = {
     content,
     embeds: [buildMilestoneEmbed(milestone, progress, thumbnailUrl)],
-    allowed_mentions: isVerification
+    allowed_mentions: shouldPingEveryone
       ? { parse: ['everyone'] }
-      : roleId
-      ? { roles: [roleId] }
+      : pingRoleId
+      ? { roles: [pingRoleId] }
       : { parse: [] as string[] },
   };
 

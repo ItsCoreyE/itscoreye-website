@@ -49,7 +49,12 @@ export async function POST(request: NextRequest) {
     
     console.log('💾 Saving data to Upstash...', data.totalRevenue);
     
-    // Automatically save to Upstash Redis
+    const previousData = await redis.get('ugc-sales-data');
+    if (previousData) {
+      await redis.set('ugc-sales-data-previous', previousData);
+    }
+
+    // Save latest snapshot to Upstash Redis
     await redis.set('ugc-sales-data', data);
     
     console.log('✅ Data automatically saved to Upstash');

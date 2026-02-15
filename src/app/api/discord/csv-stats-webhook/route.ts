@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { Redis } from '@upstash/redis';
 import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
 import { fetchWithRetry } from '@/lib/server/httpClient';
+import { WEBHOOK_PINGS_ENABLED } from '@/lib/server/webhookSettings';
 
 interface TopItem {
   name?: string;
@@ -22,6 +24,16 @@ interface StatsData {
   uploadType?: 'single' | 'growth' | string;
 }
 
+const redis = Redis.fromEnv();
+
+const DISCORD_LIMITS = {
+  content: 2000,
+  embedTitle: 256,
+  embedDescription: 4096,
+  fieldName: 256,
+  fieldValue: 1024,
+};
+
 const formatNumber = (value: number) => new Intl.NumberFormat('en-US').format(value);
 
 const escapeDiscordMarkdown = (input: string) => {
@@ -31,6 +43,40 @@ const escapeDiscordMarkdown = (input: string) => {
 const truncate = (value: string, maxLength: number) => {
   if (value.length <= maxLength) return value;
   return `${value.slice(0, maxLength - 1)}…`;
+};
+
+const getItemKey = (item: TopItem) => {
+  const assetId = (item.assetId || '').replace(/[^\d]/g, '');
+  if (assetId) return `asset:${assetId}`;
+  return `name:${(item.name || '').toLowerCase().trim()}`;
+};
+
+const toSafeField = (name: string, value: string, inline = false) => ({
+  name: truncate(name, DISCORD_LIMITS.fieldName),
+  value: truncate(value || '—', DISCORD_LIMITS.fieldValue),
+  inline,
+});
+
+const getSeverityBadge = (sales: number, topSales: number) => {
+  if (sales <= 0) return '⚪';
+  const ratio = topSales > 0 ? sales / topSales : 0;
+  if (ratio >= 0.75) return '🟢';
+  if (ratio >= 0.4) return '🟡';
+  return '🔴';
+};
+
+const getTrendBadge = (current: TopItem, previous?: TopItem) => {
+  if (!previous) return { emoji: '🆕', label: 'new' };
+
+  const salesDelta = (current.sales || 0) - (previous.sales || 0);
+  if (salesDelta > 0) return { emoji: '⬆️', label: `+${formatNumber(salesDelta)} sales` };
+  if (salesDelta < 0) return { emoji: '⬇️', label: `${formatNumber(salesDelta)} sales` };
+
+  const revenueDelta = Math.round((current.revenue || 0) - (previous.revenue || 0));
+  if (revenueDelta > 0) return { emoji: '📈', label: `+${formatNumber(revenueDelta)} R$` };
+  if (revenueDelta < 0) return { emoji: '📉', label: `${formatNumber(revenueDelta)} R$` };
+
+  return { emoji: '➖', label: 'steady' };
 };
 
 const toTimestamp = (value?: string) => {
@@ -72,9 +118,18 @@ const normalizeStats = (statsData: StatsData) => {
   };
 };
 
-const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
+const buildDiscordPayload = (statsData: StatsData, roleId?: string, previousStats?: StatsData) => {
   const normalized = normalizeStats(statsData);
-  const { totalRevenue, totalSales, growthPercentage, dataPeriod, uploadType, lastUpdated, topItems } = normalized;
+  const previousNormalized = previousStats ? normalizeStats(previousStats) : null;
+  const {
+    totalRevenue,
+    totalSales,
+    growthPercentage,
+    dataPeriod,
+    uploadType,
+    lastUpdated,
+    topItems,
+  } = normalized;
 
   const color =
     growthPercentage >= 20
@@ -96,57 +151,68 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
   const uploadLabel = uploadType === 'growth' ? 'Monthly Growth Report' : 'Monthly Stats Update';
   const timestamp = toTimestamp(lastUpdated);
   const topSeller = topItems[0];
-  const topSellerName = topSeller ? truncate(escapeDiscordMarkdown(topSeller.name), 80) : 'No item data';
+  const topSellerName = topSeller
+    ? truncate(escapeDiscordMarkdown(topSeller.name), 80)
+    : 'No item data';
 
+  const previousByItem = new Map<string, TopItem>();
+  if (previousNormalized) {
+    for (const previousItem of previousNormalized.topItems) {
+      previousByItem.set(getItemKey(previousItem), previousItem);
+    }
+  }
+
+  const topSalesLeader = topItems[0]?.sales || 0;
   const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '6️⃣'];
   const topSellerLines = topItems.map((item, index) => {
-    const safeName = truncate(escapeDiscordMarkdown(item.name), 90);
+    const safeName = truncate(escapeDiscordMarkdown(item.name), 72);
     const assetId = item.assetId.replace(/[^\d]/g, '');
     const itemLink = assetId ? `https://www.roblox.com/catalog/${assetId}` : '';
     const itemLabel = itemLink ? `[${safeName}](${itemLink})` : `**${safeName}**`;
+    const trend = getTrendBadge(item, previousByItem.get(getItemKey(item)));
+    const severity = getSeverityBadge(item.sales, topSalesLeader);
 
-    return `${medals[index] || `#${index + 1}`} ${itemLabel}\n\`Sales ${formatNumber(
-      item.sales
-    )}\` • \`Revenue ${formatNumber(Math.round(item.revenue))} R$\` • \`Price ${formatNumber(
-      Math.round(item.price)
-    )} R$\``;
+    return truncate(
+      `${medals[index] || `#${index + 1}`} ${severity} ${trend.emoji} ${itemLabel}\n\`Sales ${formatNumber(
+        item.sales
+      )}\` • \`Revenue ${formatNumber(Math.round(item.revenue))} R$\` • \`Price ${formatNumber(
+        Math.round(item.price)
+      )} R$\` • \`Trend ${trend.label}\``,
+      560
+    );
   });
 
+  const topSellerAssetId = (topSeller?.assetId || '').replace(/[^\d]/g, '');
+  const topSellerLink = topSellerAssetId
+    ? `https://www.roblox.com/catalog/${topSellerAssetId}`
+    : '';
+
+  const quickLinks = topSellerLink
+    ? '[Dashboard](https://www.itscoreye.com/admin) • [Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)\n[Top Item](https://www.roblox.com/catalog/' +
+      `${topSellerAssetId})`
+    : '[Dashboard](https://www.itscoreye.com/admin) • [Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
+
   const summaryEmbed = {
-    title: `📊 ${uploadLabel}`,
-    description:
+    title: truncate(`📊 ${uploadLabel}`, DISCORD_LIMITS.embedTitle),
+    description: truncate(
       uploadType === 'growth'
         ? `Performance window: **${escapeDiscordMarkdown(dataPeriod)}**`
         : `Fresh sales snapshot for **${escapeDiscordMarkdown(dataPeriod)}**`,
+      DISCORD_LIMITS.embedDescription
+    ),
     color,
     fields: [
-      {
-        name: '💰 Total Revenue',
-        value: `\`${formatNumber(Math.round(totalRevenue))} R$\``,
-        inline: true,
-      },
-      {
-        name: '🛍️ Total Sales',
-        value: `\`${formatNumber(totalSales)}\``,
-        inline: true,
-      },
-      {
-        name: `${growthEmoji} Growth`,
-        value: `\`${growthLabel}\``,
-        inline: true,
-      },
-      {
-        name: '🏆 Top Seller',
-        value: topSeller
+      toSafeField('💰 Total Revenue', `\`${formatNumber(Math.round(totalRevenue))} R$\``, true),
+      toSafeField('🛍️ Total Sales', `\`${formatNumber(totalSales)}\``, true),
+      toSafeField(`${growthEmoji} Growth`, `\`${growthLabel}\``, true),
+      toSafeField(
+        '🏆 Top Seller',
+        topSeller
           ? `**${topSellerName}**\n\`${formatNumber(topSeller.sales)} sales • ${formatNumber(Math.round(topSeller.revenue))} R$\``
-          : '`No top sellers detected`',
-        inline: false,
-      },
-      {
-        name: '🕒 Updated',
-        value: `<t:${timestamp}:F>`,
-        inline: false,
-      },
+          : '`No top sellers detected`'
+      ),
+      toSafeField('🕒 Updated', `<t:${timestamp}:R> • <t:${timestamp}:F>`),
+      toSafeField('🔗 Quick Links', quickLinks),
     ],
     footer: {
       text: 'ItsCoreyE Monthly Analytics',
@@ -155,11 +221,15 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
   };
 
   const topSellersEmbed = {
-    title: '🔥 Top 6 Best Sellers',
-    description:
+    title: truncate('🔥 Top 6 Best Sellers', DISCORD_LIMITS.embedTitle),
+    description: truncate(
       topSellerLines.length > 0
-        ? `Ranked by sales from the latest CSV processing.\n\n${topSellerLines.join('\n\n')}`
+        ? `Legend: 🟢 strong • 🟡 medium • 🔴 watchlist • ⚪ low • 🆕 new\n\n${topSellerLines.join(
+            '\n\n'
+          )}`
         : 'No featured items were detected in this upload.',
+      DISCORD_LIMITS.embedDescription
+    ),
     color,
     footer: {
       text: 'ItsCoreyE Featured Sellers',
@@ -167,24 +237,34 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
     thumbnail: topSeller?.thumbnail ? { url: topSeller.thumbnail } : undefined,
   };
 
-  const contentPrefix = roleId ? `<@&${roleId}> ` : '';
-  const content =
+  const pingRoleId = WEBHOOK_PINGS_ENABLED ? roleId : undefined;
+  const contentPrefix = pingRoleId ? `<@&${pingRoleId}> ` : '';
+  const headline =
     uploadType === 'growth'
       ? `${contentPrefix}🚀 **Monthly Growth Report is live**`
       : `${contentPrefix}⭐ **Monthly stats update is live**`;
+  const snapshotLine = `\`R$ ${formatNumber(Math.round(totalRevenue))}\` • \`${formatNumber(
+    totalSales
+  )} sales\` • \`${growthLabel}\``;
+  const content = truncate(`${headline}\n${snapshotLine}`, DISCORD_LIMITS.content);
 
   return {
     payload: {
       content,
       embeds: [summaryEmbed, topSellersEmbed],
-      allowed_mentions: roleId ? { roles: [roleId] } : { parse: [] as string[] },
+      allowed_mentions: pingRoleId ? { roles: [pingRoleId] } : { parse: [] as string[] },
     },
     normalized,
   };
 };
 
-const sendDirectDiscordWebhook = async (webhookUrl: string, statsData: StatsData, roleId?: string) => {
-  const { payload, normalized } = buildDiscordPayload(statsData, roleId);
+const sendDirectDiscordWebhook = async (
+  webhookUrl: string,
+  statsData: StatsData,
+  roleId?: string,
+  previousStats?: StatsData
+) => {
+  const { payload, normalized } = buildDiscordPayload(statsData, roleId, previousStats);
 
   const response = await fetchWithRetry(
     webhookUrl,
@@ -204,6 +284,19 @@ const sendDirectDiscordWebhook = async (webhookUrl: string, statsData: StatsData
   }
 
   return normalized;
+};
+
+const loadPreviousStatsSnapshot = async () => {
+  try {
+    const previousData = await redis.get<StatsData>('ugc-sales-data-previous');
+    if (!previousData || typeof previousData !== 'object') {
+      return undefined;
+    }
+    return previousData;
+  } catch (error) {
+    console.error('⚠️ Unable to load previous sales snapshot for trend analysis:', error);
+    return undefined;
+  }
 };
 
 export async function POST(request: NextRequest) {
@@ -245,7 +338,13 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const normalizedStats = await sendDirectDiscordWebhook(discordWebhookUrl, statsData, roleId);
+      const previousStats = await loadPreviousStatsSnapshot();
+      const normalizedStats = await sendDirectDiscordWebhook(
+        discordWebhookUrl,
+        statsData,
+        roleId,
+        previousStats
+      );
 
       console.log('✅ Monthly stats notification sent directly to Discord');
 
