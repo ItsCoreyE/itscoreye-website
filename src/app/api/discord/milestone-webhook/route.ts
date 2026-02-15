@@ -75,12 +75,6 @@ const categoryConfig: Record<
   },
 };
 
-const formatNumberCompact = (value: number) => {
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
-  if (value >= 1_000) return `${(value / 1_000).toFixed(1).replace(/\.0$/, '')}K`;
-  return `${value}`;
-};
-
 const buildProgressBar = (completed: number, total: number, length = 10) => {
   if (total <= 0) return '░'.repeat(length);
   const ratio = Math.max(0, Math.min(1, completed / total));
@@ -107,29 +101,16 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
   const config = categoryConfig[category] || categoryConfig.revenue;
   const colour = milestoneColours[category] || milestoneColours.revenue;
   const description = milestone.description || 'Milestone achieved';
-  const target = Number(milestone.target) || 0;
   const categoryCompleted = Number(progress[`${category}_completed` as keyof ProgressData]) || 0;
   const categoryTotal = Number(progress[`${category}_total` as keyof ProgressData]) || 0;
   const safeDescription = truncate(escapeDiscordMarkdown(description), 140);
   const timestamp = Math.floor(Date.now() / 1000);
-  const achievementLine =
-    category === 'collectibles'
-      ? `💎 **Collectible:** \`${safeDescription}\``
-      : category === 'verification'
-      ? '✅ **Goal:** `Verified Creator`'
-      : `${config.emoji} **Target:** \`${formatNumberCompact(target)} ${config.unit}\``;
   const totalCompleted = Number(progress.total_completed) || 0;
   const totalMilestones = Number(progress.total_milestones) || 0;
   const completionPercentage = Number(progress.completion_percentage) || 0;
   const categoryLeft = Math.max(0, categoryTotal - categoryCompleted);
   const categoryBar = buildProgressBar(categoryCompleted, categoryTotal);
   const overallBar = buildProgressBar(totalCompleted, totalMilestones);
-  const spotlightLabel =
-    category === 'collectibles'
-      ? 'Collectible Added'
-      : category === 'verification'
-      ? 'Creator Verification'
-      : `${config.name} Target Hit`;
 
   const quickLinksBase =
     '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile)';
@@ -142,7 +123,7 @@ const buildMilestoneEmbed = (milestone: MilestoneData, progress: ProgressData, t
   const embed: Record<string, unknown> = {
     title: truncate(`${config.emoji} ${config.name} Complete`, DISCORD_LIMITS.embedTitle),
     description: truncate(
-      `## ${spotlightLabel}\n**${safeDescription}**\n\n${achievementLine}`,
+      `**${safeDescription}**`,
       DISCORD_LIMITS.embedDescription
     ),
     color: colour,
