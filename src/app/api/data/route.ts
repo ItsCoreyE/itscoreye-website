@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
+import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
 
 // Initialize Redis
 const redis = Redis.fromEnv();
@@ -37,6 +38,13 @@ export async function GET() {
 // POST - Automatically save data to Upstash
 export async function POST(request: NextRequest) {
   try {
+    if (!isAdminRequestAuthorized(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const data = await request.json();
     
     console.log('💾 Saving data to Upstash...', data.totalRevenue);

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { fetchWithRetry } from '@/lib/server/httpClient';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -21,19 +22,21 @@ export async function GET(request: NextRequest) {
 
   try {
     console.log(`🖼️ Fetching thumbnail for ${cleanAssetId}`);
-    
-    // Add delay to avoid rate limiting
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
+
     let thumbnail = null;
     
     // Fetch thumbnail from Roblox API
-    const thumbnailResponse = await fetch(`https://thumbnails.roblox.com/v1/assets?assetIds=${cleanAssetId}&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false`, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        'Accept': 'application/json',
-      }
-    });
+    const thumbnailResponse = await fetchWithRetry(
+      `https://thumbnails.roblox.com/v1/assets?assetIds=${cleanAssetId}&returnPolicy=PlaceHolder&size=420x420&format=Png&isCircular=false`,
+      {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          Accept: 'application/json',
+        },
+      },
+      { timeoutMs: 8000, retries: 2, retryDelayMs: 400 }
+    );
     
     if (thumbnailResponse.ok) {
       const thumbnailData = await thumbnailResponse.json();

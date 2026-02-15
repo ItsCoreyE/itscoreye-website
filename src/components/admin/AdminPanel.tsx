@@ -33,6 +33,86 @@ interface SalesData {
   }>;
 }
 
+const parseCsvRows = (csvText: string): string[][] => {
+  const rows: string[][] = [];
+  let currentRow: string[] = [];
+  let currentField = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < csvText.length; i += 1) {
+    const char = csvText[i];
+    const next = csvText[i + 1];
+
+    if (char === '"') {
+      if (inQuotes && next === '"') {
+        currentField += '"';
+        i += 1;
+      } else {
+        inQuotes = !inQuotes;
+      }
+      continue;
+    }
+
+    if (char === ',' && !inQuotes) {
+      currentRow.push(currentField);
+      currentField = '';
+      continue;
+    }
+
+    if ((char === '\n' || char === '\r') && !inQuotes) {
+      if (char === '\r' && next === '\n') {
+        i += 1;
+      }
+      currentRow.push(currentField);
+      currentField = '';
+
+      if (currentRow.some((field) => field.trim().length > 0)) {
+        rows.push(currentRow);
+      }
+      currentRow = [];
+      continue;
+    }
+
+    currentField += char;
+  }
+
+  if (currentField.length > 0 || currentRow.length > 0) {
+    currentRow.push(currentField);
+    if (currentRow.some((field) => field.trim().length > 0)) {
+      rows.push(currentRow);
+    }
+  }
+
+  return rows;
+};
+
+const normalizeSalesData = (value: unknown): SalesData | null => {
+  if (!value || typeof value !== 'object') return null;
+  const candidate = value as Partial<SalesData>;
+
+  return {
+    totalRevenue: Number(candidate.totalRevenue) || 0,
+    totalSales: Number(candidate.totalSales) || 0,
+    growthPercentage: Number(candidate.growthPercentage) || 0,
+    lastUpdated:
+      typeof candidate.lastUpdated === 'string'
+        ? candidate.lastUpdated
+        : new Date().toISOString(),
+    dataPeriod: typeof candidate.dataPeriod === 'string' ? candidate.dataPeriod : 'Current Period',
+    topItems: Array.isArray(candidate.topItems)
+      ? candidate.topItems.slice(0, 6).map((item) => ({
+          name: item?.name || 'Unknown Item',
+          sales: Number(item?.sales) || 0,
+          revenue: Number(item?.revenue) || 0,
+          price: Number(item?.price) || 0,
+          assetId: item?.assetId || '',
+          assetType: item?.assetType || '',
+          thumbnail: item?.thumbnail || '',
+        }))
+      : [],
+  };
+};
+
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
@@ -43,6 +123,9 @@ export default function AdminPanel() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleLogout = () => {
+    void fetch('/api/admin/logout', { method: 'POST' }).catch((error) => {
+      console.error('Logout cleanup error:', error);
+    });
     setIsAuthenticated(false);
     setPassword('');
     setSalesData(null);
@@ -54,12 +137,28 @@ export default function AdminPanel() {
     setTimeout(() => setStatusMessage(null), 5000);
   };
 
-  // Load existing data on component mount (client-side only)
+  // Load current persisted stats from API on mount.
   useEffect(() => {
-    const savedData = localStorage.getItem('ugc-sales-data');
-    if (savedData) {
-      setSalesData(JSON.parse(savedData));
-    }
+    let active = true;
+
+    const loadSalesData = async () => {
+      try {
+        const response = await fetch('/api/data', { cache: 'no-store' });
+        if (!response.ok) return;
+        const data = await response.json();
+        const normalized = normalizeSalesData(data);
+        if (active && normalized) {
+          setSalesData(normalized);
+        }
+      } catch (error) {
+        console.error('Failed to load initial sales data:', error);
+      }
+    };
+
+    void loadSalesData();
+    return () => {
+      active = false;
+    };
   }, []);
 
   const handleLogin = async () => {
@@ -108,7 +207,7 @@ export default function AdminPanel() {
         totalRevenue: revenueNum,
         totalSales: salesNum,
         growthPercentage: growth ? parseInt(growth.replace(/[^\d]/g, '')) : 2579,
-        lastUpdated: new Date().toLocaleString(),
+        lastUpdated: new Date().toISOString(),
         dataPeriod: period,
         topItems: salesData?.topItems || []
       };
@@ -221,7 +320,7 @@ export default function AdminPanel() {
       const finalData = {
         ...currentData,
         growthPercentage: growthPercentage,
-        lastUpdated: new Date().toLocaleString(),
+        lastUpdated: new Date().toISOString(),
         dataPeriod: `${previousData.dataPeriod} → ${currentData.dataPeriod}`
       };
       
@@ -272,22 +371,19 @@ export default function AdminPanel() {
   const processCSVDataForGrowth = async (csvText: string, periodLabel: string): Promise<SalesData> => {
     console.log(`Processing ${periodLabel} CSV data...`);
     
-    const lines = csvText.split('\n');
+    const rows = parseCsvRows(csvText);
     let totalRevenue = 0;
     let totalSales = 0;
     let earliestDate: Date | null = null;
     let latestDate: Date | null = null;
 
     // Process CSV data (simplified for growth calculation)
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-
-      const columns = line.split(',');
+    for (let i = 1; i < rows.length; i++) {
+      const columns = rows[i];
       
       if (columns.length >= 13) {
-        const revenue = parseFloat(columns[11]);
-        const dateStr = columns[2].replace(/"/g, '').trim();
+        const revenue = parseFloat((columns[11] || '').trim());
+        const dateStr = (columns[2] || '').trim();
         
         const saleDate = new Date(dateStr);
         if (!isNaN(saleDate.getTime())) {
@@ -314,7 +410,7 @@ export default function AdminPanel() {
       totalRevenue: Math.round(totalRevenue),
       totalSales,
       growthPercentage: 0, // Will be calculated later
-      lastUpdated: new Date().toLocaleString(),
+      lastUpdated: new Date().toISOString(),
       dataPeriod,
       topItems: [] // Not needed for growth calculation
     };
@@ -323,7 +419,7 @@ export default function AdminPanel() {
   const processCSVData = async (csvText: string): Promise<SalesData> => {
     console.log('Processing ROBLOX CSV data...');
     
-    const lines = csvText.split('\n');
+    const rows = parseCsvRows(csvText);
     let totalRevenue = 0;
     let totalSales = 0;
     const itemSales: { [key: string]: { 
@@ -337,19 +433,16 @@ export default function AdminPanel() {
     let latestDate: Date | null = null;
 
     // Process CSV data
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (!line) continue;
-
-      const columns = line.split(',');
+    for (let i = 1; i < rows.length; i++) {
+      const columns = rows[i];
       
       if (columns.length >= 13) {
-        const revenue = parseFloat(columns[11]);
-        const price = parseFloat(columns[12]);
-        const assetId = columns[7].replace(/"/g, '').trim();
-        const assetName = columns[8].replace(/"/g, '').trim();
-        const assetType = columns[9].replace(/"/g, '').trim();
-        const dateStr = columns[2].replace(/"/g, '').trim();
+        const revenue = parseFloat((columns[11] || '').trim());
+        const price = parseFloat((columns[12] || '').trim());
+        const assetId = (columns[7] || '').trim();
+        const assetName = (columns[8] || '').trim();
+        const assetType = (columns[9] || '').trim();
+        const dateStr = (columns[2] || '').trim();
         
         const saleDate = new Date(dateStr);
         if (!isNaN(saleDate.getTime())) {
@@ -425,7 +518,7 @@ export default function AdminPanel() {
       totalRevenue: Math.round(totalRevenue),
       totalSales,
       growthPercentage: 2579,
-      lastUpdated: new Date().toLocaleString(),
+      lastUpdated: new Date().toISOString(),
       dataPeriod,
       topItems
     };

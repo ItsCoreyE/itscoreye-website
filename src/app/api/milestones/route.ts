@@ -1,5 +1,7 @@
 import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
+import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
+import { fetchWithRetry } from '@/lib/server/httpClient';
 
 // Initialize Redis
 const redis = Redis.fromEnv();
@@ -160,6 +162,13 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    if (!isAdminRequestAuthorized(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const { milestones } = await request.json();
 
     if (!milestones || !Array.isArray(milestones)) {
@@ -233,19 +242,28 @@ export async function POST(request: NextRequest) {
     const discordNotifications = [];
     if (newlyCompletedMilestones.length > 0) {
       const progressStats = calculateProgress();
+      const cookieHeader = request.headers.get('cookie');
       
       for (const milestone of newlyCompletedMilestones) {
         try {
           console.log(`🎉 Sending Discord notification for milestone: ${milestone.description}`);
+          const headers: HeadersInit = { 'Content-Type': 'application/json' };
+          if (cookieHeader) {
+            headers.Cookie = cookieHeader;
+          }
           
-          const discordResponse = await fetch(`${request.nextUrl.origin}/api/discord/milestone-webhook`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              milestone,
-              progress: progressStats
-            })
-          });
+          const discordResponse = await fetchWithRetry(
+            `${request.nextUrl.origin}/api/discord/milestone-webhook`,
+            {
+              method: 'POST',
+              headers,
+              body: JSON.stringify({
+                milestone,
+                progress: progressStats
+              })
+            },
+            { timeoutMs: 10000, retries: 1, retryDelayMs: 500 }
+          );
 
           if (discordResponse.ok) {
             const discordResult = await discordResponse.json();

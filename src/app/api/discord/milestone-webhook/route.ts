@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
+import { fetchWithRetry } from '@/lib/server/httpClient';
 
 interface MilestoneData {
   id?: string;
@@ -153,13 +155,17 @@ const postToDiscord = async (
       : { parse: [] as string[] },
   };
 
-  const response = await fetch(webhookUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetchWithRetry(
+    webhookUrl,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     },
-    body: JSON.stringify(payload),
-  });
+    { timeoutMs: 10000, retries: 2, retryDelayMs: 500 }
+  );
 
   if (!response.ok) {
     const responseText = await response.text();
@@ -169,6 +175,13 @@ const postToDiscord = async (
 
 export async function POST(request: NextRequest) {
   try {
+    if (!isAdminRequestAuthorized(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const { milestone, progress } = (await request.json()) as {
       milestone?: MilestoneData;
       progress?: ProgressData;
@@ -197,8 +210,10 @@ export async function POST(request: NextRequest) {
     let thumbnailUrl: string | null = null;
     if (milestone.category === 'collectibles' && milestone.assetId) {
       try {
-        const thumbnailResponse = await fetch(
-          `${request.nextUrl.origin}/api/roblox?assetId=${milestone.assetId}`
+        const thumbnailResponse = await fetchWithRetry(
+          `${request.nextUrl.origin}/api/roblox?assetId=${milestone.assetId}`,
+          undefined,
+          { timeoutMs: 8000, retries: 1, retryDelayMs: 400 }
         );
         if (thumbnailResponse.ok) {
           const thumbnailData = await thumbnailResponse.json();

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
+import { fetchWithRetry } from '@/lib/server/httpClient';
 
 interface TopItem {
   name?: string;
@@ -97,19 +99,17 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
   const topSellerName = topSeller ? truncate(escapeDiscordMarkdown(topSeller.name), 80) : 'No item data';
 
   const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣', '6️⃣'];
-  const topSellerFields = topItems.map((item, index) => {
+  const topSellerLines = topItems.map((item, index) => {
     const safeName = truncate(escapeDiscordMarkdown(item.name), 90);
     const assetId = item.assetId.replace(/[^\d]/g, '');
     const itemLink = assetId ? `https://www.roblox.com/catalog/${assetId}` : '';
-    const linkLine = itemLink ? `\n🔗 [View Item](${itemLink})` : '';
+    const itemLabel = itemLink ? `[${safeName}](${itemLink})` : `**${safeName}**`;
 
-    return {
-      name: `${medals[index] || `#${index + 1}`} ${safeName}`,
-      value: `**Sales** \`${formatNumber(item.sales)}\`\n**Revenue** \`${formatNumber(
-        Math.round(item.revenue)
-      )} R$\`\n**Price** \`${formatNumber(Math.round(item.price))} R$\`${linkLine}`,
-      inline: true,
-    };
+    return `${medals[index] || `#${index + 1}`} ${itemLabel}\n\`Sales ${formatNumber(
+      item.sales
+    )}\` • \`Revenue ${formatNumber(Math.round(item.revenue))} R$\` • \`Price ${formatNumber(
+      Math.round(item.price)
+    )} R$\``;
   });
 
   const summaryEmbed = {
@@ -157,20 +157,10 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
   const topSellersEmbed = {
     title: '🔥 Top 6 Best Sellers',
     description:
-      topSellerFields.length > 0
-        ? 'Ranked by sales from the latest CSV processing.'
+      topSellerLines.length > 0
+        ? `Ranked by sales from the latest CSV processing.\n\n${topSellerLines.join('\n\n')}`
         : 'No featured items were detected in this upload.',
     color,
-    fields:
-      topSellerFields.length > 0
-        ? topSellerFields
-        : [
-            {
-              name: 'No Item Data',
-              value: 'Upload includes no valid item sales entries yet.',
-              inline: false,
-            },
-          ],
     footer: {
       text: 'ItsCoreyE Featured Sellers',
     },
@@ -196,13 +186,17 @@ const buildDiscordPayload = (statsData: StatsData, roleId?: string) => {
 const sendDirectDiscordWebhook = async (webhookUrl: string, statsData: StatsData, roleId?: string) => {
   const { payload, normalized } = buildDiscordPayload(statsData, roleId);
 
-  const response = await fetch(webhookUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  const response = await fetchWithRetry(
+    webhookUrl,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
     },
-    body: JSON.stringify(payload),
-  });
+    { timeoutMs: 10000, retries: 2, retryDelayMs: 500 }
+  );
 
   if (!response.ok) {
     const errorText = await response.text();
@@ -214,6 +208,13 @@ const sendDirectDiscordWebhook = async (webhookUrl: string, statsData: StatsData
 
 export async function POST(request: NextRequest) {
   try {
+    if (!isAdminRequestAuthorized(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const { statsData } = (await request.json()) as { statsData?: StatsData };
 
     if (!statsData) {
