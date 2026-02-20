@@ -85,7 +85,7 @@ export default function VenturesOverview() {
       iconBg: 'bg-emerald-500/10',
       name: 'Click The Otter',
       subtitle: 'Idle Clicker Game',
-      description: 'Free browser-based idle clicker game. Click the otter, earn fish, unlock achievements and prestige for endless progression',
+      description: 'Free idle clicker game with achievements, prestige mechanics, and endless progression',
       stats: [
         { label: 'Status', value: 'Live', color: 'text-green-400' },
         { label: 'Founded', value: 'Feb 2026', color: 'text-emerald-400' }
