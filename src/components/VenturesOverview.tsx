@@ -91,7 +91,7 @@ export default function VenturesOverview() {
         { label: 'Founded', value: 'Feb 2026', color: 'text-emerald-400' }
       ],
       accentColor: 'emerald',
-      link: 'https://clicktheotter.com',
+      link: 'https://www.clicktheotter.com',
       isInternal: false
     }
   ];

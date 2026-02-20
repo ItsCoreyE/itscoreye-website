@@ -95,7 +95,7 @@ export default function RootLayout({
         "@type": "Organization",
         "name": "Click The Otter",
         "description": "Free browser-based idle clicker game with achievements and prestige mechanics",
-        "url": "https://clicktheotter.com",
+        "url": "https://www.clicktheotter.com",
         "foundingDate": "2026-02"
       }
     ]

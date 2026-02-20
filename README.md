@@ -15,7 +15,7 @@ This portfolio website showcases ItsCoreyE's entrepreneurial journey and active 
 - **ItsCoreyE UGC** - Roblox UGC Creator building quality digital items
 - **Odds Up** - Fair prize competition platform with realistic odds (Coming Soon)
 - **Fix My Rig** - Remote IT support service providing expert tech assistance (Coming Soon)
-- **Click The Otter** - Free browser-based idle clicker game (Live at [clicktheotter.com](https://clicktheotter.com))
+- **Click The Otter** - Free browser-based idle clicker game (Live at [www.clicktheotter.com](https://www.clicktheotter.com))
 
 ## 🛠️ Tech Stack
 
