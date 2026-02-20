@@ -2,7 +2,7 @@
 
 ![ItsCoreyE Banner](public/og-image.png)
 
-Professional portfolio website for ItsCoreyE - Entrepreneur & Creator. Showcasing three active ventures: Roblox UGC Creation, Odds Up (Prize Competitions), and Fix My Rig (IT Support).
+Professional portfolio website for ItsCoreyE - Entrepreneur & Creator. Showcasing four ventures: Roblox UGC Creation, Odds Up (Prize Competitions), Fix My Rig (IT Support), and Click The Otter (Idle Clicker Game).
 
 🌐 **Live Site:** [www.itscoreye.com](https://www.itscoreye.com)
 
@@ -13,8 +13,9 @@ This portfolio website showcases ItsCoreyE's entrepreneurial journey and active 
 ### Featured Ventures
 
 - **ItsCoreyE UGC** - Roblox UGC Creator building quality digital items
-- **Odds Up** - Fair prize competition platform with realistic odds
-- **Fix My Rig** - Remote IT support service providing expert tech assistance
+- **Odds Up** - Fair prize competition platform with realistic odds (Coming Soon)
+- **Fix My Rig** - Remote IT support service providing expert tech assistance (Coming Soon)
+- **Click The Otter** - Free browser-based idle clicker game (Live at [clicktheotter.com](https://clicktheotter.com))
 
 ## 🛠️ Tech Stack
 

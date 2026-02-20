@@ -15,8 +15,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.itscoreye.com'),
   title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
-  description: 'Corey Edwards (ItsCoreyE) - Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions) and Fix My Rig (remote IT support). Building transparent businesses across gaming, tech, and customer service.',
-  keywords: ['Corey Edwards', 'ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
+  description: 'Corey Edwards (ItsCoreyE) - Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions), Fix My Rig (remote IT support), and Click The Otter (idle clicker game). Building transparent businesses across gaming, tech, and customer service.',
+  keywords: ['Corey Edwards', 'ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Click The Otter', 'Idle Clicker Game', 'Browser Game', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
   authors: [{ name: 'Corey Edwards' }],
   creator: 'Corey Edwards',
   publisher: 'Corey Edwards',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
-    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur building transparent businesses. Operating three ventures: UGC digital items, Odds Up (competitions), and Fix My Rig (IT support).',
+    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur building transparent businesses. Operating four ventures: UGC digital items, Odds Up (competitions), Fix My Rig (IT support), and Click The Otter (idle clicker game).',
     url: 'https://www.itscoreye.com',
     siteName: 'Corey Edwards Portfolio',
     type: 'website',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
-    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, and Fix My Rig IT support.',
+    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, Fix My Rig IT support, and Click The Otter idle clicker game.',
     creator: '@itscoreye',
     images: ['/og-image.png']
   },
@@ -90,6 +90,13 @@ export default function RootLayout({
         "description": "Remote IT Support Service - Expert technical assistance",
         "url": "https://www.fixmyrig.co.uk",
         "foundingDate": "2025-02"
+      },
+      {
+        "@type": "Organization",
+        "name": "Click The Otter",
+        "description": "Free browser-based idle clicker game with achievements and prestige mechanics",
+        "url": "https://clicktheotter.com",
+        "foundingDate": "2026-02"
       }
     ]
   };

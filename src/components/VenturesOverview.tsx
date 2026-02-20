@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { RocketLaunchIcon, TrophyIcon, ComputerDesktopIcon } from '@heroicons/react/24/outline';
+import { RocketLaunchIcon, TrophyIcon, ComputerDesktopIcon, CursorArrowRaysIcon } from '@heroicons/react/24/outline';
 
 interface SalesData {
   totalRevenue: number;
@@ -55,7 +55,7 @@ export default function VenturesOverview() {
       subtitle: 'Prize Competition Platform',
       description: 'Fair competitions with realistic odds and transparent prizes',
       stats: [
-        { label: 'Status', value: 'Active', color: 'text-green-400' },
+        { label: 'Status', value: 'Coming Soon', color: 'text-amber-400' },
         { label: 'Founded', value: 'Dec 2025', color: 'text-cyan-400' }
       ],
       accentColor: 'cyan',
@@ -77,6 +77,22 @@ export default function VenturesOverview() {
       accentColor: 'pink',
       link: 'https://www.fixmyrig.co.uk',
       isInternal: false
+    },
+    {
+      id: 'clicktheotter',
+      Icon: CursorArrowRaysIcon,
+      iconColor: 'text-emerald-400',
+      iconBg: 'bg-emerald-500/10',
+      name: 'Click The Otter',
+      subtitle: 'Idle Clicker Game',
+      description: 'Free browser-based idle clicker game — click the otter, earn fish, unlock achievements and prestige for endless progression',
+      stats: [
+        { label: 'Status', value: 'Live', color: 'text-green-400' },
+        { label: 'Founded', value: 'Feb 2026', color: 'text-emerald-400' }
+      ],
+      accentColor: 'emerald',
+      link: 'https://clicktheotter.com',
+      isInternal: false
     }
   ];
 
@@ -95,12 +111,12 @@ export default function VenturesOverview() {
             My Ventures
           </h2>
           <p className="text-base sm:text-lg text-gray-400 max-w-xl mx-auto">
-            Three businesses focused on transparency, quality, and customer satisfaction
+            Four ventures focused on transparency, quality, and customer satisfaction
           </p>
         </motion.div>
 
         {/* Venture Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 md:gap-6 lg:gap-8">
           {ventures.map((venture, index) => (
             <motion.a
               key={venture.id}
