@@ -26,7 +26,7 @@ export default function AboutSection() {
   ];
 
   const highlights = [
-    { value: 'Multi-Year', label: 'Experience', color: 'text-purple-400' },
+    { value: '5+', label: 'Years Experience', color: 'text-purple-400' },
     { value: '4', label: 'Active Ventures', color: 'text-cyan-400' },
     { value: '100%', label: 'Commitment', color: 'text-pink-400' },
   ];
@@ -112,7 +112,7 @@ export default function AboutSection() {
           >
             <div className="glass-card p-6 sm:p-8">
               <p className="text-lg sm:text-xl text-gray-200 leading-relaxed mb-5">
-                A results-driven entrepreneur with <span className="text-purple-400 font-medium">multi-year experience</span> in customer operations and service roles. I&apos;m passionate about building transparent businesses that solve real problems and deliver measurable value.
+                A results-driven entrepreneur with <span className="text-purple-400 font-medium">over five years of experience</span> in customer operations and service roles. I&apos;m passionate about building transparent businesses that solve real problems and deliver measurable value.
               </p>
               <p className="text-base text-gray-400 leading-relaxed mb-6">
                 Whether it&apos;s creating digital items for millions of Roblox users, building fair competition platforms, or providing reliable IT support - I focus on <span className="text-cyan-400 font-medium">trust, quality, and customer satisfaction</span>. I thrive in fast-paced environments and demonstrate a consistent commitment to professional development.
