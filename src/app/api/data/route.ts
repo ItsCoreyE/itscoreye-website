@@ -12,11 +12,11 @@ export async function GET() {
     
     if (!data) {
       return NextResponse.json({
-        totalRevenue: 56799,
-        totalSales: 2653,
-        growthPercentage: 2579,
+        totalRevenue: 0,
+        totalSales: 0,
+        growthPercentage: 0,
         lastUpdated: new Date().toISOString(),
-        dataPeriod: 'All Time',
+        dataPeriod: 'Awaiting Data Upload',
         topItems: []
       });
     }

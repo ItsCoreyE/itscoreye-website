@@ -71,20 +71,19 @@ const defaultMilestones: Milestone[] = [
   { id: 'items-2000', category: 'items', target: 2000, description: '2,000 UGC items published', isCompleted: false },
   { id: 'items-3000', category: 'items', target: 3000, description: '3,000 UGC items published', isCompleted: false },
 
-  // Collectibles Milestones (13 total) - Personal Roblox Limited Goals
+  // Collectibles Milestones (12 total) - Personal Roblox Limited Goals
   { id: 'coll-korblox', category: 'collectibles', target: 1, description: 'Korblox Deathspeaker', isCompleted: false, assetId: '192' },
   { id: 'coll-headless', category: 'collectibles', target: 2, description: 'Headless Horseman', isCompleted: false, assetId: '201' },
-  { id: 'coll-purple-clockwork-headphones', category: 'collectibles', target: 3, description: 'Purple Clockwork Headphones', isCompleted: false, assetId: '99550579072279' },
-  { id: 'coll-vampire', category: 'collectibles', target: 4, description: 'Playful Vampire', isCompleted: false, assetId: '2409285794' },
-  { id: 'coll-helsworn-valk', category: 'collectibles', target: 5, description: 'Helsworn Valkyrie', isCompleted: false, assetId: '113598419875472' },
-  { id: 'coll-violet-valk', category: 'collectibles', target: 6, description: 'Violet Valkyrie', isCompleted: false, assetId: '1402432199' },
-  { id: 'coll-valk-helm', category: 'collectibles', target: 7, description: 'Valkyrie Helm', isCompleted: false, assetId: '1365767' },
-  { id: 'coll-ice-valk', category: 'collectibles', target: 8, description: 'Ice Valkyrie', isCompleted: false, assetId: '4390891467' },
-  { id: 'coll-sparkle-valk', category: 'collectibles', target: 9, description: 'Sparkle Time Valkyrie', isCompleted: false, assetId: '1180433861' },
-  { id: 'coll-sparkle-fedora', category: 'collectibles', target: 10, description: 'Sparkle Time Fedora', isCompleted: false, assetId: '1285307' },
-  { id: 'coll-white-fedora', category: 'collectibles', target: 11, description: 'White Sparkle Time Fedora', isCompleted: false, assetId: '1016143686' },
-  { id: 'coll-green-fedora', category: 'collectibles', target: 12, description: 'Green Sparkle Time Fedora', isCompleted: false, assetId: '100929604' },
-  { id: 'coll-midnight-fedora', category: 'collectibles', target: 13, description: 'Midnight Blue Sparkle Time Fedora', isCompleted: false, assetId: '119916949' },
+  { id: 'coll-vampire', category: 'collectibles', target: 3, description: 'Playful Vampire', isCompleted: false, assetId: '2409285794' },
+  { id: 'coll-helsworn-valk', category: 'collectibles', target: 4, description: 'Helsworn Valkyrie', isCompleted: false, assetId: '113598419875472' },
+  { id: 'coll-violet-valk', category: 'collectibles', target: 5, description: 'Violet Valkyrie', isCompleted: false, assetId: '1402432199' },
+  { id: 'coll-valk-helm', category: 'collectibles', target: 6, description: 'Valkyrie Helm', isCompleted: false, assetId: '1365767' },
+  { id: 'coll-ice-valk', category: 'collectibles', target: 7, description: 'Ice Valkyrie', isCompleted: false, assetId: '4390891467' },
+  { id: 'coll-sparkle-valk', category: 'collectibles', target: 8, description: 'Sparkle Time Valkyrie', isCompleted: false, assetId: '1180433861' },
+  { id: 'coll-sparkle-fedora', category: 'collectibles', target: 9, description: 'Sparkle Time Fedora', isCompleted: false, assetId: '1285307' },
+  { id: 'coll-white-fedora', category: 'collectibles', target: 10, description: 'White Sparkle Time Fedora', isCompleted: false, assetId: '1016143686' },
+  { id: 'coll-green-fedora', category: 'collectibles', target: 11, description: 'Green Sparkle Time Fedora', isCompleted: false, assetId: '100929604' },
+  { id: 'coll-midnight-fedora', category: 'collectibles', target: 12, description: 'Midnight Blue Sparkle Time Fedora', isCompleted: false, assetId: '119916949' },
 ];
 
 export async function GET() {
@@ -100,8 +99,12 @@ export async function GET() {
       });
     }
     
-    // Check if we need to migrate (add new milestones or update collectible names)
-    const needsCountMigration = existingMilestones.length < defaultMilestones.length;
+    // Check if milestone schema changed (added/removed IDs)
+    const defaultMilestoneIds = new Set(defaultMilestones.map(m => m.id));
+    const existingMilestoneIds = new Set(existingMilestones.map(m => m.id));
+    const hasMissingIds = defaultMilestones.some(m => !existingMilestoneIds.has(m.id));
+    const hasRemovedIds = existingMilestones.some(m => !defaultMilestoneIds.has(m.id));
+    const needsSchemaMigration = existingMilestones.length !== defaultMilestones.length || hasMissingIds || hasRemovedIds;
     
     // Check if collectible names/asset IDs need updating
     const needsCollectibleUpdate = defaultMilestones.some(defaultMilestone => {
@@ -115,8 +118,8 @@ export async function GET() {
       return false;
     });
     
-    if (needsCountMigration || needsCollectibleUpdate) {
-      // Migrate: preserve existing completion status, add new milestones, update collectible names
+    if (needsSchemaMigration || needsCollectibleUpdate) {
+      // Migrate to current schema while preserving completion status where IDs still match.
       const migratedMilestones = defaultMilestones.map(defaultMilestone => {
         const existingMilestone = existingMilestones.find(m => m.id === defaultMilestone.id);
         

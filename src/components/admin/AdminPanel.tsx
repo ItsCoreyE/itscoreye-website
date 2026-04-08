@@ -185,10 +185,10 @@ export default function AdminPanel() {
   };
 
   const handleManualUpdate = async () => {
-    const revenue = prompt('💰 Enter total revenue (numbers only, no commas):\nExample: 56799');
-    const sales = prompt('📊 Enter total sales (numbers only, no commas):\nExample: 2653');
-    const growth = prompt('📈 Enter growth percentage (optional, default 2579):');
-    const period = prompt('📅 Enter data period (e.g., "June 2024", "Q2 2024", "All Time"):') || 'Current Period';
+    const revenue = prompt('💰 Enter total revenue (numbers only, no commas):\nExample: 100000');
+    const sales = prompt('📊 Enter total sales (numbers only, no commas):\nExample: 5000');
+    const growth = prompt('📈 Enter growth percentage (optional, default 0):');
+    const period = prompt('📅 Enter data period (e.g., "March 2026", "Q1 2026", "All Time"):') || 'Current Period';
     
     if (revenue && sales) {
       const cleanRevenue = revenue.replace(/[^\d]/g, '');
@@ -206,7 +206,7 @@ export default function AdminPanel() {
       const manualData = {
         totalRevenue: revenueNum,
         totalSales: salesNum,
-        growthPercentage: growth ? parseInt(growth.replace(/[^\d]/g, '')) : 2579,
+        growthPercentage: growth ? parseInt(growth.replace(/[^\d]/g, '')) : 0,
         lastUpdated: new Date().toISOString(),
         dataPeriod: period,
         topItems: salesData?.topItems || []
@@ -517,7 +517,7 @@ export default function AdminPanel() {
     const result = {
       totalRevenue: Math.round(totalRevenue),
       totalSales,
-      growthPercentage: 2579,
+      growthPercentage: 0,
       lastUpdated: new Date().toISOString(),
       dataPeriod,
       topItems

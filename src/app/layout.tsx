@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.itscoreye.com'),
   title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
-  description: 'Corey Edwards (ItsCoreyE) - Results-driven entrepreneur with 5+ years experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions), Fix My Rig (remote IT support), and Click The Otter (idle clicker game). Building transparent businesses across gaming, tech, and customer service.',
+  description: 'Corey Edwards (ItsCoreyE) - Results-driven entrepreneur with multi-year experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions), Fix My Rig (remote IT support), and Click The Otter (idle clicker game). Building transparent businesses across gaming, tech, and customer service.',
   keywords: ['Corey Edwards', 'ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Click The Otter', 'Idle Clicker Game', 'Browser Game', 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
   authors: [{ name: 'Corey Edwards' }],
   creator: 'Corey Edwards',
@@ -72,7 +72,7 @@ export default function RootLayout({
     "@type": "Person",
     "name": "Corey Edwards",
     "alternateName": "ItsCoreyE",
-    "description": "Roblox UGC Creator and entrepreneur with 5+ years experience building transparent businesses across gaming, tech, and customer service",
+    "description": "Roblox UGC Creator and entrepreneur with multi-year experience building transparent businesses across gaming, tech, and customer service",
     "jobTitle": "Entrepreneur & UGC Creator",
     "url": "https://www.itscoreye.com",
     "knowsAbout": ["UGC Design", "IT Support", "Customer Service", "Web Development", "Operations Management", "Roblox Development"],

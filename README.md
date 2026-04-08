@@ -107,7 +107,7 @@ itscoreye-website/
 ## 🎯 Key Components
 
 - **Hero** - Landing section with gradient branding
-- **VenturesOverview** - Three venture cards with live status
+- **VenturesOverview** - Four venture cards with live status
 - **LiveStats** - Real-time Roblox UGC metrics
 - **FeaturedItems** - Showcase of best-selling UGC items
 - **MilestonesSection** - Achievement timeline
@@ -162,7 +162,7 @@ This is a personal portfolio website. For bug reports or suggestions, please ope
 
 ## 📄 License
 
-© 2025 ItsCoreyE. All rights reserved.
+© 2026 ItsCoreyE. All rights reserved.
 
 ## 🔗 Links
 
