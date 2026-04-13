@@ -100,14 +100,14 @@ const buildDiscordPayload = (
     '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile) • [Rolimons](https://www.rolimons.com/player/3504185)';
 
   return {
-    content: truncate('📊 **Daily inventory value update**', DISCORD_LIMITS.content),
+    content: truncate('📊 **Weekly inventory value update**', DISCORD_LIMITS.content),
     embeds: [
       {
-        title: truncate('📊 Daily Inventory Value Update', DISCORD_LIMITS.embedTitle),
+        title: truncate('📊 Weekly Inventory Value Update', DISCORD_LIMITS.embedTitle),
         color,
         fields: [
           toSafeField('💎 Rolimons Value', `\`${formatNumber(current.value)}\``, true),
-          toSafeField(`${changeEmoji} Daily Change`, changeText, true),
+          toSafeField(`${changeEmoji} Weekly Change`, changeText, true),
           toSafeField('💰 RAP', `\`${formatNumber(current.rap)}\``, true),
           toSafeField('🕒 Updated', `<t:${timestamp}:R> • <t:${timestamp}:F>`),
           toSafeField('🔗 Quick Links', quickLinks),
@@ -223,12 +223,12 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.log('✅ Daily Rolimons value update sent to Discord');
+    console.log('✅ Weekly Rolimons value update sent to Discord');
 
     const valueChange = previous ? snapshot.value - previous.value : null;
     return NextResponse.json({
       success: true,
-      message: 'Daily value update sent to Discord',
+      message: 'Weekly value update sent to Discord',
       value: snapshot.value,
       rap: snapshot.rap,
       itemCount: snapshot.itemCount,

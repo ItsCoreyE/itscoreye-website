@@ -37,6 +37,7 @@ This portfolio website showcases ItsCoreyE's entrepreneurial journey and active 
 - 🌐 SEO-ready with proper metadata and sitemap
 - 🎭 Smooth animations and transitions
 - 📈 Schema.org structured data for rich search results
+- 💎 Automated weekly Rolimons inventory value tracking via Discord
 
 ## 🏃‍♂️ Getting Started
 
@@ -123,6 +124,8 @@ itscoreye-website/
 - `DISCORD_PING_ROLE_ID` - (Optional) role ID to ping for milestone notifications
 - `DISCORD_CSV_WEBHOOK_URL` - (Optional) dedicated Discord webhook for monthly CSV/growth notifications
 - `DISCORD_CSV_PING_ROLE_ID` - (Optional) role ID to ping for monthly CSV/growth notifications
+- `CRON_SECRET` - Bearer token for authenticating external cron requests (cron-job.org)
+- `DISCORD_ROLIMONS_WEBHOOK_URL` - (Optional) dedicated Discord webhook for weekly Rolimons value updates (falls back to `DISCORD_WEBHOOK_URL`)
 
 ### Metadata Configuration
 
