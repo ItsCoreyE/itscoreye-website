@@ -21,9 +21,10 @@ This portfolio website showcases ItsCoreyE's entrepreneurial journey and active 
 
 - **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
 - **Language:** TypeScript
-- **Styling:** Tailwind CSS
+- **Styling:** Tailwind CSS v4
 - **Animations:** Framer Motion
-- **Icons:** Heroicons
+- **Icons:** Heroicons, Radix UI Icons, Lucide React
+- **Storage:** Upstash Redis
 - **Build Tool:** Turbopack
 
 ## ✨ Features
@@ -57,10 +58,6 @@ cd itscoreye-website
 2. Install dependencies:
 ```bash
 npm install
-# or
-yarn install
-# or
-pnpm install
 ```
 
 3. Create a `.env.local` file with required environment variables:
@@ -68,18 +65,19 @@ pnpm install
 ADMIN_PASSWORD=your_admin_password
 DISCORD_WEBHOOK_URL=your_discord_webhook_url
 DISCORD_PING_ROLE_ID=your_milestone_ping_role_id
-# Optional: dedicated monthly stats webhook and ping role
+UPSTASH_REDIS_REST_URL=your_upstash_redis_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_redis_token
+CRON_SECRET=your_cron_secret
+
+# Optional: dedicated webhooks per feature
 DISCORD_CSV_WEBHOOK_URL=your_csv_discord_webhook_url
 DISCORD_CSV_PING_ROLE_ID=your_discord_role_id
+DISCORD_ROLIMONS_WEBHOOK_URL=your_rolimons_webhook_url
 ```
 
 4. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
@@ -88,25 +86,35 @@ pnpm dev
 
 ```
 itscoreye-website/
-├── public/              # Static assets
-│   ├── icons/          # Favicon and app icons
-│   ├── og-image.png    # Social media preview image
-│   └── sitemap.xml     # SEO sitemap
+├── public/                  # Static assets
+│   ├── icons/              # Favicon and app icons
+│   ├── og-image.png        # Social media preview image
+│   └── sitemap.xml         # SEO sitemap
 ├── src/
-│   ├── app/            # Next.js App Router pages
-│   │   ├── api/        # API routes
-│   │   ├── admin/      # Admin panel page
-│   │   ├── layout.tsx  # Root layout with metadata
-│   │   └── page.tsx    # Homepage
-│   ├── components/     # React components
-│   │   ├── admin/      # Admin-specific components
-│   │   └── ...         # Main site components
-│   └── hooks/          # Custom React hooks
+│   ├── app/                # Next.js App Router
+│   │   ├── api/            # API routes
+│   │   │   ├── admin/      # Authentication (verify, logout)
+│   │   │   ├── data/       # UGC sales data
+│   │   │   ├── discord/    # Discord webhooks (milestone, csv-stats)
+│   │   │   ├── milestones/ # Milestone tracking
+│   │   │   ├── roblox/     # Roblox thumbnail fetching
+│   │   │   └── rolimons/   # Weekly value tracking (cron-triggered)
+│   │   ├── admin/          # Admin panel page
+│   │   ├── layout.tsx      # Root layout with SEO metadata
+│   │   ├── page.tsx        # Homepage
+│   │   └── globals.css     # Global styles and Tailwind
+│   ├── components/         # React components
+│   │   ├── admin/          # Admin-specific components
+│   │   └── ...             # Main site components
+│   ├── hooks/              # Custom React hooks
+│   └── lib/
+│       └── server/         # Server-side utilities
 └── ...
 ```
 
 ## 🎯 Key Components
 
+- **Navigation** - Sticky navigation bar
 - **Hero** - Landing section with gradient branding
 - **VenturesOverview** - Four venture cards with live status
 - **LiveStats** - Real-time Roblox UGC metrics
@@ -114,18 +122,21 @@ itscoreye-website/
 - **MilestonesSection** - Achievement timeline
 - **AboutSection** - Professional background and skills
 - **Contact** - Multi-channel contact options
+- **Footer** - Site footer
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
 - `ADMIN_PASSWORD` - Password for admin panel access
-- `DISCORD_WEBHOOK_URL` - Discord webhook for milestone notifications (also used for CSV stats if dedicated CSV webhook is not set)
+- `DISCORD_WEBHOOK_URL` - Discord webhook for milestone notifications (also used as fallback for other webhooks)
 - `DISCORD_PING_ROLE_ID` - (Optional) role ID to ping for milestone notifications
 - `DISCORD_CSV_WEBHOOK_URL` - (Optional) dedicated Discord webhook for monthly CSV/growth notifications
 - `DISCORD_CSV_PING_ROLE_ID` - (Optional) role ID to ping for monthly CSV/growth notifications
 - `CRON_SECRET` - Bearer token for authenticating external cron requests (cron-job.org)
 - `DISCORD_ROLIMONS_WEBHOOK_URL` - (Optional) dedicated Discord webhook for weekly Rolimons value updates (falls back to `DISCORD_WEBHOOK_URL`)
+- `UPSTASH_REDIS_REST_URL` - Upstash Redis URL
+- `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis token
 
 ### Metadata Configuration
 
