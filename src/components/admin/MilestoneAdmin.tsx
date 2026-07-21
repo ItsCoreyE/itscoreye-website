@@ -1,30 +1,68 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  BanknotesIcon, 
-  ShoppingBagIcon, 
-  PaintBrushIcon, 
+import { useState, useEffect, useCallback } from 'react';
+import {
+  BanknotesIcon,
+  ShoppingBagIcon,
+  PaintBrushIcon,
   SparklesIcon,
   TrophyIcon,
-  DocumentCheckIcon
+  DocumentCheckIcon,
+  CheckBadgeIcon,
 } from '@heroicons/react/24/outline';
-
-interface Milestone {
-  id: string;
-  category: 'revenue' | 'sales' | 'items' | 'collectibles' | 'verification';
-  target: number;
-  description: string;
-  isCompleted: boolean;
-  assetId?: string;
-}
-
-interface MilestonesData {
-  milestones: Milestone[];
-  lastUpdated: string;
-}
+import type { Milestone, MilestonesData } from '@/types/ugc';
 
 type TabCategory = 'verification' | 'revenue' | 'sales' | 'items' | 'collectibles';
+
+const tabs: Array<{ key: TabCategory; title: string; Icon: typeof TrophyIcon }> = [
+  { key: 'verification', title: 'Main Goal', Icon: CheckBadgeIcon },
+  { key: 'revenue', title: 'Revenue', Icon: BanknotesIcon },
+  { key: 'sales', title: 'Sales', Icon: ShoppingBagIcon },
+  { key: 'items', title: 'Items', Icon: PaintBrushIcon },
+  { key: 'collectibles', title: 'Collectibles', Icon: SparklesIcon },
+];
+
+function ToggleSwitch({
+  checked,
+  onChange,
+  label,
+  size = 'md',
+}: {
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+  size?: 'md' | 'lg';
+}) {
+  // Track, knob, inset, and travel must stay in sync: the knob is centred
+  // when inset * 2 + knob height equals track height, and travel equals
+  // track width minus inset * 2 minus knob width.
+  const track = size === 'lg' ? 'h-9 w-16' : 'h-6 w-12';
+  const knob = size === 'lg' ? 'h-7 w-7' : 'h-5 w-5';
+  const inset = size === 'lg' ? 'top-1 left-1' : 'top-0.5 left-0.5';
+  const travel = size === 'lg' ? 'translate-x-7' : 'translate-x-6';
+
+  return (
+    <label className="-m-2 flex flex-shrink-0 cursor-pointer items-center p-2">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        aria-label={label}
+        className="sr-only"
+      />
+      <span
+        className={`relative block rounded-full transition-colors duration-300 ${track} ${
+          checked ? 'bg-success' : 'bg-line'
+        }`}
+      >
+        <span
+          className={`absolute rounded-full bg-white shadow-sm transition-transform duration-300 ${inset} ${knob} ${
+            checked ? travel : ''
+          }`}
+        />
+      </span>
+    </label>
+  );
+}
 
 export default function MilestoneAdmin() {
   const [milestonesData, setMilestonesData] = useState<MilestonesData | null>(null);
@@ -34,11 +72,7 @@ export default function MilestoneAdmin() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabCategory>('verification');
 
-  useEffect(() => {
-    fetchMilestones();
-  }, []);
-
-  const fetchMilestones = async () => {
+  const fetchMilestones = useCallback(async () => {
     try {
       const response = await fetch('/api/milestones');
       if (response.ok) {
@@ -48,30 +82,27 @@ export default function MilestoneAdmin() {
       } else {
         setError('Failed to load milestones');
       }
-    } catch (error) {
-      console.error('Error fetching milestones:', error);
+    } catch (fetchError) {
+      console.error('Error fetching milestones:', fetchError);
       setError('Failed to load milestones');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    void fetchMilestones();
+  }, [fetchMilestones]);
 
   const handleMilestoneToggle = (milestoneId: string) => {
     if (!milestonesData) return;
-
-    const updatedMilestones = milestonesData.milestones.map(milestone => {
-      if (milestone.id === milestoneId) {
-        return {
-          ...milestone,
-          isCompleted: !milestone.isCompleted
-        };
-      }
-      return milestone;
-    });
-
     setMilestonesData({
       ...milestonesData,
-      milestones: updatedMilestones
+      milestones: milestonesData.milestones.map((milestone) =>
+        milestone.id === milestoneId
+          ? { ...milestone, isCompleted: !milestone.isCompleted }
+          : milestone
+      ),
     });
   };
 
@@ -86,331 +117,228 @@ export default function MilestoneAdmin() {
       const response = await fetch('/api/milestones', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ milestones: milestonesData.milestones })
+        body: JSON.stringify({ milestones: milestonesData.milestones }),
       });
 
       if (response.ok) {
-        setSuccessMessage('✅ Milestones saved successfully!');
+        setSuccessMessage('Milestones saved successfully!');
         await fetchMilestones();
         setTimeout(() => setSuccessMessage(null), 3000);
       } else {
-        setError('❌ Failed to save milestones');
+        setError('Failed to save milestones');
       }
-    } catch (error) {
-      console.error('Error saving milestones:', error);
-      setError('❌ Failed to save milestones');
+    } catch (saveError) {
+      console.error('Error saving milestones:', saveError);
+      setError('Failed to save milestones');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const getCategoryData = (category: string) => {
+  const getCategoryData = (category: TabCategory): Milestone[] => {
     if (!milestonesData) return [];
     return milestonesData.milestones
-      .filter(m => m.category === category)
+      .filter((m) => m.category === category)
       .sort((a, b) => a.target - b.target);
-  };
-
-  const getCategoryIcon = (category: string) => {
-    const iconClass = "w-6 h-6";
-    switch (category) {
-      case 'verification': return <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>;
-      case 'revenue': return <BanknotesIcon className={iconClass} />;
-      case 'sales': return <ShoppingBagIcon className={iconClass} />;
-      case 'items': return <PaintBrushIcon className={iconClass} />;
-      case 'collectibles': return <SparklesIcon className={iconClass} />;
-      default: return <SparklesIcon className={iconClass} />;
-    }
-  };
-
-  const getCategoryTitle = (category: string) => {
-    switch (category) {
-      case 'verification': return 'Main Goal';
-      case 'revenue': return 'Revenue';
-      case 'sales': return 'Sales';
-      case 'items': return 'Items';
-      case 'collectibles': return 'Collectibles';
-      default: return 'Milestones';
-    }
-  };
-
-  const getOverallProgress = () => {
-    if (!milestonesData) return { completed: 0, total: 0, percentage: 0 };
-    const completed = milestonesData.milestones.filter(m => m.isCompleted).length;
-    const total = milestonesData.milestones.length;
-    return {
-      completed,
-      total,
-      percentage: total > 0 ? Math.round((completed / total) * 100) : 0
-    };
   };
 
   if (isLoading) {
     return (
-      <div className="glass-card p-8">
-        <div className="animate-pulse space-y-6">
-          <div className="h-12 bg-gray-700/50 rounded-lg w-1/3"></div>
-          <div className="grid grid-cols-5 gap-4">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="h-24 bg-gray-700/50 rounded-lg"></div>
-            ))}
-          </div>
-          <div className="h-96 bg-gray-700/50 rounded-lg"></div>
+      <div className="card animate-pulse space-y-6 p-6 sm:p-8">
+        <div className="h-10 w-1/3 rounded-lg bg-surface-muted" />
+        <div className="grid grid-cols-5 gap-3">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="h-20 rounded-lg bg-surface-muted" />
+          ))}
         </div>
+        <div className="h-72 rounded-lg bg-surface-muted" />
       </div>
     );
   }
 
-  const tabs: TabCategory[] = ['verification', 'revenue', 'sales', 'items', 'collectibles'];
-  const progress = getOverallProgress();
+  const completed = milestonesData?.milestones.filter((m) => m.isCompleted).length ?? 0;
+  const total = milestonesData?.milestones.length ?? 0;
+  const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const verificationMilestone = milestonesData?.milestones.find(
+    (m) => m.category === 'verification'
+  );
 
   return (
-    <div className="glass-card p-4 sm:p-8 overflow-hidden">
-      {/* Header with Save Button */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+    <div className="card p-5 sm:p-8">
+      {/* Header */}
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h3 className="text-xl sm:text-3xl font-bold text-gray-100 flex items-center gap-2 break-words">
-            <TrophyIcon className="w-7 h-7 text-amber-400" />
+          <h3 className="flex items-center gap-2 text-xl font-semibold text-ink">
+            <TrophyIcon className="h-6 w-6 text-accent" />
             Milestone Manager
           </h3>
-          <p className="text-sm text-gray-300 mt-1">
-            {progress.completed} of {progress.total} completed ({progress.percentage}%)
+          <p className="mt-1 text-sm text-ink-muted">
+            {completed} of {total} completed ({percentage}%)
           </p>
         </div>
-        
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+
+        <button
           onClick={saveMilestones}
           disabled={isSaving}
-          className="modern-button px-6 py-3 font-bold disabled:opacity-50 w-full sm:w-auto flex items-center gap-2 justify-center"
-          style={{ color: '#ffffff' }}
+          className="btn-primary w-full text-sm disabled:opacity-50 sm:w-auto"
         >
-          {isSaving ? (
-            <>
-              <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Saving...
-            </>
-          ) : (
-            <>
-              <DocumentCheckIcon className="w-5 h-5" />
-              Save Changes
-            </>
-          )}
-        </motion.button>
+          <DocumentCheckIcon className="h-5 w-5" />
+          {isSaving ? 'Saving…' : 'Save Changes'}
+        </button>
       </div>
 
-      {/* Status Messages */}
-      <AnimatePresence>
-        {error && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6"
-          >
-            <p className="text-red-400 text-sm break-words">{error}</p>
-          </motion.div>
-        )}
+      {/* Status messages */}
+      {error && (
+        <div className="mt-4 rounded-lg border border-danger/20 bg-danger-soft p-3">
+          <p className="text-sm break-words text-danger">{error}</p>
+        </div>
+      )}
+      {successMessage && (
+        <div className="mt-4 rounded-lg border border-success/20 bg-success-soft p-3">
+          <p className="text-sm break-words text-success">{successMessage}</p>
+        </div>
+      )}
 
-        {successMessage && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6"
-          >
-            <p className="text-green-400 text-sm break-words">{successMessage}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Tab Navigation */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mb-6 p-2 bg-gray-900/50 rounded-lg">
+      {/* Tabs: scrollable pill row on small screens, 5-column grid from sm up */}
+      <div className="mt-6 flex gap-2 overflow-x-auto rounded-xl bg-surface-muted p-2 sm:grid sm:grid-cols-5">
         {tabs.map((tab) => {
-          const categoryData = getCategoryData(tab);
-          const completed = categoryData.filter(m => m.isCompleted).length;
-          const total = categoryData.length;
-          const isActive = activeTab === tab;
+          const categoryData = getCategoryData(tab.key);
+          const categoryCompleted = categoryData.filter((m) => m.isCompleted).length;
+          const isActive = activeTab === tab.key;
 
           return (
-            <motion.button
-              key={tab}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setActiveTab(tab)}
-              className={`relative w-full px-3 sm:px-4 py-3 rounded-lg font-semibold transition-all ${
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`min-w-[5.25rem] shrink-0 rounded-lg px-3 py-3 text-sm font-medium transition-colors sm:min-w-0 ${
                 isActive
-                  ? 'bg-gradient-to-r from-purple-600 to-cyan-500 text-white shadow-lg'
-                  : 'bg-gray-800/50 text-gray-300 hover:bg-gray-800'
+                  ? 'bg-surface text-accent shadow-card'
+                  : 'text-ink-muted hover:bg-surface/60 hover:text-ink'
               }`}
             >
-              <div className="flex flex-col items-center gap-1">
-                <span className="text-xl">{getCategoryIcon(tab)}</span>
-                <span className="text-[11px] sm:text-sm leading-tight text-center break-words">
-                  {getCategoryTitle(tab)}
-                </span>
-                {tab !== 'verification' && (
-                  <span className={`text-xs ${isActive ? 'text-white/80' : 'text-gray-300'}`}>
-                    {completed}/{total}
+              <span className="flex flex-col items-center gap-1">
+                <tab.Icon className="h-5 w-5" />
+                <span className="leading-tight">{tab.title}</span>
+                {tab.key !== 'verification' && (
+                  <span className="text-xs text-ink-muted">
+                    {categoryCompleted}/{categoryData.length}
                   </span>
                 )}
-              </div>
-            </motion.button>
+              </span>
+            </button>
           );
         })}
       </div>
 
-      {/* Tab Content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {activeTab === 'verification' ? (
-            /* Verification Tab */
-            <div className="space-y-4">
-              {milestonesData && (() => {
-                const verificationMilestone = milestonesData.milestones.find(m => m.category === 'verification');
-                if (!verificationMilestone) return null;
-                
-                return (
-                  <div className={`p-4 sm:p-8 rounded-xl border-2 ${
-                    verificationMilestone.isCompleted
-                      ? 'bg-blue-500/10 border-blue-400'
-                      : 'bg-gray-800/30 border-blue-500/30'
-                  }`}>
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                        <svg className="w-12 h-12 sm:w-14 sm:h-14 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                        <div className="min-w-0">
-                          <div className="text-xs text-blue-400 font-bold mb-2 tracking-wide flex items-center gap-2">
-                            <TrophyIcon className="w-4 h-4" />
-                            MAIN GOAL
-                            <TrophyIcon className="w-4 h-4" />
-                          </div>
-                          <div className="text-lg sm:text-2xl font-bold text-gray-100 mb-2 break-words">
-                            {verificationMilestone.description}
-                          </div>
-                          <div className="text-sm text-gray-300 space-y-1 break-words">
-                            <div className="flex items-center gap-2">
-                              <BanknotesIcon className="w-4 h-4" />
-                              2,000,000 Robux revenue (90 days)
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <ShoppingBagIcon className="w-4 h-4" />
-                              200,000 items sold
-                            </div>
-                          </div>
+      {/* Tab content */}
+      <div className="mt-6">
+        {activeTab === 'verification' ? (
+          <div className="space-y-4">
+            {verificationMilestone && (
+              <div
+                className={`rounded-xl border-2 p-5 sm:p-7 ${
+                  verificationMilestone.isCompleted
+                    ? 'border-success/40 bg-success-soft'
+                    : 'border-accent-border bg-accent-soft/50'
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3 sm:items-center sm:gap-4">
+                  <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
+                    <CheckBadgeIcon
+                      className={`h-9 w-9 flex-shrink-0 sm:h-12 sm:w-12 ${
+                        verificationMilestone.isCompleted ? 'text-success' : 'text-accent'
+                      }`}
+                    />
+                    <div className="min-w-0">
+                      <div className="text-xs font-semibold tracking-wide text-accent uppercase">
+                        Main Goal
+                      </div>
+                      <div className="mt-1 text-lg font-semibold break-words text-ink sm:text-xl">
+                        {verificationMilestone.description}
+                      </div>
+                      <div className="mt-2 space-y-1 text-sm text-ink-secondary">
+                        <div className="flex items-start gap-2">
+                          <BanknotesIcon className="mt-0.5 h-4 w-4 shrink-0" />
+                          <span>2,000,000 Robux revenue (90 days)</span>
+                        </div>
+                        <div className="flex items-start gap-2">
+                          <ShoppingBagIcon className="mt-0.5 h-4 w-4 shrink-0" />
+                          <span>200,000 items sold</span>
                         </div>
                       </div>
-                      
-                      <label className="flex items-center cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={verificationMilestone.isCompleted}
-                          onChange={() => handleMilestoneToggle(verificationMilestone.id)}
-                          className="sr-only"
-                        />
-                        <div className={`relative w-20 h-10 rounded-full transition-all duration-300 ${
-                          verificationMilestone.isCompleted ? 'bg-blue-500' : 'bg-gray-600'
-                        }`}>
-                          <motion.div 
-                            className="absolute top-1 left-1 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center"
-                            animate={{ x: verificationMilestone.isCompleted ? 40 : 0 }}
-                            transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                          >
-                            <span className="text-xs">
-                              {verificationMilestone.isCompleted ? '✓' : '○'}
-                            </span>
-                          </motion.div>
-                        </div>
-                      </label>
                     </div>
                   </div>
-                );
-              })()}
-              
-              <div className="p-4 sm:p-6 bg-blue-900/10 border border-blue-500/20 rounded-lg">
-                <p className="text-blue-300 text-sm text-center break-words">
-                  <strong>Note:</strong> When you toggle this milestone and save, an @everyone notification will be sent to Discord #milestones channel!
-                </p>
+
+                  <ToggleSwitch
+                    size="lg"
+                    checked={verificationMilestone.isCompleted}
+                    onChange={() => handleMilestoneToggle(verificationMilestone.id)}
+                    label={verificationMilestone.description}
+                  />
+                </div>
               </div>
+            )}
+
+            <div className="rounded-lg border border-accent-border bg-accent-soft/50 p-4">
+              <p className="text-center text-sm break-words text-ink-secondary">
+                <strong>Note:</strong> When you toggle this milestone and save, an @everyone
+                notification will be sent to Discord #milestones channel!
+              </p>
             </div>
-          ) : (
-            /* Other Category Tabs */
-            <div className="space-y-3">
-              {getCategoryData(activeTab).map((milestone, index) => (
-                <motion.div
-                  key={milestone.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.03 }}
-                  className={`flex items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border transition-all ${
+          </div>
+        ) : (
+          <div className="space-y-2.5">
+            {getCategoryData(activeTab).map((milestone) => (
+              <div
+                key={milestone.id}
+                className={`flex items-start gap-3 rounded-lg border p-3 transition-colors sm:items-center sm:gap-4 sm:p-4 ${
+                  milestone.isCompleted
+                    ? 'border-success/20 bg-success-soft'
+                    : 'border-line bg-surface hover:border-accent-border'
+                }`}
+              >
+                <ToggleSwitch
+                  checked={milestone.isCompleted}
+                  onChange={() => handleMilestoneToggle(milestone.id)}
+                  label={milestone.description}
+                />
+
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`text-sm font-medium break-words sm:text-base ${
+                      milestone.isCompleted ? 'text-success' : 'text-ink-secondary'
+                    }`}
+                  >
+                    {milestone.description}
+                  </p>
+                  <p className="mt-0.5 text-xs text-ink-muted">
+                    Target: {milestone.target.toLocaleString()}
+                  </p>
+                </div>
+
+                <span
+                  className={`hidden rounded-full px-3 py-1 text-xs font-semibold sm:block ${
                     milestone.isCompleted
-                      ? 'bg-green-500/10 border-green-500/30'
-                      : 'bg-gray-800/30 border-gray-700/50 hover:border-gray-600'
+                      ? 'bg-success/10 text-success'
+                      : 'bg-surface-muted text-ink-muted'
                   }`}
                 >
-                  {/* Toggle Switch */}
-                  <label className="flex items-center cursor-pointer flex-shrink-0">
-                    <input
-                      type="checkbox"
-                      checked={milestone.isCompleted}
-                      onChange={() => handleMilestoneToggle(milestone.id)}
-                      className="sr-only"
-                    />
-                    <div className={`relative w-12 h-6 rounded-full transition-all duration-300 ${
-                      milestone.isCompleted ? 'bg-green-500' : 'bg-gray-600'
-                    }`}>
-                      <motion.div 
-                        className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md"
-                        animate={{ x: milestone.isCompleted ? 24 : 0 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      />
-                    </div>
-                  </label>
+                  {milestone.isCompleted ? '✓' : '○'}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
-                  {/* Milestone Info */}
-                  <div className="flex-1 min-w-0">
-                    <p className={`font-medium text-sm sm:text-base ${
-                      milestone.isCompleted ? 'text-green-400' : 'text-gray-300'
-                    } break-words`}>
-                      {milestone.description}
-                    </p>
-                    <p className="text-xs text-gray-400 mt-0.5">
-                      Target: {milestone.target.toLocaleString()}
-                    </p>
-                  </div>
-
-                  {/* Status Badge */}
-                  <div className={`hidden sm:block px-3 py-1 rounded-full text-xs font-bold ${
-                    milestone.isCompleted 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-gray-700/50 text-gray-300'
-                  }`}>
-                    {milestone.isCompleted ? '✓' : '○'}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </motion.div>
-      </AnimatePresence>
-
-      {/* Footer with Last Updated */}
+      {/* Footer */}
       {milestonesData && (
-        <div className="mt-6 pt-6 border-t border-gray-700/50 flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 text-xs text-gray-300">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="break-words">Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}</span>
+        <div className="mt-6 flex flex-col items-start gap-2 border-t border-line pt-6 text-xs text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-success" />
+            <span className="break-words">
+              Last updated: {new Date(milestonesData.lastUpdated).toLocaleString()}
+            </span>
           </div>
           <span className="hidden sm:inline">Press Save to update live website</span>
         </div>

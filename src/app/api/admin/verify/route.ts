@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { attachAdminSessionCookie, createAdminSessionToken } from '@/lib/server/adminAuth';
+import { redis } from '@/lib/server/redis';
 
-interface AttemptState {
-  failedAttempts: number;
-  windowStartedAt: number;
-  lockUntil: number;
-}
-
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+// Rate-limit state lives in Redis so it survives serverless cold starts and
+// is shared across instances.
+const RATE_LIMIT_WINDOW_SECONDS = 15 * 60;
 const MAX_FAILED_ATTEMPTS = 8;
-const LOCKOUT_MS = 30 * 60 * 1000;
-const attemptsByIp = new Map<string, AttemptState>();
+const LOCKOUT_SECONDS = 30 * 60;
+
+const attemptsKey = (ip: string) => `admin:attempts:${ip}`;
+const lockKey = (ip: string) => `admin:lock:${ip}`;
 
 const getClientIp = (request: NextRequest) => {
   const forwarded = request.headers.get('x-forwarded-for');
@@ -29,32 +28,19 @@ const passwordsMatch = (providedPassword: string, expectedPassword: string) => {
   return timingSafeEqual(providedHash, expectedHash);
 };
 
-const getAttemptState = (ip: string, now: number) => {
-  const state = attemptsByIp.get(ip);
-  if (!state) {
-    return { failedAttempts: 0, windowStartedAt: now, lockUntil: 0 };
-  }
-  if (now - state.windowStartedAt > RATE_LIMIT_WINDOW_MS) {
-    return { failedAttempts: 0, windowStartedAt: now, lockUntil: 0 };
-  }
-  return state;
-};
-
 export async function POST(request: NextRequest) {
   try {
-    const now = Date.now();
     const ip = getClientIp(request);
-    const attemptState = getAttemptState(ip, now);
 
-    if (attemptState.lockUntil > now) {
-      const retryAfterSeconds = Math.ceil((attemptState.lockUntil - now) / 1000);
+    const lockTtlSeconds = await redis.ttl(lockKey(ip));
+    if (lockTtlSeconds > 0) {
       return NextResponse.json(
         {
           success: false,
           error: 'Too many failed attempts. Please try again later.',
-          retryAfter: retryAfterSeconds,
+          retryAfter: lockTtlSeconds,
         },
-        { status: 429, headers: { 'Retry-After': `${retryAfterSeconds}` } }
+        { status: 429, headers: { 'Retry-After': `${lockTtlSeconds}` } }
       );
     }
 
@@ -82,7 +68,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (passwordsMatch(password, correctPassword)) {
-      attemptsByIp.delete(ip);
+      await redis.del(attemptsKey(ip), lockKey(ip));
 
       const token = createAdminSessionToken();
       if (!token) {
@@ -93,22 +79,21 @@ export async function POST(request: NextRequest) {
       }
 
       const response = NextResponse.json({
-        success: true, 
-        message: 'Authentication successful' 
+        success: true,
+        message: 'Authentication successful'
       });
       attachAdminSessionCookie(response, token);
       return response;
     }
 
-    const nextFailedAttempts = attemptState.failedAttempts + 1;
-    const lockUntil =
-      nextFailedAttempts >= MAX_FAILED_ATTEMPTS ? now + LOCKOUT_MS : 0;
-
-    attemptsByIp.set(ip, {
-      failedAttempts: nextFailedAttempts,
-      windowStartedAt: attemptState.windowStartedAt,
-      lockUntil,
-    });
+    const failedAttempts = await redis.incr(attemptsKey(ip));
+    if (failedAttempts === 1) {
+      await redis.expire(attemptsKey(ip), RATE_LIMIT_WINDOW_SECONDS);
+    }
+    if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+      await redis.set(lockKey(ip), '1', { ex: LOCKOUT_SECONDS });
+      await redis.del(attemptsKey(ip));
+    }
 
     return NextResponse.json(
       { success: false, error: 'Invalid password' },

@@ -1,31 +1,14 @@
-import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
+import { getSalesData, saveSalesData, HOME_DATA_TAG } from '@/lib/server/store';
+import { normalizeSalesData } from '@/lib/salesData';
 
-// Initialize Redis
-const redis = Redis.fromEnv();
-
-// GET - Fetch current data from Upstash
+// GET - Fetch current sales data
 export async function GET() {
   try {
-    const data = await redis.get('ugc-sales-data');
-    
-    if (!data) {
-      return NextResponse.json({
-        totalRevenue: 0,
-        totalSales: 0,
-        growthPercentage: 0,
-        lastUpdated: new Date().toISOString(),
-        dataPeriod: 'Awaiting Data Upload',
-        topItems: []
-      });
-    }
-    
-    // Return data with current timestamp (live update)
-    return NextResponse.json({
-      ...data,
-      lastUpdated: new Date().toISOString()
-    });
+    const data = await getSalesData();
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Error fetching data:', error);
     return NextResponse.json(
@@ -35,7 +18,7 @@ export async function GET() {
   }
 }
 
-// POST - Automatically save data to Upstash
+// POST - Save sales data (admin only)
 export async function POST(request: NextRequest) {
   try {
     if (!isAdminRequestAuthorized(request)) {
@@ -45,23 +28,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const data = await request.json();
-    
-    console.log('💾 Saving data to Upstash...', data.totalRevenue);
-    
-    const previousData = await redis.get('ugc-sales-data');
-    if (previousData) {
-      await redis.set('ugc-sales-data-previous', previousData);
+    const body = await request.json();
+    const data = normalizeSalesData(body);
+
+    if (!data) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid sales data payload' },
+        { status: 400 }
+      );
     }
 
-    // Save latest snapshot to Upstash Redis
-    await redis.set('ugc-sales-data', data);
-    
-    console.log('✅ Data automatically saved to Upstash');
-    
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Data saved automatically to global storage!' 
+    await saveSalesData(data);
+    revalidateTag(HOME_DATA_TAG);
+    revalidatePath('/');
+
+    return NextResponse.json({
+      success: true,
+      message: 'Data saved automatically to global storage!'
     });
   } catch (error) {
     console.error('Error saving data:', error);

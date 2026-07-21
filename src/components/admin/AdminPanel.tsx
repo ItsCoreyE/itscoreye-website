@@ -1,143 +1,29 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-  LockClosedIcon,
-  LockOpenIcon,
-  BoltIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  CalendarIcon,
-  ClockIcon,
-  BanknotesIcon,
-  ShoppingBagIcon,
-} from '@heroicons/react/24/outline';
-import MilestoneAdmin from './MilestoneAdmin';
+import { useState, useEffect } from 'react';
+import type { SalesData } from '@/types/ugc';
+import { normalizeSalesData } from '@/lib/salesData';
 import AdminNavigation from './AdminNavigation';
-
-interface SalesData {
-  totalRevenue: number;
-  totalSales: number;
-  growthPercentage: number;
-  lastUpdated: string;
-  dataPeriod?: string;
-  topItems: Array<{
-    name: string;
-    sales: number;
-    revenue: number;
-    price: number;
-    assetId?: string;
-    assetType?: string;
-    thumbnail?: string;
-  }>;
-}
-
-const parseCsvRows = (csvText: string): string[][] => {
-  const rows: string[][] = [];
-  let currentRow: string[] = [];
-  let currentField = '';
-  let inQuotes = false;
-
-  for (let i = 0; i < csvText.length; i += 1) {
-    const char = csvText[i];
-    const next = csvText[i + 1];
-
-    if (char === '"') {
-      if (inQuotes && next === '"') {
-        currentField += '"';
-        i += 1;
-      } else {
-        inQuotes = !inQuotes;
-      }
-      continue;
-    }
-
-    if (char === ',' && !inQuotes) {
-      currentRow.push(currentField);
-      currentField = '';
-      continue;
-    }
-
-    if ((char === '\n' || char === '\r') && !inQuotes) {
-      if (char === '\r' && next === '\n') {
-        i += 1;
-      }
-      currentRow.push(currentField);
-      currentField = '';
-
-      if (currentRow.some((field) => field.trim().length > 0)) {
-        rows.push(currentRow);
-      }
-      currentRow = [];
-      continue;
-    }
-
-    currentField += char;
-  }
-
-  if (currentField.length > 0 || currentRow.length > 0) {
-    currentRow.push(currentField);
-    if (currentRow.some((field) => field.trim().length > 0)) {
-      rows.push(currentRow);
-    }
-  }
-
-  return rows;
-};
-
-const normalizeSalesData = (value: unknown): SalesData | null => {
-  if (!value || typeof value !== 'object') return null;
-  const candidate = value as Partial<SalesData>;
-
-  return {
-    totalRevenue: Number(candidate.totalRevenue) || 0,
-    totalSales: Number(candidate.totalSales) || 0,
-    growthPercentage: Number(candidate.growthPercentage) || 0,
-    lastUpdated:
-      typeof candidate.lastUpdated === 'string'
-        ? candidate.lastUpdated
-        : new Date().toISOString(),
-    dataPeriod: typeof candidate.dataPeriod === 'string' ? candidate.dataPeriod : 'Current Period',
-    topItems: Array.isArray(candidate.topItems)
-      ? candidate.topItems.slice(0, 6).map((item) => ({
-          name: item?.name || 'Unknown Item',
-          sales: Number(item?.sales) || 0,
-          revenue: Number(item?.revenue) || 0,
-          price: Number(item?.price) || 0,
-          assetId: item?.assetId || '',
-          assetType: item?.assetType || '',
-          thumbnail: item?.thumbnail || '',
-        }))
-      : [],
-  };
-};
+import LoginForm from './LoginForm';
+import StatsSummary from './StatsSummary';
+import ManualStatsForm from './ManualStatsForm';
+import CsvUploadCard from './CsvUploadCard';
+import GrowthCalcCard from './GrowthCalcCard';
+import MilestoneAdmin from './MilestoneAdmin';
 
 export default function AdminPanel() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState<string | null>(null);
   const [salesData, setSalesData] = useState<SalesData | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleLogout = () => {
-    void fetch('/api/admin/logout', { method: 'POST' }).catch((error) => {
-      console.error('Logout cleanup error:', error);
-    });
-    setIsAuthenticated(false);
-    setPassword('');
-    setSalesData(null);
-    setStatusMessage(null);
-  };
+  const [statusMessage, setStatusMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   const showStatus = (type: 'success' | 'error', text: string) => {
     setStatusMessage({ type, text });
     setTimeout(() => setStatusMessage(null), 5000);
   };
 
-  // Load current persisted stats from API on mount.
+  // Load current persisted stats on mount.
   useEffect(() => {
     let active = true;
 
@@ -161,712 +47,72 @@ export default function AdminPanel() {
     };
   }, []);
 
-  const handleLogin = async () => {
-    setLoginError(null);
-    try {
-      const response = await fetch('/api/admin/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        setIsAuthenticated(true);
-        setLoginError(null);
-      } else {
-        setLoginError('Incorrect password. Please try again.');
-      }
-    } catch (error) {
-      console.error('Authentication error:', error);
-      setLoginError('Authentication failed. Please try again.');
-    }
-  };
-
-  const handleManualUpdate = async () => {
-    const revenue = prompt('💰 Enter total revenue (numbers only, no commas):\nExample: 100000');
-    const sales = prompt('📊 Enter total sales (numbers only, no commas):\nExample: 5000');
-    const growth = prompt('📈 Enter growth percentage (optional, default 0):');
-    const period = prompt('📅 Enter data period (e.g., "March 2026", "Q1 2026", "All Time"):') || 'Current Period';
-    
-    if (revenue && sales) {
-      const cleanRevenue = revenue.replace(/[^\d]/g, '');
-      const cleanSales = sales.replace(/[^\d]/g, '');
-      
-      const revenueNum = parseInt(cleanRevenue);
-      const salesNum = parseInt(cleanSales);
-      
-      if (revenueNum > 10000000) {
-        if (!confirm(`Revenue of ${revenueNum.toLocaleString()} seems very high. Continue?`)) {
-          return;
-        }
-      }
-      
-      const manualData = {
-        totalRevenue: revenueNum,
-        totalSales: salesNum,
-        growthPercentage: growth ? parseInt(growth.replace(/[^\d]/g, '')) : 0,
-        lastUpdated: new Date().toISOString(),
-        dataPeriod: period,
-        topItems: salesData?.topItems || []
-      };
-      
-      try {
-        // Save automatically to Upstash
-        const response = await fetch('/api/data', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(manualData)
-        });
-
-        if (response.ok) {
-          setSalesData(manualData);
-          showStatus('success', `Stats updated! Revenue: ${revenueNum.toLocaleString()} | Sales: ${salesNum.toLocaleString()} | Period: ${period}`);
-        } else {
-          showStatus('error', 'Failed to save data');
-        }
-      } catch (error) {
-        console.error('Error saving data:', error);
-        showStatus('error', 'Failed to save data');
-      }
-    }
-  };
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    setIsUploading(true);
-    
-    try {
-      const text = await file.text();
-      console.log('📁 Processing CSV and fetching asset details...');
-      const processedData = await processCSVData(text);
-      
-      // Save to Upstash automatically
-      const response = await fetch('/api/data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(processedData)
-      });
-      
-      if (response.ok) {
-        setSalesData(processedData);
-
-        // Trigger CSV stats webhook
-        try {
-          const webhookData = {
-            ...processedData,
-            uploadType: 'single'
-          };
-
-          const webhookResponse = await fetch('/api/discord/csv-stats-webhook', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ statsData: webhookData })
-          });
-
-          if (webhookResponse.ok) {
-            console.log('CSV stats webhook sent successfully');
-          } else {
-            console.log('CSV stats webhook failed, but data was saved');
-          }
-        } catch (webhookError) {
-          console.log('CSV stats webhook error:', webhookError);
-        }
-
-        showStatus('success', `CSV processed! ${processedData.topItems.length} featured items loaded. Data is now live!`);
-      } else {
-        showStatus('error', 'Failed to save processed data');
-      }
-    } catch (error) {
-      console.error('Error processing CSV:', error);
-      showStatus('error', 'Error processing file. Please check the CSV format.');
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleGrowthCalculation = async () => {
-    const previousFile = document.getElementById('previousFile') as HTMLInputElement;
-    const currentFile = document.getElementById('currentFile') as HTMLInputElement;
-    
-    if (!previousFile.files?.[0] || !currentFile.files?.[0]) {
-      showStatus('error', 'Please select both previous month and current month CSV files');
-      return;
-    }
-
-    setIsUploading(true);
-    
-    try {
-      console.log('📊 Processing both CSV files for growth calculation...');
-      
-      // Process previous month file (simplified - just need totals)
-      const previousText = await previousFile.files[0].text();
-      const previousData = await processCSVDataForGrowth(previousText, 'Previous Month');
-      
-      // Process current month file (FULL processing with thumbnails and featured items)
-      const currentText = await currentFile.files[0].text();
-      const currentData = await processCSVData(currentText);
-      
-      // Calculate growth (revenue growth as the main metric)
-      const revenueGrowth = previousData.totalRevenue > 0
-        ? ((currentData.totalRevenue - previousData.totalRevenue) / previousData.totalRevenue) * 100
-        : 0;
-      const growthPercentage = Math.round(revenueGrowth * 10) / 10;
-      
-      // Create final data with growth calculation and featured items
-      const finalData = {
-        ...currentData,
-        growthPercentage: growthPercentage,
-        lastUpdated: new Date().toISOString(),
-        dataPeriod: `${previousData.dataPeriod} → ${currentData.dataPeriod}`
-      };
-      
-      // Save to Upstash automatically
-      const response = await fetch('/api/data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(finalData)
-      });
-      
-      if (response.ok) {
-        setSalesData(finalData);
-        
-        // Trigger CSV stats webhook for growth calculation
-        try {
-          const webhookData = {
-            ...finalData,
-            uploadType: 'growth'
-          };
-          
-          const webhookResponse = await fetch('/api/discord/csv-stats-webhook', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ statsData: webhookData })
-          });
-          
-          if (webhookResponse.ok) {
-            console.log('Growth calculation webhook sent successfully');
-          } else {
-            console.log('Growth calculation webhook failed, but data was saved');
-          }
-        } catch (webhookError) {
-          console.log('Growth calculation webhook error:', webhookError);
-        }
-
-        showStatus('success', `Growth calculation complete! Revenue: ${growthPercentage > 0 ? '+' : ''}${growthPercentage}% | ${finalData.topItems.length} featured items loaded`);
-      } else {
-        showStatus('error', 'Failed to save processed data');
-      }
-    } catch (error) {
-      console.error('Error processing growth calculation:', error);
-      showStatus('error', 'Error processing files. Please check the CSV format.');
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const processCSVDataForGrowth = async (csvText: string, periodLabel: string): Promise<SalesData> => {
-    console.log(`Processing ${periodLabel} CSV data...`);
-    
-    const rows = parseCsvRows(csvText);
-    let totalRevenue = 0;
-    let totalSales = 0;
-    let earliestDate: Date | null = null;
-    let latestDate: Date | null = null;
-
-    // Process CSV data (simplified for growth calculation)
-    for (let i = 1; i < rows.length; i++) {
-      const columns = rows[i];
-      
-      if (columns.length >= 13) {
-        const revenue = parseFloat((columns[11] || '').trim());
-        const dateStr = (columns[2] || '').trim();
-        
-        const saleDate = new Date(dateStr);
-        if (!isNaN(saleDate.getTime())) {
-          if (!earliestDate || saleDate < earliestDate) earliestDate = saleDate;
-          if (!latestDate || saleDate > latestDate) latestDate = saleDate;
-        }
-        
-        if (!isNaN(revenue) && revenue > 0) {
-          totalRevenue += revenue;
-          totalSales += 1;
-        }
-      }
-    }
-
-    // Calculate period
-    let dataPeriod = periodLabel;
-    if (earliestDate && latestDate) {
-      const earliestMonth = earliestDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-      const latestMonth = latestDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-      dataPeriod = earliestMonth === latestMonth ? earliestMonth : `${earliestMonth} - ${latestMonth}`;
-    }
-
-    return {
-      totalRevenue: Math.round(totalRevenue),
-      totalSales,
-      growthPercentage: 0, // Will be calculated later
-      lastUpdated: new Date().toISOString(),
-      dataPeriod,
-      topItems: [] // Not needed for growth calculation
-    };
-  };
-
-  const processCSVData = async (csvText: string): Promise<SalesData> => {
-    console.log('Processing ROBLOX CSV data...');
-    
-    const rows = parseCsvRows(csvText);
-    let totalRevenue = 0;
-    let totalSales = 0;
-    const itemSales: { [key: string]: { 
-      sales: number; 
-      revenue: number; 
-      price: number;
-      assetId: string;
-      assetType: string;
-    } } = {};
-    let earliestDate: Date | null = null;
-    let latestDate: Date | null = null;
-
-    // Process CSV data
-    for (let i = 1; i < rows.length; i++) {
-      const columns = rows[i];
-      
-      if (columns.length >= 13) {
-        const revenue = parseFloat((columns[11] || '').trim());
-        const price = parseFloat((columns[12] || '').trim());
-        const assetId = (columns[7] || '').trim();
-        const assetName = (columns[8] || '').trim();
-        const assetType = (columns[9] || '').trim();
-        const dateStr = (columns[2] || '').trim();
-        
-        const saleDate = new Date(dateStr);
-        if (!isNaN(saleDate.getTime())) {
-          if (!earliestDate || saleDate < earliestDate) earliestDate = saleDate;
-          if (!latestDate || saleDate > latestDate) latestDate = saleDate;
-        }
-        
-        if (!isNaN(revenue) && revenue > 0) {
-          totalRevenue += revenue;
-          totalSales += 1;
-
-          if (!itemSales[assetName]) {
-            itemSales[assetName] = { 
-              sales: 0, 
-              revenue: 0, 
-              price: price || 0,
-              assetId: assetId,
-              assetType: assetType
-            };
-          }
-          itemSales[assetName].sales += 1;
-          itemSales[assetName].revenue += revenue;
-        }
-      }
-    }
-
-    // Get top selling items
-    const topItemsRaw = Object.entries(itemSales)
-      .map(([name, data]) => ({ 
-        name, 
-        sales: data.sales,
-        revenue: data.revenue,
-        price: data.price,
-        assetId: data.assetId,
-        assetType: data.assetType
-      }))
-      .sort((a, b) => b.sales - a.sales)
-      .slice(0, 6);
-
-    // Fetch thumbnails for top items
-    console.log('🖼️ Fetching thumbnails for top items...');
-    const topItems = [];
-    
-    for (let i = 0; i < topItemsRaw.length; i++) {
-      const item = topItemsRaw[i];
-      console.log(`📸 Fetching thumbnail ${i + 1}/${topItemsRaw.length} for ${item.name}`);
-      
-      // Fetch thumbnail details
-      const assetDetails = await fetchAssetDetails(item.assetId);
-      
-      topItems.push({
-        ...item,
-        thumbnail: assetDetails.thumbnail
-      });
-      
-      // Add delay between requests to avoid rate limiting
-      if (i < topItemsRaw.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-      }
-    }
-    
-    console.log('✅ Thumbnail fetching complete');
-
-    // Calculate period
-    let dataPeriod = 'CSV Data';
-    if (earliestDate && latestDate) {
-      const earliestMonth = earliestDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-      const latestMonth = latestDate.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-      dataPeriod = earliestMonth === latestMonth ? earliestMonth : `${earliestMonth} - ${latestMonth}`;
-    }
-
-    const result = {
-      totalRevenue: Math.round(totalRevenue),
-      totalSales,
-      growthPercentage: 0,
-      lastUpdated: new Date().toISOString(),
-      dataPeriod,
-      topItems
-    };
-    
-    console.log('✅ CSV processed with enhanced featured items:', result.topItems);
-    return result;
-  };
-
-  // Function to fetch asset thumbnails (descriptions no longer needed)
-  const fetchAssetDetails = async (assetId: string) => {
-    try {
-      console.log(`🔍 Fetching thumbnail for asset ${assetId} via proxy...`);
-      
-      // Use our internal API route for thumbnails only
-      const response = await fetch(`/api/roblox?assetId=${assetId}`);
-      const data = await response.json();
-      
-      if (data.success) {
-        console.log(`✅ Successfully fetched thumbnail for ${assetId}`);
-        return {
-          thumbnail: data.thumbnail
-        };
-      } else {
-        console.log(`⚠️ API returned error for ${assetId}:`, data.error);
-        return {
-          thumbnail: null
-        };
-      }
-    } catch (error) {
-      console.log(`❌ Failed to fetch thumbnail for asset ${assetId}:`, error);
-      return {
-        thumbnail: null
-      };
-    }
+  const handleLogout = () => {
+    void fetch('/api/admin/logout', { method: 'POST' }).catch((error) => {
+      console.error('Logout cleanup error:', error);
+    });
+    setIsAuthenticated(false);
+    setSalesData(null);
+    setStatusMessage(null);
   };
 
   if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen modern-gradient-bg flex items-center justify-center relative overflow-hidden">
-        {/* Background Effects - Purple/Cyan Theme */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9, y: 50 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="glass-card p-6 sm:p-10 max-w-md w-full mx-3 sm:mx-4 relative z-10 border-purple-500/20"
-        >
-          <div className="text-center mb-8">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3, type: "spring" }}
-              className="flex justify-center mb-6"
-            >
-              <div className="p-6 bg-purple-500/10 rounded-2xl border-2 border-purple-500/30">
-                <LockClosedIcon className="w-16 h-16 text-purple-400" />
-              </div>
-            </motion.div>
-            <h2 className="text-3xl sm:text-4xl font-bold gradient-text mb-3">
-              Admin Access
-            </h2>
-            <p className="text-gray-200 text-base sm:text-lg">ItsCoreyE Control Panel</p>
-          </div>
-          
-          <div className="space-y-4">
-            <input
-              type="password"
-              placeholder="Enter admin password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setLoginError(null);
-              }}
-              onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
-              className="modern-input w-full"
-            />
-            <AnimatePresence>
-              {loginError && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="bg-red-500/10 border border-red-500/30 rounded-lg p-3"
-                >
-                  <p className="text-red-400 text-sm text-center">{loginError}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleLogin}
-              className="modern-button w-full py-3 sm:py-4 text-base sm:text-lg font-bold flex items-center justify-center gap-2"
-            >
-              <LockOpenIcon className="w-5 h-5" />
-              <span>Login to Dashboard</span>
-            </motion.button>
-          </div>
-        </motion.div>
-      </div>
-    );
+    return <LoginForm onSuccess={() => setIsAuthenticated(true)} />;
   }
 
   return (
-    <div className="min-h-screen modern-gradient-bg relative overflow-hidden">
-      {/* Admin Navigation */}
+    <div className="min-h-screen bg-canvas">
       <AdminNavigation onLogout={handleLogout} />
 
-      {/* Background Effects - Purple/Cyan Theme */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
-      </div>
+      <div className="mx-auto max-w-5xl px-4 pt-8 pb-16 sm:px-6 lg:px-8">
+        <header>
+          <h1 className="text-2xl font-semibold text-ink sm:text-3xl">Admin Dashboard</h1>
+          <p className="mt-1 text-sm text-ink-muted">Manage your UGC business</p>
+        </header>
 
-      <div className="relative z-10 px-3 sm:px-6 lg:px-8 pb-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-8"
+        {statusMessage && (
+          <div
+            role="status"
+            className={`fixed right-4 bottom-4 z-50 max-w-sm rounded-lg border p-4 shadow-card-hover ${
+              statusMessage.type === 'success'
+                ? 'border-success/20 bg-success-soft'
+                : 'border-danger/20 bg-danger-soft'
+            }`}
           >
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold gradient-text mb-3 sm:mb-4">
-              Admin Dashboard
-            </h1>
-            <p className="text-base sm:text-xl text-gray-200">Manage Your UGC Business</p>
-          </motion.div>
-
-          {/* Status Messages */}
-          <AnimatePresence>
-            {statusMessage && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className={`mb-6 p-4 rounded-lg border ${
-                  statusMessage.type === 'success'
-                    ? 'bg-green-500/10 border-green-500/30'
-                    : 'bg-red-500/10 border-red-500/30'
-                }`}
-              >
-                <p className={`text-sm text-center ${
-                  statusMessage.type === 'success' ? 'text-green-400' : 'text-red-400'
-                } break-words`}>
-                  {statusMessage.text}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Current Stats at Top */}
-          {salesData && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6"
+            <p
+              className={`text-sm break-words ${
+                statusMessage.type === 'success' ? 'text-success' : 'text-danger'
+              }`}
             >
-              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-green-400 mb-1 text-center">
-                  {salesData.totalRevenue.toLocaleString()}
-                </div>
-                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
-                  <BanknotesIcon className="w-4 h-4" />
-                  Revenue (R$)
-                </div>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-blue-400 mb-1 text-center">
-                  {salesData.totalSales.toLocaleString()}
-                </div>
-                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
-                  <ShoppingBagIcon className="w-4 h-4" />
-                  Sales
-                </div>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-3xl sm:text-4xl font-extrabold tracking-tight tabular-nums text-purple-400 mb-1 text-center">
-                  {salesData.growthPercentage > 0 ? '+' : ''}
-                  {salesData.growthPercentage}%
-                </div>
-                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
-                  <ChartBarIcon className="w-4 h-4" />
-                  Growth
-                </div>
-              </motion.div>
-              <motion.div whileHover={{ scale: 1.02 }} className="stats-card">
-                <div className="text-sm sm:text-base font-semibold text-amber-300 mb-1 break-words leading-snug text-center">
-                  {salesData.dataPeriod || 'Current'}
-                </div>
-                <div className="text-gray-300 font-semibold text-xs sm:text-sm flex items-center gap-1.5 justify-center">
-                  <CalendarIcon className="w-4 h-4" />
-                  Period
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
+              {statusMessage.text}
+            </p>
+          </div>
+        )}
 
-          {/* Quick Actions */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="glass-card p-4 sm:p-6 mb-6"
-          >
-            <h3 className="text-lg sm:text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
-              <BoltIcon className="w-6 h-6 text-purple-400" />
-              Quick Actions
-            </h3>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleManualUpdate}
-                className="bg-gradient-to-br from-blue-600/20 to-blue-500/10 border border-blue-500/30 hover:border-blue-500/50 p-4 rounded-lg text-left transition-all group"
-              >
-                <div className="flex items-center gap-3 mb-2 min-w-0">
-                  <div className="p-2 bg-blue-500/10 rounded-lg">
-                    <ChartBarIcon className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <span className="font-bold text-gray-100 break-words">Quick Update</span>
-                </div>
-                <p className="text-xs text-gray-300">Manual stats entry</p>
-              </motion.button>
+        <section className="mt-8">
+          <h2 className="section-label mb-4">Overview</h2>
+          <StatsSummary salesData={salesData} />
+        </section>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => fileInputRef.current?.click()}
-                disabled={isUploading}
-                className="bg-gradient-to-br from-green-600/20 to-green-500/10 border border-green-500/30 hover:border-green-500/50 p-4 rounded-lg text-left transition-all group disabled:opacity-50"
-              >
-                <div className="flex items-center gap-3 mb-2 min-w-0">
-                  <div className="p-2 bg-green-500/10 rounded-lg">
-                    <FolderIcon className="w-6 h-6 text-green-400" />
-                  </div>
-                  <span className="font-bold text-gray-100 break-words">
-                    {isUploading ? 'Processing...' : 'CSV Upload'}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-300">
-                  {isUploading ? 'Please wait...' : 'Single month data'}
-                </p>
-              </motion.button>
-              
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".csv"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-
-              <motion.a
-                href="/"
-                target="_blank"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-gradient-to-br from-purple-600/20 to-purple-500/10 border border-purple-500/30 hover:border-purple-500/50 p-4 rounded-lg text-left transition-all group block"
-              >
-                <div className="flex items-center gap-3 mb-2 min-w-0">
-                  <div className="p-2 bg-purple-500/10 rounded-lg">
-                    <HomeIcon className="w-6 h-6 text-purple-400" />
-                  </div>
-                  <span className="font-bold text-gray-100 break-words">View Site</span>
-                </div>
-                <p className="text-xs text-gray-300">See live changes</p>
-              </motion.a>
+        <section className="mt-10">
+          <h2 className="section-label mb-4">Data updates</h2>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <ManualStatsForm
+              currentData={salesData}
+              onSaved={setSalesData}
+              showStatus={showStatus}
+            />
+            <div className="flex flex-col gap-6">
+              <CsvUploadCard onSaved={setSalesData} showStatus={showStatus} />
+              <GrowthCalcCard onSaved={setSalesData} showStatus={showStatus} />
             </div>
-          </motion.div>
+          </div>
+        </section>
 
-          {/* Growth Calculation - Collapsible */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="glass-card p-4 sm:p-6 mb-6"
-          >
-            <h3 className="text-lg sm:text-xl font-bold text-gray-100 mb-4 flex items-center gap-2">
-              <ChartBarIcon className="w-6 h-6 text-cyan-400" />
-              Growth Calculation
-            </h3>
-              
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block text-gray-300 font-medium mb-2 text-sm flex items-center gap-2">
-                  <CalendarIcon className="w-4 h-4 text-purple-400" />
-                  Previous Month
-                </label>
-                <input
-                  id="previousFile"
-                  type="file"
-                  accept=".csv"
-                  className="block w-full min-w-0 max-w-full overflow-hidden text-xs sm:text-sm text-gray-400 file:mr-2 sm:file:mr-3 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:font-semibold file:text-xs sm:file:text-sm hover:file:bg-purple-700 transition-colors"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-gray-300 font-medium mb-2 text-sm flex items-center gap-2">
-                  <CalendarIcon className="w-4 h-4 text-cyan-400" />
-                  Current Month
-                </label>
-                <input
-                  id="currentFile"
-                  type="file"
-                  accept=".csv"
-                  className="block w-full min-w-0 max-w-full overflow-hidden text-xs sm:text-sm text-gray-400 file:mr-2 sm:file:mr-3 file:py-2 file:px-3 sm:file:px-4 file:rounded-lg file:border-0 file:bg-cyan-600 file:text-white file:font-semibold file:text-xs sm:file:text-sm hover:file:bg-cyan-700 transition-colors"
-                />
-              </div>
-            </div>
-            
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleGrowthCalculation}
-              disabled={isUploading}
-              className="modern-button w-full py-3 font-bold disabled:opacity-50 flex items-center justify-center gap-2"
-              style={{ color: '#ffffff' }}
-            >
-              {isUploading ? (
-                <>
-                  <ClockIcon className="w-5 h-5 animate-spin" />
-                  <span>Calculating...</span>
-                </>
-              ) : (
-                <>
-                  <ChartBarIcon className="w-5 h-5" />
-                  <span>Calculate Growth</span>
-                </>
-              )}
-            </motion.button>
-          </motion.div>
-
-          {/* Milestone Management Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-          >
-            <MilestoneAdmin />
-          </motion.div>
-        </div>
+        <section className="mt-10">
+          <h2 className="section-label mb-4">Milestones</h2>
+          <MilestoneAdmin />
+        </section>
       </div>
     </div>
   );

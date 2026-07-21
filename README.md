@@ -1,51 +1,34 @@
 # ItsCoreyE - Portfolio Website
 
-![ItsCoreyE Banner](public/og-image.png)
+Personal portfolio website for Corey Edwards (ItsCoreyE), Entrepreneur & Creator. Showcases four ventures: Roblox UGC creation, Odds Up (prize competitions), Fix My Rig (IT support), and Click The Otter (idle clicker game), backed by live sales statistics and milestone tracking.
 
-Professional portfolio website for ItsCoreyE - Entrepreneur & Creator. Showcasing four ventures: Roblox UGC Creation, Odds Up (Prize Competitions), Fix My Rig (IT Support), and Click The Otter (Idle Clicker Game).
+**Live site:** [www.itscoreye.com](https://www.itscoreye.com)
 
-🌐 **Live Site:** [www.itscoreye.com](https://www.itscoreye.com)
-
-## 🚀 About
-
-This portfolio website showcases ItsCoreyE's entrepreneurial journey and active ventures with a focus on transparency and real-time metrics. Built with modern web technologies for optimal performance and user experience.
-
-### Featured Ventures
-
-- **ItsCoreyE UGC** - Roblox UGC Creator building quality digital items
-- **Odds Up** - Fair prize competition platform with realistic odds (Coming Soon)
-- **Fix My Rig** - Remote IT support service providing expert tech assistance (Coming Soon)
-- **Click The Otter** - Free browser-based idle clicker game (Live at [www.clicktheotter.com](https://www.clicktheotter.com))
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS v4
-- **Animations:** Framer Motion
-- **Icons:** Heroicons, Radix UI Icons, Lucide React
+- **Language:** TypeScript (strict)
+- **Styling:** Tailwind CSS v4 (CSS-first `@theme` configuration)
+- **Icons:** Heroicons
 - **Storage:** Upstash Redis
-- **Build Tool:** Turbopack
+- **Dev server:** Turbopack
 
-## ✨ Features
+## Features
 
-- 🎨 Modern, responsive design with purple-cyan gradient theme
-- 📱 Fully optimized for mobile devices
-- 📊 Real-time Roblox UGC statistics integration
-- 🎯 Live milestone tracking with Discord webhooks
-- 🔐 Protected admin panel for content management
-- ⚡ Performance-optimized with lazy loading
-- 🌐 SEO-ready with proper metadata and sitemap
-- 🎭 Smooth animations and transitions
-- 📈 Schema.org structured data for rich search results
-- 💎 Automated weekly Rolimons inventory value tracking via Discord
+- Server-rendered homepage: sales stats and milestone progress are fetched from Redis on the server and cached, with on-demand revalidation when the admin saves new data
+- Light theme built around the CE brand gradient (purple, blue, cyan) with an accessible neutral base
+- Live Roblox UGC statistics: revenue, sales, best-selling items with thumbnails
+- Milestone tracking across five categories with Discord notifications on completion
+- Password-protected admin panel: manual stat entry, monthly CSV upload, growth calculation between months, and milestone management
+- Weekly Rolimons inventory value tracking posted to Discord via external cron
+- SEO metadata, OpenGraph/Twitter cards, and Schema.org structured data
 
-## 🏃‍♂️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - Node.js 18.0 or higher
-- npm, yarn, pnpm, or bun
+- npm
 
 ### Installation
 
@@ -60,7 +43,7 @@ cd itscoreye-website
 npm install
 ```
 
-3. Create a `.env.local` file with required environment variables:
+3. Create a `.env.local` file with the required environment variables:
 ```env
 ADMIN_PASSWORD=your_admin_password
 DISCORD_WEBHOOK_URL=your_discord_webhook_url
@@ -80,111 +63,79 @@ DISCORD_ROLIMONS_WEBHOOK_URL=your_rolimons_webhook_url
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 itscoreye-website/
-├── public/                  # Static assets
-│   ├── icons/              # Favicon and app icons
+├── public/
+│   ├── icons/              # Favicons and app icons
 │   ├── og-image.png        # Social media preview image
-│   └── sitemap.xml         # SEO sitemap
+│   └── sitemap.xml
 ├── src/
-│   ├── app/                # Next.js App Router
-│   │   ├── api/            # API routes
+│   ├── app/
+│   │   ├── api/
 │   │   │   ├── admin/      # Authentication (verify, logout)
-│   │   │   ├── data/       # UGC sales data
+│   │   │   ├── data/       # UGC sales data (GET/POST)
 │   │   │   ├── discord/    # Discord webhooks (milestone, csv-stats)
-│   │   │   ├── milestones/ # Milestone tracking
-│   │   │   ├── roblox/     # Roblox thumbnail fetching
+│   │   │   ├── milestones/ # Milestone tracking (GET/POST)
+│   │   │   ├── roblox/     # Roblox thumbnail proxy (single and batched)
 │   │   │   └── rolimons/   # Weekly value tracking (cron-triggered)
 │   │   ├── admin/          # Admin panel page
 │   │   ├── layout.tsx      # Root layout with SEO metadata
-│   │   ├── page.tsx        # Homepage
-│   │   └── globals.css     # Global styles and Tailwind
-│   ├── components/         # React components
-│   │   ├── admin/          # Admin-specific components
-│   │   └── ...             # Main site components
-│   ├── hooks/              # Custom React hooks
-│   └── lib/
-│       └── server/         # Server-side utilities
+│   │   ├── page.tsx        # Homepage (Server Component)
+│   │   └── globals.css     # Design tokens and global styles
+│   ├── components/
+│   │   ├── site/           # Public homepage sections
+│   │   └── admin/          # Admin panel components
+│   ├── lib/                # Shared helpers (CSV parsing, milestones, validation)
+│   │   └── server/         # Server-only utilities (Redis, Discord, auth)
+│   └── types/              # Shared TypeScript types
 └── ...
 ```
 
-## 🎯 Key Components
+## Commands
 
-- **Navigation** - Sticky navigation bar
-- **Hero** - Landing section with gradient branding
-- **VenturesOverview** - Four venture cards with live status
-- **LiveStats** - Real-time Roblox UGC metrics
-- **FeaturedItems** - Showcase of best-selling UGC items
-- **MilestonesSection** - Achievement timeline
-- **AboutSection** - Professional background and skills
-- **Contact** - Multi-channel contact options
-- **Footer** - Site footer
+```bash
+npm run dev      # Start dev server with Turbopack
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
 
-## 🔧 Configuration
+## Environment Variables
 
-### Environment Variables
+| Variable | Required | Purpose |
+|---|---|---|
+| `ADMIN_PASSWORD` | Yes | Admin panel access |
+| `DISCORD_WEBHOOK_URL` | Yes | Milestone notifications (fallback for all webhooks) |
+| `DISCORD_PING_ROLE_ID` | No | Role pinged on milestone notifications |
+| `DISCORD_CSV_WEBHOOK_URL` | No | Dedicated webhook for monthly CSV/growth updates |
+| `DISCORD_CSV_PING_ROLE_ID` | No | Role pinged on CSV/growth updates |
+| `DISCORD_ROLIMONS_WEBHOOK_URL` | No | Dedicated webhook for weekly Rolimons updates |
+| `CRON_SECRET` | Yes | Bearer token for the external cron endpoint |
+| `UPSTASH_REDIS_REST_URL` | Yes | Upstash Redis URL |
+| `UPSTASH_REDIS_REST_TOKEN` | Yes | Upstash Redis token |
 
-- `ADMIN_PASSWORD` - Password for admin panel access
-- `DISCORD_WEBHOOK_URL` - Discord webhook for milestone notifications (also used as fallback for other webhooks)
-- `DISCORD_PING_ROLE_ID` - (Optional) role ID to ping for milestone notifications
-- `DISCORD_CSV_WEBHOOK_URL` - (Optional) dedicated Discord webhook for monthly CSV/growth notifications
-- `DISCORD_CSV_PING_ROLE_ID` - (Optional) role ID to ping for monthly CSV/growth notifications
-- `CRON_SECRET` - Bearer token for authenticating external cron requests (cron-job.org)
-- `DISCORD_ROLIMONS_WEBHOOK_URL` - (Optional) dedicated Discord webhook for weekly Rolimons value updates (falls back to `DISCORD_WEBHOOK_URL`)
-- `UPSTASH_REDIS_REST_URL` - Upstash Redis URL
-- `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis token
+## Deployment
 
-### Metadata Configuration
+### Vercel (recommended)
 
-SEO and social media metadata can be updated in `src/app/layout.tsx`:
-- Page titles and descriptions
-- OpenGraph and Twitter Card settings
-- Structured data (Schema.org)
+1. Push the repository to GitHub
+2. Import the project on [Vercel](https://vercel.com)
+3. Add the environment variables
+4. Deploy
 
-## 📱 Mobile Optimization
+The site also runs on any platform supporting Next.js (Netlify, Railway, AWS Amplify, or self-hosted Node.js).
 
-- Hero section: 70vh on mobile, 75vh on larger screens
-- Section padding: 2.5rem mobile → 4rem tablet → 5rem desktop
-- Responsive typography scaling
-- Touch-friendly button sizes (44px minimum)
-- Progressive grid breakpoints (1 col → 2 col → 3 col)
-
-## 🚢 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Import project on [Vercel](https://vercel.com)
-3. Add environment variables
-4. Deploy!
-
-### Other Platforms
-
-The site can be deployed on any platform supporting Next.js:
-- Netlify
-- Railway
-- AWS Amplify
-- Self-hosted with Node.js
-
-## 🤝 Contributing
-
-This is a personal portfolio website. For bug reports or suggestions, please open an issue on GitHub.
-
-## 📄 License
+## License
 
 © 2026 ItsCoreyE. All rights reserved.
 
-## 🔗 Links
+## Links
 
 - **Website:** [www.itscoreye.com](https://www.itscoreye.com)
 - **Roblox:** [@ItsCoreyE](https://www.roblox.com/users/3504185/profile)
 - **TikTok:** [@itscoreye](https://www.tiktok.com/@itscoreye)
-- **Discord:** [Join Server](https://discord.gg/nbQArRaq8m)
-
----
-
-Built with ❤️ by ItsCoreyE
+- **Discord:** [Join Server](https://discord.gg/itscoreye)

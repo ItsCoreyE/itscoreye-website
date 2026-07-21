@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
 import { verifyCronSecret } from '@/lib/server/cronAuth';
 import { fetchWithRetry } from '@/lib/server/httpClient';
-
-const redis = Redis.fromEnv();
+import { redis, KEYS } from '@/lib/server/redis';
+import {
+  DISCORD_LIMITS,
+  formatNumber,
+  postDiscordWebhook,
+  toSafeField,
+  truncate,
+} from '@/lib/server/discord';
 
 const ROBLOX_USER_ID = '3504185';
 const ROLIMONS_PLAYER_URL = `https://www.rolimons.com/player/${ROBLOX_USER_ID}`;
-const REDIS_LATEST_KEY = 'rolimons:latest';
-const REDIS_HISTORY_KEY = 'rolimons:history';
 const HISTORY_MAX_ENTRIES = 90;
 
 interface RolimonsSnapshot {
@@ -17,26 +20,6 @@ interface RolimonsSnapshot {
   itemCount: number;
   timestamp: string;
 }
-
-const DISCORD_LIMITS = {
-  content: 2000,
-  embedTitle: 256,
-  fieldName: 256,
-  fieldValue: 1024,
-};
-
-const formatNumber = (value: number) => new Intl.NumberFormat('en-US').format(value);
-
-const truncate = (value: string, maxLength: number) => {
-  if (value.length <= maxLength) return value;
-  return `${value.slice(0, maxLength - 1)}…`;
-};
-
-const toSafeField = (name: string, value: string, inline = false) => ({
-  name: truncate(name, DISCORD_LIMITS.fieldName),
-  value: truncate(value || '—', DISCORD_LIMITS.fieldValue),
-  inline,
-});
 
 const parseRolimonsPage = (html: string): { value: number; rap: number; itemCount: number } => {
   // Extract embedded JS variables from the player page
@@ -83,18 +66,18 @@ const buildDiscordPayload = (
     : '0.00';
 
   const color = !hasChange
-    ? 0xf59e0b
+    ? 0xd97706
     : valueChange > 0
-    ? 0x22c55e
+    ? 0x059669
     : valueChange < 0
-    ? 0xef4444
-    : 0xf59e0b;
+    ? 0xdc2626
+    : 0xd97706;
 
   const changeEmoji = valueChange > 0 ? '📈' : valueChange < 0 ? '📉' : '📊';
   const changeSign = valueChange > 0 ? '+' : '';
   const changeText = hasChange
     ? `\`${changeSign}${formatNumber(valueChange)} (${changeSign}${valuePct}%)\``
-    : '`N/A — first snapshot`';
+    : '`N/A - first snapshot`';
 
   const quickLinks =
     '[Website](https://www.itscoreye.com) • [Roblox Profile](https://www.roblox.com/users/3504185/profile) • [Rolimons](https://www.rolimons.com/player/3504185)';
@@ -162,7 +145,7 @@ export async function GET(request: NextRequest) {
       itemCount = parsed.itemCount;
     } catch (fetchError) {
       const message = fetchError instanceof Error ? fetchError.message : 'Unknown fetch error';
-      console.error('❌ Rolimons page fetch failed:', message);
+      console.error('Rolimons page fetch failed:', message);
       return NextResponse.json(
         { success: false, error: 'Failed to fetch Rolimons player page', details: message },
         { status: 502 }
@@ -184,12 +167,12 @@ export async function GET(request: NextRequest) {
     };
 
     // Get previous snapshot for comparison
-    const previous = await redis.get<RolimonsSnapshot>(REDIS_LATEST_KEY);
+    const previous = await redis.get<RolimonsSnapshot>(KEYS.rolimonsLatest);
 
     // Store new snapshot
-    await redis.set(REDIS_LATEST_KEY, snapshot);
-    await redis.lpush(REDIS_HISTORY_KEY, snapshot);
-    await redis.ltrim(REDIS_HISTORY_KEY, 0, HISTORY_MAX_ENTRIES - 1);
+    await redis.set(KEYS.rolimonsLatest, snapshot);
+    await redis.lpush(KEYS.rolimonsHistory, snapshot);
+    await redis.ltrim(KEYS.rolimonsHistory, 0, HISTORY_MAX_ENTRIES - 1);
 
     // Send Discord notification
     const webhookUrl =
@@ -204,26 +187,16 @@ export async function GET(request: NextRequest) {
 
     const payload = buildDiscordPayload(snapshot, previous);
 
-    const discordResponse = await fetchWithRetry(
-      webhookUrl,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      },
-      { timeoutMs: 10000, retries: 2, retryDelayMs: 500 }
-    );
-
-    if (!discordResponse.ok) {
-      const errorText = await discordResponse.text();
-      console.error('❌ Discord webhook failed:', errorText);
+    try {
+      await postDiscordWebhook(webhookUrl, payload);
+    } catch (discordError) {
+      const details = discordError instanceof Error ? discordError.message : 'Unknown error';
+      console.error('Discord webhook failed:', details);
       return NextResponse.json(
-        { success: false, error: `Discord webhook failed (${discordResponse.status})`, details: errorText },
+        { success: false, error: 'Discord webhook failed', details },
         { status: 500 }
       );
     }
-
-    console.log('✅ Weekly Rolimons value update sent to Discord');
 
     const valueChange = previous ? snapshot.value - previous.value : null;
     return NextResponse.json({
@@ -236,7 +209,7 @@ export async function GET(request: NextRequest) {
       isFirstRun: previous === null,
     });
   } catch (error) {
-    console.error('❌ Rolimons value route error:', error);
+    console.error('Rolimons value route error:', error);
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
