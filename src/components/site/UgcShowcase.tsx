@@ -4,7 +4,7 @@ import { BanknotesIcon, ShoppingBagIcon, CalendarIcon } from '@heroicons/react/2
 import { getCategoryProgress } from '@/lib/milestones';
 import type { Milestone, SalesData } from '@/types/ugc';
 
-const formatNumber = (value: number) => value.toLocaleString('en-US');
+const formatNumber = (value: number) => value.toLocaleString('en-GB');
 
 // "HairAccessory" → "Hair Accessory"
 const formatAssetType = (assetType: string) => assetType.replace(/([A-Z])/g, ' $1').trim();

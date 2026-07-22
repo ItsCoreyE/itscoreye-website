@@ -22,7 +22,7 @@ export default function Contact() {
                 <EnvelopeIcon className="h-6 w-6 text-accent" />
               </div>
               <h3 className="mt-4 text-lg font-semibold text-ink">Email</h3>
-              <p className="mt-1 flex-grow text-sm text-ink-muted">Professional inquiries</p>
+              <p className="mt-1 flex-grow text-sm text-ink-muted">Professional enquiries</p>
               <a href="mailto:itscoreyedwards@gmail.com" className="btn-primary mt-5 w-full text-sm">
                 <span className="truncate">itscoreyedwards@gmail.com</span>
               </a>

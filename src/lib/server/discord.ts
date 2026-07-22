@@ -8,7 +8,7 @@ export const DISCORD_LIMITS = {
   fieldValue: 1024,
 };
 
-export const formatNumber = (value: number) => new Intl.NumberFormat('en-US').format(value);
+export const formatNumber = (value: number) => new Intl.NumberFormat('en-GB').format(value);
 
 export const truncate = (value: string, maxLength: number) => {
   if (value.length <= maxLength) return value;

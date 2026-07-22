@@ -129,7 +129,7 @@ npm run lint     # Run ESLint
 
 The site also runs on any platform supporting Next.js (Netlify, Railway, AWS Amplify, or self-hosted Node.js).
 
-## License
+## Licence
 
 © 2026 ItsCoreyE. All rights reserved.
 

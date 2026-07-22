@@ -23,7 +23,7 @@ export default function StatsSummary({ salesData }: { salesData: SalesData | nul
   const tiles = [
     {
       label: 'Revenue (R$)',
-      value: salesData.totalRevenue.toLocaleString('en-US'),
+      value: salesData.totalRevenue.toLocaleString('en-GB'),
       valueClass: 'text-ink',
       Icon: BanknotesIcon,
       chip: 'bg-accent-soft',
@@ -31,7 +31,7 @@ export default function StatsSummary({ salesData }: { salesData: SalesData | nul
     },
     {
       label: 'Sales',
-      value: salesData.totalSales.toLocaleString('en-US'),
+      value: salesData.totalSales.toLocaleString('en-GB'),
       valueClass: 'text-ink',
       Icon: ShoppingBagIcon,
       chip: 'bg-blue-soft',

@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import type { SalesData } from '@/types/ugc';
 
-const formatNumber = (value: number) => value.toLocaleString('en-US');
+const formatNumber = (value: number) => value.toLocaleString('en-GB');
 
 type VentureStatus = 'Live' | 'Coming Soon';
 
