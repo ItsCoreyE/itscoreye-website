@@ -61,7 +61,7 @@ export default function About() {
               {facts.map((fact) => (
                 <div key={fact.label}>
                   <div className={`text-2xl font-semibold ${fact.colour}`}>{fact.value}</div>
-                  <div className="mt-1 text-[11px] leading-tight text-ink-muted">{fact.label}</div>
+                  <div className="mt-1 text-xs leading-tight text-ink-muted">{fact.label}</div>
                 </div>
               ))}
             </div>

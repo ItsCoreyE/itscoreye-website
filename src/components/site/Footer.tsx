@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const quickLinks = [
   { name: 'About', href: '#about' },
   { name: 'Ventures', href: '#ventures' },
@@ -32,62 +34,73 @@ export default function Footer() {
   return (
     <footer className="bg-surface">
       <div aria-hidden className="gradient-hairline opacity-60" />
-      <div className="mx-auto max-w-6xl px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-12">
-          <div>
-            <span className="text-lg font-bold text-ink">Corey Edwards</span>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-              Entrepreneur &amp; Creator building transparent businesses and digital experiences
-              people can trust.
-            </p>
-            <p className="mt-3 text-xs text-ink-muted">
-              Known as <span className="font-medium text-accent">ItsCoreyE</span>
-            </p>
-          </div>
+      <div className="px-5 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-12">
+            <div>
+              <span className="flex items-center gap-2 text-lg font-bold tracking-tight text-ink">
+                <Image
+                  src="/icons/android-chrome-512x512.png"
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="h-8 w-8"
+                />
+                Corey Edwards
+              </span>
+              <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                Entrepreneur &amp; Creator building transparent businesses and digital experiences
+                people can trust.
+              </p>
+              <p className="mt-3 text-xs text-ink-muted">
+                Known as <span className="font-medium text-accent">ItsCoreyE</span>
+              </p>
+            </div>
 
-          <div>
-            <h4 className="text-sm font-semibold tracking-wider text-ink uppercase">
-              Quick Links
-            </h4>
-            <ul className="mt-4 space-y-3">
-              {quickLinks.map((link) => (
-                <li key={link.name}>
+            <div>
+              <h4 className="text-sm font-semibold tracking-wider text-ink uppercase">
+                Quick Links
+              </h4>
+              <ul className="mt-4 space-y-3">
+                {quickLinks.map((link) => (
+                  <li key={link.name}>
+                    <a
+                      href={link.href}
+                      className="text-sm text-ink-muted transition-colors hover:text-ink"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-semibold tracking-wider text-ink uppercase">Connect</h4>
+              <div className="mt-4 flex gap-3">
+                {socialLinks.map((social) => (
                   <a
-                    href={link.href}
-                    className="text-sm text-ink-muted transition-colors hover:text-ink"
+                    key={social.name}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.name}
+                    className="rounded-lg border border-line bg-surface p-3 text-ink-muted transition-colors hover:border-accent-border hover:text-accent"
                   >
-                    {link.name}
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d={social.iconPath} />
+                    </svg>
                   </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold tracking-wider text-ink uppercase">Connect</h4>
-            <div className="mt-4 flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.name}
-                  className="rounded-lg border border-line bg-surface p-3 text-ink-muted transition-colors hover:border-accent-border hover:text-accent"
-                >
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path d={social.iconPath} />
-                  </svg>
-                </a>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-12 border-t border-line pt-8 text-center">
-          <p className="text-sm text-ink-muted">
-            &copy; {currentYear} Corey Edwards. All rights reserved.
-          </p>
+          <div className="mt-12 border-t border-line pt-8 text-center">
+            <p className="text-sm text-ink-muted">
+              &copy; {currentYear} Corey Edwards. All rights reserved.
+            </p>
+          </div>
         </div>
       </div>
     </footer>
