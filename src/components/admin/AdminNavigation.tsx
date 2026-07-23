@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { ArrowTopRightOnSquareIcon, ArrowLeftOnRectangleIcon } from '@heroicons/react/24/outline';
 
 interface AdminNavigationProps {
@@ -9,9 +10,18 @@ export default function AdminNavigation({ onLogout }: AdminNavigationProps) {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="truncate text-lg font-bold text-ink">Corey Edwards</span>
-          <span className="rounded-md border border-accent-border bg-accent-soft px-2 py-0.5 text-xs font-medium text-accent">
+        <div className="flex min-w-0 items-center gap-2.5">
+          <Image
+            src="/icons/android-chrome-512x512.png"
+            alt=""
+            width={64}
+            height={64}
+            className="h-8 w-8 shrink-0"
+          />
+          <span className="hidden truncate text-lg font-bold tracking-tight text-ink sm:block">
+            Corey Edwards
+          </span>
+          <span className="shrink-0 rounded-md border border-accent-border bg-accent-soft px-2 py-0.5 text-xs font-medium text-accent">
             Admin
           </span>
         </div>
