@@ -63,7 +63,7 @@ export default function CsvUploadCard({ onSaved, showStatus }: CsvUploadCardProp
   };
 
   return (
-    <div className="card flex flex-1 flex-col p-5 sm:p-6">
+    <div className="card p-5 sm:p-6">
       <h3 className="flex items-center gap-2 text-lg font-semibold text-ink">
         <FolderIcon className="h-5 w-5 text-brand-blue" />
         CSV Upload
@@ -84,7 +84,7 @@ export default function CsvUploadCard({ onSaved, showStatus }: CsvUploadCardProp
         type="button"
         onClick={() => fileInputRef.current?.click()}
         disabled={isUploading}
-        className="btn-secondary mt-auto w-full text-sm disabled:opacity-50"
+        className="btn-secondary mt-5 w-full text-sm disabled:opacity-50"
       >
         {isUploading ? 'Processing…' : 'Choose CSV file'}
       </button>

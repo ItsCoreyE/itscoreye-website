@@ -121,6 +121,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
         {topItems.length > 0 && (
           <Reveal delay={100}>
             <h3 className="mt-14 text-xl font-semibold text-ink">Best sellers</h3>
+            <p className="mt-2 text-sm text-ink-muted">Ranked by total units sold.</p>
             <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3 md:gap-6">
               {topItems.map((item) => (
                 <div key={item.name} className="card card-interactive overflow-hidden">
