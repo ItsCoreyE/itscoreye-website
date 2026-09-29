@@ -236,16 +236,16 @@ export default function MilestoneAdmin() {
           <div className="space-y-4">
             {verificationMilestone && (
               <div
-                className={`rounded-xl border-2 p-5 sm:p-7 ${
+                className={`rounded-xl border-2 p-4 sm:p-7 ${
                   verificationMilestone.isCompleted
                     ? 'border-success/40 bg-success-soft'
                     : 'border-accent-border bg-accent-soft/50'
                 }`}
               >
-                <div className="flex items-start justify-between gap-3 sm:items-center sm:gap-4">
+                <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
                     <CheckBadgeIcon
-                      className={`h-9 w-9 flex-shrink-0 sm:h-12 sm:w-12 ${
+                      className={`hidden h-12 w-12 flex-shrink-0 sm:block ${
                         verificationMilestone.isCompleted ? 'text-success' : 'text-accent'
                       }`}
                     />

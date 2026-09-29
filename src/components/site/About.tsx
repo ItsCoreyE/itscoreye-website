@@ -66,7 +66,7 @@ export default function About() {
               ))}
             </div>
 
-            <div className="mt-8 space-y-5">
+            <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-1">
               {skillGroups.map((group) => (
                 <div key={group.title}>
                   <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-ink">

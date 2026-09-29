@@ -31,14 +31,14 @@ export default function AdminNavigation({ onLogout }: AdminNavigationProps) {
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-secondary transition-colors hover:bg-surface-muted hover:text-ink"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-ink-secondary md:min-h-0 md:min-w-0 transition-colors hover:bg-surface-muted hover:text-ink"
           >
             <span className="hidden sm:inline">View Site</span>
             <ArrowTopRightOnSquareIcon className="h-4 w-4" />
           </a>
           <button
             onClick={onLogout}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-danger/20 bg-danger-soft px-3 py-2 text-sm font-medium text-danger transition-colors hover:bg-danger/10"
+            className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-danger/20 md:min-h-0 bg-danger-soft px-3 py-2 text-sm font-medium text-danger transition-colors hover:bg-danger/10"
           >
             <ArrowLeftOnRectangleIcon className="h-4 w-4" />
             Logout

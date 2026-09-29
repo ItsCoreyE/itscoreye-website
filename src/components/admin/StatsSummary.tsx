@@ -66,9 +66,9 @@ export default function StatsSummary({ salesData }: { salesData: SalesData | nul
       </div>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 rounded-lg border border-line bg-surface px-4 py-2.5">
-        <span className="flex min-w-0 items-center gap-2 text-sm text-ink-secondary">
-          <CalendarIcon className="h-4 w-4 shrink-0 text-ink-muted" />
-          <span className="truncate" title={salesData.dataPeriod}>
+        <span className="flex min-w-0 items-start gap-2 text-sm text-ink-secondary">
+          <CalendarIcon className="mt-0.5 h-4 w-4 shrink-0 text-ink-muted" />
+          <span className="min-w-0 break-words">
             {salesData.dataPeriod || 'Current period'}
           </span>
         </span>

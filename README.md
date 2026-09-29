@@ -27,7 +27,7 @@ Personal portfolio website for Corey Edwards (ItsCoreyE), Entrepreneur & Creator
 
 ### Prerequisites
 
-- Node.js 18.0 or higher
+- Node.js 18.18 or higher
 - npm
 
 ### Installation
@@ -72,6 +72,8 @@ itscoreye-website/
 ├── public/
 │   ├── icons/              # Favicons and app icons
 │   ├── og-image.png        # Social media preview image
+│   ├── profile.webp        # Hero headshot
+│   ├── site.webmanifest
 │   └── sitemap.xml
 ├── src/
 │   ├── app/

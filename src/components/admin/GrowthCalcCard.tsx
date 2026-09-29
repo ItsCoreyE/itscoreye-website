@@ -79,7 +79,7 @@ export default function GrowthCalcCard({ onSaved, showStatus }: GrowthCalcCardPr
   };
 
   const fileInputClasses =
-    'block w-full text-sm text-ink-muted file:mr-3 file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-accent-strong file:transition-colors';
+    'block w-full text-sm text-ink-muted file:mr-3 file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-3 file:text-sm file:font-medium file:text-white hover:file:bg-accent-strong file:transition-colors';
 
   return (
     <div className="card p-5 sm:p-6">

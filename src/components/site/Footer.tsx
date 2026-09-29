@@ -61,12 +61,12 @@ export default function Footer() {
               <h4 className="text-sm font-semibold tracking-wider text-ink uppercase">
                 Quick Links
               </h4>
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-2 md:mt-4 md:space-y-3">
                 {quickLinks.map((link) => (
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="text-sm text-ink-muted transition-colors hover:text-ink"
+                      className="inline-flex min-h-11 items-center text-sm text-ink-muted transition-colors hover:text-ink md:min-h-0"
                     >
                       {link.name}
                     </a>

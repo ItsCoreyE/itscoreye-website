@@ -17,20 +17,20 @@ export default function Contact() {
 
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
           <Reveal delay={75}>
-            <div className="card flex h-full flex-col p-6 text-center sm:p-7">
+            <div className="card flex h-full flex-col p-5 text-center sm:p-7">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft">
                 <EnvelopeIcon className="h-6 w-6 text-accent" />
               </div>
               <h3 className="mt-4 text-lg font-semibold text-ink">Email</h3>
               <p className="mt-1 flex-grow text-sm text-ink-muted">Professional enquiries</p>
-              <a href="mailto:itscoreyedwards@gmail.com" className="btn-primary mt-5 w-full text-sm">
-                <span className="truncate">itscoreyedwards@gmail.com</span>
+              <a href="mailto:itscoreyedwards@gmail.com" className="btn-primary mt-5 w-full px-4 text-sm">
+                <span className="min-w-0 break-all">itscoreyedwards@gmail.com</span>
               </a>
             </div>
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="card flex h-full flex-col p-6 text-center sm:p-7">
+            <div className="card flex h-full flex-col p-5 text-center sm:p-7">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-soft">
                 <UserGroupIcon className="h-6 w-6 text-brand-blue" />
               </div>

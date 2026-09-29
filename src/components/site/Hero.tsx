@@ -22,7 +22,7 @@ export default function Hero() {
       <div className="relative mx-auto max-w-3xl text-center">
         <div className="animate-rise mx-auto mb-8 w-fit rounded-full bg-[image:var(--gradient-brand)] p-[3px] shadow-card">
           <Image
-            src="/profile.png"
+            src="/profile.webp"
             alt="Corey Edwards"
             width={144}
             height={144}

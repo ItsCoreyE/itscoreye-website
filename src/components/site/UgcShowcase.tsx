@@ -68,12 +68,12 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
 
         {/* Stats */}
         <Reveal delay={75}>
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
             <div className="card p-6">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-soft">
                 <BanknotesIcon className="h-5 w-5 text-accent" />
               </div>
-              <div className="mt-4 flex items-baseline gap-2">
+              <div className="mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 <span className="text-3xl font-semibold tracking-tight text-ink tabular-nums">
                   {formatNumber(sales.totalRevenue)}
                 </span>
@@ -99,7 +99,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
               </div>
               <div className="mt-1 text-sm text-ink-muted">Total Sales</div>
             </div>
-            <div className="card p-6 sm:col-span-2 lg:col-span-1">
+            <div className="card p-6 sm:col-span-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-soft">
                 <CalendarIcon className="h-5 w-5 text-brand-cyan-deep" />
               </div>
@@ -124,8 +124,8 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
             <p className="mt-2 text-sm text-ink-muted">Ranked by total units sold.</p>
             <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3 md:gap-6">
               {topItems.map((item) => (
-                <div key={item.name} className="card card-interactive overflow-hidden">
-                  <div className="relative aspect-square bg-surface-muted">
+                <div key={item.name} className="card card-interactive flex overflow-hidden sm:block">
+                  <div className="relative aspect-square w-28 shrink-0 bg-surface-muted sm:w-auto">
                     {item.thumbnail ? (
                       <Image
                         src={item.thumbnail}
@@ -136,7 +136,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-ink-muted">
-                        <svg className="h-14 w-14 opacity-40" viewBox="0 0 24 24" fill="currentColor">
+                        <svg className="h-10 w-10 opacity-40 sm:h-14 sm:w-14" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
                           <path d="M14 2v6h6" />
                           <rect x="8" y="12" width="8" height="6" rx="1" />
@@ -144,16 +144,16 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
                       </div>
                     )}
                   </div>
-                  <div className="p-5">
+                  <div className="min-w-0 flex-1 p-4 sm:p-5">
                     <h4 className="line-clamp-2 leading-snug font-semibold text-ink">{item.name}</h4>
-                    <div className="mt-3 flex items-center justify-between text-sm">
+                    <div className="mt-2 flex items-center justify-between gap-3 text-sm sm:mt-3">
                       <span className="font-medium text-success">
                         {formatNumber(item.sales)} sold
                       </span>
                       <span className="font-medium text-ink-secondary">{item.price} R$</span>
                     </div>
                     {item.assetType && (
-                      <span className="tag mt-3 text-xs">{formatAssetType(item.assetType)}</span>
+                      <span className="tag mt-2 text-xs sm:mt-3">{formatAssetType(item.assetType)}</span>
                     )}
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-medium text-ink-secondary transition-colors hover:border-accent-border hover:text-accent"
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-medium text-ink-secondary transition-colors hover:border-accent-border hover:text-accent"
               >
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
                   <path d={social.iconPath} />
