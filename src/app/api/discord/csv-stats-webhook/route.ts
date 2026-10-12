@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
-import { WebhookConfigError } from '@/lib/server/discord';
 import {
   sendCsvStatsNotification,
   type StatsData,
@@ -29,28 +28,22 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        message: 'Monthly stats notification sent to Discord',
+        message: 'Monthly stats notification queued for Ember to post',
         revenue: normalizedStats.totalRevenue,
         sales: normalizedStats.totalSales,
         period: normalizedStats.dataPeriod,
         topItemsCount: normalizedStats.topItems.length,
-        delivery: 'direct-discord',
+        delivery: 'ember',
       });
     } catch (sendError: unknown) {
-      if (sendError instanceof WebhookConfigError) {
-        return NextResponse.json(
-          { success: false, error: sendError.message },
-          { status: 500 }
-        );
-      }
 
       const details = sendError instanceof Error ? sendError.message : 'Unknown error occurred';
-      console.error('Monthly stats webhook send failed:', details);
+      console.error('Monthly stats notification failed:', details);
 
       return NextResponse.json(
         {
           success: false,
-          error: 'Failed to send monthly stats notification',
+          error: 'Failed to queue monthly stats notification',
           details,
           revenue: Number(statsData.totalRevenue) || 0,
         },

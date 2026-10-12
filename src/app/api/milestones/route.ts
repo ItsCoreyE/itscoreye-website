@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
           discordNotifications.push({
             milestone: milestone.description,
             success: true,
-            message: 'Milestone notification sent to Discord',
+            message: 'Milestone notification queued for Ember to post',
           });
         } catch (discordError) {
           console.error(`Discord notification failed for ${milestone.description}:`, discordError);
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
             error:
               discordError instanceof Error
                 ? discordError.message
-                : 'Failed to send milestone notification',
+                : 'Failed to queue milestone notification',
           });
         }
       }

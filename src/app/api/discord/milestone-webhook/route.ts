@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { isAdminRequestAuthorized } from '@/lib/server/adminAuth';
-import { WebhookConfigError } from '@/lib/server/discord';
 import {
   sendMilestoneNotification,
   type MilestoneData,
@@ -33,24 +32,18 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        message: 'Milestone notification sent to Discord',
+        message: 'Milestone notification queued for Ember to post',
         milestone: milestone.description || 'Unknown milestone',
         category: milestone.category || 'unknown',
-        delivery: 'direct-discord',
+        delivery: 'ember',
       });
     } catch (sendError: unknown) {
-      if (sendError instanceof WebhookConfigError) {
-        return NextResponse.json(
-          { success: false, error: sendError.message },
-          { status: 500 }
-        );
-      }
 
       const details = sendError instanceof Error ? sendError.message : 'Unknown error occurred';
       return NextResponse.json(
         {
           success: false,
-          error: 'Failed to send milestone notification',
+          error: 'Failed to queue milestone notification',
           details,
           milestone: milestone.description || 'Unknown milestone',
         },

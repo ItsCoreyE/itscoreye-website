@@ -5,6 +5,6 @@ export const redis = Redis.fromEnv();
 export const KEYS = {
   salesData: 'ugc-sales-data',
   milestones: 'ugc-milestones',
-  rolimonsLatest: 'rolimons:latest',
-  rolimonsHistory: 'rolimons:history',
+  // Notes for Ember, the Discord bot, to post (see discordNotifications.ts)
+  emberOutbox: 'ember:outbox',
 } as const;
