@@ -3,7 +3,7 @@ import {
   RocketLaunchIcon,
   TrophyIcon,
   ComputerDesktopIcon,
-  CursorArrowRaysIcon,
+  ShieldCheckIcon,
 } from '@heroicons/react/24/outline';
 import type { SalesData } from '@/types/ugc';
 
@@ -80,7 +80,7 @@ export default function Ventures({ sales }: { sales: SalesData }) {
       name: 'Odds Up',
       subtitle: 'Prize Competition Platform',
       description: 'Fair competitions with realistic odds and transparent prizes',
-      status: 'Coming Soon',
+      status: 'Live',
       accent: 'blue',
       detail: 'Founded Dec 2025',
       link: 'https://www.oddsup.co.uk',
@@ -99,16 +99,16 @@ export default function Ventures({ sales }: { sales: SalesData }) {
       isInternal: false,
     },
     {
-      id: 'clicktheotter',
-      Icon: CursorArrowRaysIcon,
-      name: 'Click The Otter',
-      subtitle: 'Idle Clicker Game',
+      id: 'muzzle',
+      Icon: ShieldCheckIcon,
+      name: 'Muzzle',
+      subtitle: "Yapin' Moderation Bot",
       description:
-        'Free idle clicker game with achievements, prestige mechanics, and endless progression',
+        "Free moderation bot for Yapin' servers with automod, raid protection, and a staff dashboard",
       status: 'Live',
       accent: 'emerald',
-      detail: 'Founded Feb 2026',
-      link: 'https://www.clicktheotter.com',
+      detail: 'Founded Nov 2026',
+      link: 'https://getmuzzle.tech',
       isInternal: false,
     },
   ];

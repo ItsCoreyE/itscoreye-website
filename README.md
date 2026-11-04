@@ -1,6 +1,6 @@
 # ItsCoreyE - Portfolio Website
 
-Personal portfolio website for Corey Edwards (ItsCoreyE), Entrepreneur & Creator. Showcases four ventures: Roblox UGC creation, Odds Up (prize competitions), Fix My Rig (IT support), and Click The Otter (idle clicker game), backed by live sales statistics and milestone tracking.
+Personal portfolio website for Corey Edwards (ItsCoreyE), Entrepreneur & Creator. Showcases four ventures: Roblox UGC creation, Odds Up (prize competitions), Fix My Rig (IT support), and Muzzle (a free moderation bot for Yapin'), backed by live sales statistics and milestone tracking.
 
 **Live site:** [www.itscoreye.com](https://www.itscoreye.com)
 
