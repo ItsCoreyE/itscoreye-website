@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.itscoreye.com'),
   title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
-  description: "Corey Edwards (ItsCoreyE) - Results-driven entrepreneur with over five years of experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions), Fix My Rig (remote IT support), and Muzzle (a free moderation bot for Yapin'). Building transparent businesses across gaming, tech, and customer service.",
+  description: 'Corey Edwards (ItsCoreyE) designs Roblox UGC avatar accessories and runs Odds Up, Muzzle and Fix My Rig. See the ventures, real monthly sales numbers and how to get in touch.',
   keywords: ['Corey Edwards', 'ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Muzzle', 'Moderation Bot', "Yapin'", 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
   authors: [{ name: 'Corey Edwards' }],
   creator: 'Corey Edwards',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
-    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur building transparent businesses. Operating four ventures: UGC digital items, Odds Up (competitions), Fix My Rig (IT support), and Muzzle (moderation bot).',
+    description: 'I design Roblox UGC and build businesses people trust, including Odds Up, Muzzle and Fix My Rig.',
     url: 'https://www.itscoreye.com',
     siteName: 'Corey Edwards Portfolio',
     type: 'website',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
-    description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, Fix My Rig IT support, and Muzzle moderation bot.',
+    description: 'I design Roblox UGC and build businesses people trust, including Odds Up, Muzzle and Fix My Rig.',
     creator: '@itscoreye',
     images: ['/og-image.png?v=3']
   },
@@ -72,7 +72,7 @@ export default function RootLayout({
     "@type": "Person",
     "name": "Corey Edwards",
     "alternateName": "ItsCoreyE",
-    "description": "Roblox UGC Creator and entrepreneur with over five years of experience building transparent businesses across gaming, tech, and customer service",
+    "description": "Roblox UGC creator and founder of Odds Up, Muzzle and Fix My Rig, with over five years of experience in customer operations",
     "jobTitle": "Entrepreneur & UGC Creator",
     "url": "https://www.itscoreye.com",
     "knowsAbout": ["UGC Design", "IT Support", "Customer Service", "Web Development", "Operations Management", "Roblox Development"],
@@ -80,14 +80,14 @@ export default function RootLayout({
       {
         "@type": "Organization",
         "name": "Odds Up",
-        "description": "Fair Prize Competition Platform offering realistic odds",
+        "description": "Fair prize competitions with realistic odds and transparent prizes",
         "url": "https://www.oddsup.co.uk",
         "foundingDate": "2025-12"
       },
       {
         "@type": "Organization",
         "name": "Fix My Rig",
-        "description": "Remote IT Support Service - Expert technical assistance",
+        "description": "Expert remote tech support for PC and software problems",
         "url": "https://www.fixmyrig.co.uk",
         "foundingDate": "2025-02"
       },
