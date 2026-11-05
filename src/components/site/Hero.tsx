@@ -104,12 +104,6 @@ export default function Hero({ sales }: { sales: SalesData }) {
                 sizes="(min-width: 1024px) 352px, 256px"
                 className="object-cover"
               />
-              {/* Name caption is desktop only: on phones the chips frame the corners and the name follows in the copy */}
-              <div className="absolute inset-x-0 bottom-0 hidden h-1/2 bg-gradient-to-t from-ink/55 to-transparent lg:block" />
-              <div className="absolute inset-x-5 bottom-5 hidden text-left text-white lg:block">
-                <p className="text-lg font-semibold tracking-tight">Corey Edwards</p>
-                <p className="text-sm text-white/85">Creator and Founder</p>
-              </div>
             </div>
           </div>
 
