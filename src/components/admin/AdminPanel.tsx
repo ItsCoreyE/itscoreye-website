@@ -61,19 +61,33 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-canvas">
+    <div className="relative min-h-dvh overflow-x-hidden bg-canvas">
       <AdminNavigation onLogout={handleLogout} />
 
-      <div className="mx-auto max-w-5xl px-4 pt-8 pb-16 sm:px-6 lg:px-8">
-        <header>
-          <h1 className="text-2xl font-semibold text-ink sm:text-3xl">Admin Dashboard</h1>
-          <p className="mt-1 text-sm text-ink-muted">Manage your UGC business</p>
+      {/* Soft brand light behind the page header */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-96">
+        <div className="bg-grid absolute inset-0 opacity-80" />
+        <div
+          className="absolute top-[-6rem] left-[-6rem] h-[26rem] w-[26rem]"
+          style={{ background: 'radial-gradient(closest-side, rgb(147 51 234 / 0.12), transparent 70%)' }}
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-5xl px-5 pt-10 pb-[max(4rem,env(safe-area-inset-bottom))] sm:px-6 sm:pt-12 lg:px-8">
+        <header className="animate-rise">
+          <p className="text-sm font-medium text-ink-muted">Welcome back, Corey</p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
+            Admin <span className="gradient-text">Dashboard</span>
+          </h1>
+          <p className="mt-2 text-sm text-ink-muted">
+            Update UGC stats and milestones. Saves refresh the live homepage within seconds.
+          </p>
         </header>
 
         {statusMessage && (
           <div
             role="status"
-            className={`fixed right-4 bottom-4 z-50 max-w-sm rounded-lg border p-4 shadow-card-hover ${
+            className={`animate-rise fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 rounded-xl border p-4 shadow-float sm:right-6 sm:left-auto sm:max-w-sm ${
               statusMessage.type === 'success'
                 ? 'border-success/20 bg-success-soft'
                 : 'border-danger/20 bg-danger-soft'
@@ -95,7 +109,7 @@ export default function AdminPanel() {
         </section>
 
         <section className="mt-10">
-          <h2 className="section-label mb-4">Data updates</h2>
+          <h2 className="section-label mb-4">Data Updates</h2>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <ManualStatsForm
               currentData={salesData}

@@ -49,9 +49,14 @@ export default function StatsSummary({ salesData }: { salesData: SalesData | nul
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        {tiles.map((tile) => (
-          <div key={tile.label} className="card flex items-center gap-4 p-5">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+        {tiles.map((tile, index) => (
+          <div
+            key={tile.label}
+            className={`card flex gap-3 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5 ${
+              index === 0 ? 'col-span-2 flex-row items-center sm:col-span-1' : 'flex-col items-start'
+            }`}
+          >
             <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tile.chip}`}>
               <tile.Icon className={`h-5 w-5 ${tile.iconClass}`} />
             </div>
@@ -65,7 +70,7 @@ export default function StatsSummary({ salesData }: { salesData: SalesData | nul
         ))}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 rounded-lg border border-line bg-surface px-4 py-2.5">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 rounded-xl border border-line bg-surface px-4 py-3 sm:mt-4">
         <span className="flex min-w-0 items-start gap-2 text-sm text-ink-secondary">
           <CalendarIcon className="mt-0.5 h-4 w-4 shrink-0 text-ink-muted" />
           <span className="min-w-0 break-words">

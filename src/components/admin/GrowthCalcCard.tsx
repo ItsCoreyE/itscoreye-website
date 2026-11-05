@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from 'react';
-import { ChartBarIcon } from '@heroicons/react/24/outline';
+import { ChartBarIcon, DocumentArrowUpIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { processSalesCsv, summarizeSalesCsv } from '@/lib/csv';
 import { attachThumbnails } from '@/lib/thumbnails';
 import type { SalesData } from '@/types/ugc';
@@ -14,6 +14,10 @@ export default function GrowthCalcCard({ onSaved, showStatus }: GrowthCalcCardPr
   const previousFileRef = useRef<HTMLInputElement>(null);
   const currentFileRef = useRef<HTMLInputElement>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  const [fileNames, setFileNames] = useState<{ previous: string | null; current: string | null }>({
+    previous: null,
+    current: null,
+  });
 
   const handleGrowthCalculation = async () => {
     const previousFile = previousFileRef.current?.files?.[0];
@@ -78,8 +82,10 @@ export default function GrowthCalcCard({ onSaved, showStatus }: GrowthCalcCardPr
     }
   };
 
-  const fileInputClasses =
-    'block w-full text-sm text-ink-muted file:mr-3 file:rounded-lg file:border-0 file:bg-accent file:px-4 file:py-3 file:text-sm file:font-medium file:text-white hover:file:bg-accent-strong file:transition-colors';
+  const pickers = [
+    { key: 'previous' as const, id: 'previous-file', label: 'Previous Month', ref: previousFileRef },
+    { key: 'current' as const, id: 'current-file', label: 'Current Month', ref: currentFileRef },
+  ];
 
   return (
     <div className="card p-5 sm:p-6">
@@ -91,19 +97,42 @@ export default function GrowthCalcCard({ onSaved, showStatus }: GrowthCalcCardPr
         Compare two months of sales CSVs to calculate the revenue growth percentage.
       </p>
 
-      <div className="mt-4 grid grid-cols-1 gap-4">
-        <div>
-          <label htmlFor="previous-file" className="mb-1.5 block text-sm font-medium text-ink-secondary">
-            Previous month
-          </label>
-          <input id="previous-file" ref={previousFileRef} type="file" accept=".csv" className={fileInputClasses} />
-        </div>
-        <div>
-          <label htmlFor="current-file" className="mb-1.5 block text-sm font-medium text-ink-secondary">
-            Current month
-          </label>
-          <input id="current-file" ref={currentFileRef} type="file" accept=".csv" className={fileInputClasses} />
-        </div>
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+        {pickers.map((picker) => {
+          const fileName = fileNames[picker.key];
+          return (
+            <div key={picker.key}>
+              <span className="mb-1.5 block text-sm font-medium text-ink-secondary">{picker.label}</span>
+              {/* The real input stays focusable (sr-only) so keyboard users get the label's focus ring */}
+              <label
+                htmlFor={picker.id}
+                className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-dashed px-4 py-3 text-sm transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-accent ${
+                  fileName
+                    ? 'border-success/40 bg-success-soft text-success'
+                    : 'border-line bg-surface-muted/60 text-ink-muted hover:border-accent-border hover:text-accent'
+                }`}
+              >
+                {fileName ? (
+                  <CheckCircleIcon className="h-5 w-5 shrink-0" />
+                ) : (
+                  <DocumentArrowUpIcon className="h-5 w-5 shrink-0" />
+                )}
+                <span className="min-w-0 truncate font-medium">{fileName ?? 'Choose CSV File'}</span>
+                <input
+                  id={picker.id}
+                  ref={picker.ref}
+                  type="file"
+                  accept=".csv"
+                  className="sr-only"
+                  onChange={(event) => {
+                    const name = event.target.files?.[0]?.name ?? null;
+                    setFileNames((current) => ({ ...current, [picker.key]: name }));
+                  }}
+                />
+              </label>
+            </div>
+          );
+        })}
       </div>
 
       <button

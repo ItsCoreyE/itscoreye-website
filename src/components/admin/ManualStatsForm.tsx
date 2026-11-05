@@ -93,7 +93,7 @@ export default function ManualStatsForm({ currentData, onSaved, showStatus }: Ma
         <div className="grid grid-cols-1 gap-3">
           <div>
             <label htmlFor="manual-revenue" className="mb-1 block text-xs font-medium text-ink-secondary">
-              Total revenue (R$)
+              Total Revenue (R$)
             </label>
             <input
               id="manual-revenue"
@@ -112,7 +112,7 @@ export default function ManualStatsForm({ currentData, onSaved, showStatus }: Ma
           </div>
           <div>
             <label htmlFor="manual-sales" className="mb-1 block text-xs font-medium text-ink-secondary">
-              Total sales
+              Total Sales
             </label>
             <input
               id="manual-sales"
@@ -128,7 +128,7 @@ export default function ManualStatsForm({ currentData, onSaved, showStatus }: Ma
           </div>
           <div>
             <label htmlFor="manual-growth" className="mb-1 block text-xs font-medium text-ink-secondary">
-              Growth % (optional)
+              Growth % (Optional)
             </label>
             <input
               id="manual-growth"
@@ -142,7 +142,7 @@ export default function ManualStatsForm({ currentData, onSaved, showStatus }: Ma
           </div>
           <div>
             <label htmlFor="manual-period" className="mb-1 block text-xs font-medium text-ink-secondary">
-              Data period
+              Data Period
             </label>
             <input
               id="manual-period"

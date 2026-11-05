@@ -200,7 +200,7 @@ export default function MilestoneAdmin() {
       )}
 
       {/* Tabs: scrollable pill row on small screens, 5-column grid from sm up */}
-      <div className="mt-6 flex gap-2 overflow-x-auto rounded-xl bg-surface-muted p-2 sm:grid sm:grid-cols-5">
+      <div className="no-scrollbar mt-6 flex snap-x gap-2 overflow-x-auto rounded-2xl bg-surface-muted p-2 sm:grid sm:grid-cols-5">
         {tabs.map((tab) => {
           const categoryData = getCategoryData(tab.key);
           const categoryCompleted = categoryData.filter((m) => m.isCompleted).length;
@@ -209,8 +209,10 @@ export default function MilestoneAdmin() {
           return (
             <button
               key={tab.key}
+              type="button"
+              aria-pressed={isActive}
               onClick={() => setActiveTab(tab.key)}
-              className={`min-w-[5.25rem] shrink-0 rounded-lg px-3 py-3 text-sm font-medium transition-colors sm:min-w-0 ${
+              className={`min-w-[5.25rem] shrink-0 snap-start rounded-xl px-3 py-3 text-sm font-medium transition-colors sm:min-w-0 ${
                 isActive
                   ? 'bg-surface text-accent shadow-card'
                   : 'text-ink-muted hover:bg-surface/60 hover:text-ink'

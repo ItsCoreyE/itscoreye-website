@@ -86,7 +86,7 @@ export default function CsvUploadCard({ onSaved, showStatus }: CsvUploadCardProp
         disabled={isUploading}
         className="btn-secondary mt-5 w-full text-sm disabled:opacity-50"
       >
-        {isUploading ? 'Processing…' : 'Choose CSV file'}
+        {isUploading ? 'Processing…' : 'Choose CSV File'}
       </button>
     </div>
   );

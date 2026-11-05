@@ -1,9 +1,28 @@
+import { EyeIcon, SparklesIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline';
 import Reveal from './Reveal';
 
-const facts = [
-  { value: '5+', label: 'Years Experience', colour: 'text-brand-purple' },
-  { value: '4', label: 'Active Ventures', colour: 'text-brand-blue' },
-  { value: '100%', label: 'Commitment', colour: 'text-brand-cyan-deep' },
+const principles = [
+  {
+    Icon: EyeIcon,
+    title: 'Transparent by Default',
+    body: 'Real sales figures, realistic odds and clear pricing across everything I run.',
+    chip: 'bg-accent-soft',
+    icon: 'text-accent',
+  },
+  {
+    Icon: SparklesIcon,
+    title: 'Quality over Volume',
+    body: 'Every item and every product gets the time it needs before it goes out.',
+    chip: 'bg-blue-soft',
+    icon: 'text-brand-blue',
+  },
+  {
+    Icon: ChatBubbleLeftRightIcon,
+    title: 'People First',
+    body: 'Five years in customer operations taught me that honest, fast support keeps people coming back.',
+    chip: 'bg-cyan-soft',
+    icon: 'text-brand-cyan-deep',
+  },
 ];
 
 const skillGroups = [
@@ -26,64 +45,68 @@ const skillGroups = [
 
 export default function About() {
   return (
-    <section id="about" className="scroll-mt-20 px-5 py-16 sm:px-6 sm:py-24 lg:px-8">
-      <div className="mx-auto max-w-5xl">
-        <Reveal>
-          <span className="section-label mb-3">About</span>
-          <h2 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-            A little about me
-          </h2>
-        </Reveal>
-
-        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-5 lg:gap-14">
-          <Reveal delay={75} className="lg:col-span-3">
-            <p className="text-lg leading-relaxed text-ink-secondary">
-              A results-driven entrepreneur with over five years of experience in customer
-              operations and service roles. I&apos;m passionate about building transparent
-              businesses that solve real problems and deliver measurable value.
+    <section id="about" className="section scroll-mt-24 bg-surface">
+      <div className="container-page">
+        <div className="grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
+          <Reveal>
+            <span className="section-label mb-4">About</span>
+            <h2 className="heading-section">The person behind the work.</h2>
+            <p className="mt-6 text-lg leading-relaxed text-ink-secondary">
+              I&apos;m Corey, a results-driven entrepreneur with over five years of experience in
+              customer operations and service roles. I build businesses that solve real problems
+              and deliver measurable value.
             </p>
             <p className="mt-4 leading-relaxed text-ink-secondary">
-              Whether it&apos;s creating digital items for millions of Roblox users, building fair
-              competition platforms, or providing reliable IT support, I focus on trust, quality,
-              and customer satisfaction. I thrive in fast-paced environments and demonstrate a
-              consistent commitment to professional development.
+              Whether it&apos;s designing digital items for Roblox players, running fair prize
+              competitions or keeping people&apos;s tech working, I focus on trust, quality and
+              looking after the people who use what I make.
             </p>
-            <blockquote className="mt-6 flex gap-4">
+            <figure className="mt-8 flex gap-4">
               <span aria-hidden className="w-[3px] shrink-0 self-stretch rounded-full bg-[image:var(--gradient-brand)]" />
-              <span className="text-ink italic">
+              <blockquote className="text-lg font-medium text-ink">
                 &ldquo;Building businesses that people can trust, one venture at a time.&rdquo;
-              </span>
-            </blockquote>
+              </blockquote>
+            </figure>
           </Reveal>
 
-          <Reveal delay={150} className="lg:col-span-2">
-            <div className="card grid grid-cols-3 gap-3 p-5 text-center sm:gap-4 sm:p-6">
-              {facts.map((fact) => (
-                <div key={fact.label}>
-                  <div className={`text-2xl font-semibold ${fact.colour}`}>{fact.value}</div>
-                  <div className="mt-1 text-xs leading-tight text-ink-muted">{fact.label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-1">
-              {skillGroups.map((group) => (
-                <div key={group.title}>
-                  <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold text-ink">
-                    <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${group.dot}`} />
-                    {group.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {group.skills.map((skill) => (
-                      <span key={skill} className="tag">
-                        {skill}
-                      </span>
-                    ))}
+          <div className="flex flex-col gap-10">
+            <div className="flex flex-col gap-3">
+              {principles.map((principle, index) => (
+                <Reveal key={principle.title} delay={index * 90}>
+                  <div className="card card-interactive flex gap-4 p-5 sm:p-6">
+                    <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${principle.chip}`}>
+                      <principle.Icon className={`h-5 w-5 ${principle.icon}`} />
+                    </span>
+                    <span>
+                      <span className="block font-semibold text-ink">{principle.title}</span>
+                      <span className="mt-1 block text-sm leading-relaxed text-ink-muted">{principle.body}</span>
+                    </span>
                   </div>
-                </div>
+                </Reveal>
               ))}
             </div>
-          </Reveal>
+
+            <Reveal delay={120}>
+              <h3 className="text-sm font-semibold tracking-[0.12em] text-ink-muted uppercase">Toolkit</h3>
+              <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-1">
+                {skillGroups.map((group) => (
+                  <div key={group.title}>
+                    <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-ink">
+                      <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${group.dot}`} />
+                      {group.title}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {group.skills.map((skill) => (
+                        <span key={skill} className="tag">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>

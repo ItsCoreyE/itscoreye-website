@@ -14,7 +14,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.itscoreye.com'),
-  title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
+  title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
   description: "Corey Edwards (ItsCoreyE) - Results-driven entrepreneur with over five years of experience. Roblox UGC Creator building quality digital items, founder of Odds Up (fair prize competitions), Fix My Rig (remote IT support), and Muzzle (a free moderation bot for Yapin'). Building transparent businesses across gaming, tech, and customer service.",
   keywords: ['Corey Edwards', 'ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Muzzle', 'Moderation Bot', "Yapin'", 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
   authors: [{ name: 'Corey Edwards' }],
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
+    title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
     description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur building transparent businesses. Operating four ventures: UGC digital items, Odds Up (competitions), Fix My Rig (IT support), and Muzzle (moderation bot).',
     url: 'https://www.itscoreye.com',
     siteName: 'Corey Edwards Portfolio',
@@ -39,14 +39,14 @@ export const metadata: Metadata = {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator'
+        alt: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder'
       }
     ]
   },
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Corey Edwards | ItsCoreyE - Entrepreneur & Creator',
+    title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
     description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, Fix My Rig IT support, and Muzzle moderation bot.',
     creator: '@itscoreye',
     images: ['/og-image.png']
@@ -114,7 +114,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
         <noscript>
-          <style>{`.reveal{opacity:1;transform:none}`}</style>
+          <style>{`.reveal{opacity:1;transform:none}.progress-fill{width:calc(var(--progress,0)*100%)}`}</style>
         </noscript>
       </head>
       <body className={inter.className}>{children}</body>

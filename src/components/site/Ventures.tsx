@@ -1,34 +1,19 @@
+import Image from 'next/image';
+import { ArrowRightIcon, ArrowUpRightIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import Reveal from './Reveal';
-import {
-  RocketLaunchIcon,
-  TrophyIcon,
-  ComputerDesktopIcon,
-  ShieldCheckIcon,
-} from '@heroicons/react/24/outline';
+import SpotlightGroup from './SpotlightGroup';
+import { ventures, ventureCount, type VentureAccent, type VentureStatus } from './ventureData';
+import { DISCORD_URL, iconPaths, BrandIcon } from './links';
+import { formatNumber } from '@/lib/format';
 import type { SalesData } from '@/types/ugc';
-
-const formatNumber = (value: number) => value.toLocaleString('en-GB');
-
-type VentureStatus = 'Live' | 'Coming Soon';
 
 const statusBadge: Record<VentureStatus, string> = {
   Live: 'bg-success-soft text-success',
   'Coming Soon': 'bg-surface-muted text-ink-muted',
 };
 
-type VentureAccent = 'purple' | 'blue' | 'cyan' | 'emerald';
-
 // Full literal class strings: Tailwind's scanner cannot see interpolated names
-const accentStyles: Record<
-  VentureAccent,
-  { chip: string; icon: string; link: string; hover: string }
-> = {
-  purple: {
-    chip: 'bg-accent-soft',
-    icon: 'text-accent',
-    link: 'text-accent',
-    hover: 'hover:border-accent-border',
-  },
+const accentStyles: Record<VentureAccent, { chip: string; icon: string; link: string; hover: string }> = {
   blue: {
     chip: 'bg-blue-soft',
     icon: 'text-brand-blue',
@@ -49,129 +34,147 @@ const accentStyles: Record<
   },
 };
 
+// Slight fan for the featured tile's product stack
+const fanStyles = [
+  'z-30 rotate-0',
+  'z-20 -ml-10 rotate-6 translate-y-2 sm:-ml-8',
+  'z-10 -ml-10 rotate-12 translate-y-5 sm:-ml-8',
+];
+
+const tileBase =
+  'card card-interactive spotlight group flex h-full flex-col p-6 sm:p-7';
+
 export default function Ventures({ sales }: { sales: SalesData }) {
-  const ventures: Array<{
-    id: string;
-    Icon: typeof RocketLaunchIcon;
-    name: string;
-    subtitle: string;
-    description: string;
-    status: VentureStatus;
-    accent: VentureAccent;
-    detail: string;
-    link: string;
-    isInternal: boolean;
-  }> = [
-    {
-      id: 'itscoreye',
-      Icon: RocketLaunchIcon,
-      name: 'ItsCoreyE',
-      subtitle: 'Roblox UGC Creator',
-      description: 'Quality UGC items for Roblox avatars with a focus on unique designs',
-      status: 'Live',
-      accent: 'purple',
-      detail: `${formatNumber(sales.totalRevenue)} R$ earned · ${formatNumber(sales.totalSales)} sales`,
-      link: '#ugc-business',
-      isInternal: true,
-    },
-    {
-      id: 'oddsup',
-      Icon: TrophyIcon,
-      name: 'Odds Up',
-      subtitle: 'Prize Competition Platform',
-      description: 'Fair competitions with realistic odds and transparent prizes',
-      status: 'Live',
-      accent: 'blue',
-      detail: 'Founded Dec 2025',
-      link: 'https://www.oddsup.co.uk',
-      isInternal: false,
-    },
-    {
-      id: 'fixmyrig',
-      Icon: ComputerDesktopIcon,
-      name: 'Fix My Rig',
-      subtitle: 'Remote IT Support',
-      description: 'Expert tech assistance from anywhere in the world',
-      status: 'Coming Soon',
-      accent: 'cyan',
-      detail: 'Founded Feb 2025',
-      link: 'https://www.fixmyrig.co.uk',
-      isInternal: false,
-    },
-    {
-      id: 'muzzle',
-      Icon: ShieldCheckIcon,
-      name: 'Muzzle',
-      subtitle: "Yapin' Moderation Bot",
-      description:
-        "Free moderation bot for Yapin' servers with automod, raid protection, and a staff dashboard",
-      status: 'Live',
-      accent: 'emerald',
-      detail: 'Founded Nov 2026',
-      link: 'https://getmuzzle.tech',
-      isInternal: false,
-    },
-  ];
+  const showcase = sales.topItems.filter((item) => item.thumbnail).slice(0, 3);
 
   return (
-    <section id="ventures" className="scroll-mt-20 px-5 py-16 sm:px-6 sm:py-24 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <section id="ventures" className="section scroll-mt-24">
+      <div className="container-page">
         <Reveal>
-          <span className="section-label mb-3">Ventures</span>
-          <h2 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">
-            What I&apos;m building
+          <span className="section-label mb-4">What I Do</span>
+          <h2 className="heading-section max-w-3xl">
+            One creator, {ventureCount} ventures, all built in the open.
           </h2>
-          <p className="mt-3 max-w-xl text-ink-muted">
-            Four ventures focused on transparency, quality, and customer satisfaction.
+          <p className="section-intro">
+            From avatar items on the Roblox marketplace to prize competitions and moderation
+            tools, here is everything I run right now.
           </p>
         </Reveal>
 
-        <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
+        <SpotlightGroup className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+          {/* Featured: Roblox UGC */}
+          <Reveal className="sm:col-span-2">
+            <a
+              href="#ugc-business"
+              className={`${tileBase} hover:border-accent-border overflow-hidden lg:flex-row lg:items-center lg:gap-8`}
+            >
+              <div className="flex flex-1 flex-col">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[image:var(--gradient-brand-cta)] shadow-glow-brand">
+                    <SparklesIcon className="h-6 w-6 text-white" />
+                  </div>
+                  <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusBadge.Live}`}>Live</span>
+                </div>
+                <p className="mt-6 text-sm font-medium text-accent">Roblox UGC Creator</p>
+                <h3 className="mt-1 text-2xl font-semibold tracking-tight text-ink">ItsCoreyE</h3>
+                <p className="mt-3 max-w-md leading-relaxed text-ink-secondary">
+                  I design and publish avatar accessories that players buy and wear across Roblox.
+                  This is where it all started.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2 text-sm">
+                  <span className="tag bg-surface font-medium text-ink">
+                    {formatNumber(sales.totalRevenue)} R$ earned
+                  </span>
+                  <span className="tag bg-surface font-medium text-ink">
+                    {formatNumber(sales.totalSales)} sold
+                  </span>
+                </div>
+                <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+                  See the Numbers
+                  <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </div>
+
+              {showcase.length > 0 && (
+                <div aria-hidden className="mt-8 flex justify-center pb-4 lg:mt-0 lg:w-[44%] lg:shrink-0">
+                  {showcase.map((item, index) => (
+                    <div
+                      key={item.name}
+                      className={`relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl border border-line bg-[image:linear-gradient(160deg,var(--color-wash-violet),var(--color-wash-cyan))] shadow-card transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-0 sm:h-32 sm:w-32 ${fanStyles[index]}`}
+                    >
+                      <Image
+                        src={item.thumbnail as string}
+                        alt=""
+                        width={256}
+                        height={256}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </a>
+          </Reveal>
+
           {ventures.map((venture, index) => {
             const accent = accentStyles[venture.accent];
             return (
-            <Reveal key={venture.id} delay={index * 75}>
-              <a
-                href={venture.link}
-                target={venture.isInternal ? undefined : '_blank'}
-                rel={venture.isInternal ? undefined : 'noopener noreferrer'}
-                className={`card card-interactive group flex h-full flex-col p-6 sm:p-7 ${accent.hover}`}
-              >
-                <div className="flex items-start justify-between">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${accent.chip}`}>
-                    <venture.Icon className={`h-6 w-6 ${accent.icon}`} />
+              <Reveal key={venture.id} delay={(index + 1) * 80}>
+                <a
+                  href={venture.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${tileBase} ${accent.hover}`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${accent.chip}`}>
+                      <venture.Icon className={`h-6 w-6 ${accent.icon}`} />
+                    </div>
+                    <span className={`rounded-full px-3 py-1 text-xs font-medium ${statusBadge[venture.status]}`}>
+                      {venture.status}
+                    </span>
                   </div>
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${statusBadge[venture.status]}`}
-                  >
-                    {venture.status}
-                  </span>
-                </div>
-
-                <h3 className="mt-5 text-xl font-semibold text-ink">{venture.name}</h3>
-                <p className="text-sm text-ink-muted">{venture.subtitle}</p>
-                <p className="mt-3 flex-grow text-sm leading-relaxed text-ink-secondary">
-                  {venture.description}
-                </p>
-
-                <p className="mt-4 text-sm font-medium text-ink">{venture.detail}</p>
-
-                <div className={`mt-4 flex items-center gap-1.5 border-t border-line pt-4 text-sm font-medium ${accent.link}`}>
-                  <span>{venture.isInternal ? 'View details' : 'Visit site'}</span>
-                  <svg
-                    className="h-4 w-4 transition-transform group-hover:translate-x-1"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </div>
-              </a>
-            </Reveal>
+                  <p className={`mt-6 text-sm font-medium ${accent.link}`}>{venture.tagline}</p>
+                  <h3 className="mt-1 text-xl font-semibold tracking-tight text-ink">{venture.name}</h3>
+                  <p className="mt-3 flex-grow text-sm leading-relaxed text-ink-secondary">
+                    {venture.description}
+                  </p>
+                  <div className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm">
+                    <span className="text-ink-muted">Since {venture.founded}</span>
+                    <span className={`inline-flex items-center gap-1 font-medium ${accent.link}`}>
+                      {venture.domain}
+                      <ArrowUpRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </span>
+                  </div>
+                </a>
+              </Reveal>
             );
           })}
-        </div>
+
+          {/* Community */}
+          <Reveal delay={(ventures.length + 1) * 80}>
+            <a
+              href={DISCORD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${tileBase} border-transparent bg-[image:var(--gradient-brand-cta)] text-white hover:shadow-glow-brand`}
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15">
+                <BrandIcon path={iconPaths.discord} className="h-6 w-6 text-white" />
+              </div>
+              <p className="mt-6 text-sm font-medium text-white/80">Community</p>
+              <h3 className="mt-1 text-xl font-semibold tracking-tight text-white">Join the Discord</h3>
+              <p className="mt-3 flex-grow text-sm leading-relaxed text-white/90">
+                The ItsCoreyE community: new UGC, updates from every venture, and a place to chat
+                with me directly.
+              </p>
+              <div className="mt-6 flex items-center justify-between gap-3 border-t border-white/20 pt-4 text-sm font-medium">
+                <span>discord.gg/itscoreye</span>
+                <ArrowUpRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </div>
+            </a>
+          </Reveal>
+        </SpotlightGroup>
       </div>
     </section>
   );

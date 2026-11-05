@@ -17,10 +17,10 @@ export default async function Home() {
     <>
       <Header />
       <main>
-        <Hero />
-        <About />
+        <Hero sales={sales} />
         <Ventures sales={sales} />
         <UgcShowcase sales={sales} milestones={milestones} />
+        <About />
         <Contact />
       </main>
       <Footer />
