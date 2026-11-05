@@ -60,18 +60,18 @@ export default function Hero({ sales }: { sales: SalesData }) {
             marketplace and run three ventures of my own: Odds Up, Muzzle and Fix My Rig.
           </p>
 
-          <div className="animate-rise mt-9 grid grid-cols-2 gap-3 sm:flex" style={delay(240)}>
-            <a href="#ventures" className="btn-primary group px-4 sm:px-6">
+          <div className="animate-rise mt-9 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:flex" style={delay(240)}>
+            <a href="#ventures" className="btn-primary group px-4 whitespace-nowrap sm:px-6">
               See What I Do
               <ArrowRightIcon className="hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:block" />
             </a>
-            <a href="#contact" className="btn-secondary px-4 sm:px-6">
+            <a href="#contact" className="btn-secondary px-4 whitespace-nowrap sm:px-6">
               Get in Touch
             </a>
           </div>
 
           <dl
-            className="animate-rise mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-card border border-line bg-line shadow-card sm:grid-cols-4"
+            className="animate-rise mt-10 grid grid-cols-2 sm:mt-12 gap-px overflow-hidden rounded-card border border-line bg-line shadow-card sm:grid-cols-4"
             style={delay(320)}
           >
             {stats.map((stat) => (

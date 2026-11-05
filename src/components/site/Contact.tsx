@@ -21,7 +21,7 @@ export default function Contact() {
               />
             </div>
 
-            <div className="relative px-6 py-14 text-center sm:px-12 sm:py-20">
+            <div className="relative px-5 py-12 text-center sm:px-12 sm:py-20">
               <span className="section-label mb-4">Contact</span>
               <h2 className="heading-section mx-auto max-w-2xl">
                 Have an idea, a collab or a question? <span className="gradient-text">Let&apos;s talk.</span>

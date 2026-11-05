@@ -74,7 +74,7 @@ export default function Footer() {
           </div>
 
           <div className="mt-14 flex flex-col-reverse items-center justify-between gap-4 border-t border-line pt-8 sm:flex-row">
-            <p className="text-sm text-ink-muted">&copy; {currentYear} Corey Edwards. All rights reserved.</p>
+            <p className="text-center text-sm text-ink-muted sm:text-left">&copy; {currentYear} Corey Edwards. All rights reserved.</p>
             <div className="flex items-center gap-2">
               <Link
                 href="/admin"

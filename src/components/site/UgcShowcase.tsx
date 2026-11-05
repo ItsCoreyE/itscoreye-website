@@ -58,7 +58,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
 
         {/* Monthly snapshot */}
         <Reveal delay={80}>
-          <div className="card mt-12 overflow-hidden">
+          <div className="card mt-10 overflow-hidden sm:mt-12">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-5 sm:px-8">
               <div>
                 <h3 className="text-lg font-semibold tracking-tight text-ink">Monthly Snapshot</h3>
@@ -140,7 +140,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
 
         {/* Best sellers */}
         {topItems.length > 0 && (
-          <div className="mt-20">
+          <div className="mt-14 sm:mt-20">
             <Reveal>
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
@@ -204,9 +204,9 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
         )}
 
         {/* Road to Verified Creator */}
-        <Reveal className="mt-20">
-          <div className="card-gradient-border rounded-[var(--radius-panel)] shadow-card p-6 sm:p-10">
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+        <Reveal className="mt-14 sm:mt-20">
+          <div className="card-gradient-border rounded-[var(--radius-panel)] shadow-card p-5 sm:p-10">
+            <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
               <div>
                 <StatusBadge tone={isVerified ? 'done' : 'progress'}>
                   {isVerified ? 'Verified' : 'In Progress'}
@@ -220,7 +220,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
                   progress.
                 </p>
                 <div className="mt-6 flex items-baseline gap-3">
-                  <span className="text-5xl font-semibold tracking-tight">
+                  <span className="shrink-0 text-5xl font-semibold tracking-tight whitespace-nowrap">
                     <CountUp value={overall} gradient />
                     <span className="gradient-text">%</span>
                   </span>
@@ -263,7 +263,7 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
         </Reveal>
 
         {/* Follow along */}
-        <Reveal className="mt-12">
+        <Reveal className="mt-10 sm:mt-12">
           <div className="flex flex-col items-center gap-4 text-center">
             <p className="text-sm font-medium text-ink-muted">Follow the UGC Journey</p>
             <div className="flex flex-wrap items-center justify-center gap-3">

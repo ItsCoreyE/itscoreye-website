@@ -47,7 +47,7 @@ export default function About() {
   return (
     <section id="about" className="section scroll-mt-24 bg-surface">
       <div className="container-page">
-        <div className="grid grid-cols-1 gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
+        <div className="grid grid-cols-1 gap-10 sm:gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
           <Reveal>
             <span className="section-label mb-4">About</span>
             <h2 className="heading-section">The person behind the work.</h2>

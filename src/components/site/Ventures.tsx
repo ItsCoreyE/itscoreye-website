@@ -43,7 +43,7 @@ const fanStyles = [
 ];
 
 const tileBase =
-  'card card-interactive spotlight group flex h-full flex-col p-6 sm:p-7';
+  'card card-interactive spotlight group flex h-full flex-col p-5 sm:p-7';
 
 export default function Ventures({ sales }: { sales: SalesData }) {
   const showcase = sales.topItems.filter((item) => item.thumbnail).slice(0, 3);
@@ -63,7 +63,7 @@ export default function Ventures({ sales }: { sales: SalesData }) {
           </p>
         </Reveal>
 
-        <SpotlightGroup className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+        <SpotlightGroup className="mt-10 sm:mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
           {/* Featured: Roblox UGC */}
           <Reveal className="sm:col-span-2">
             <a
@@ -142,9 +142,9 @@ export default function Ventures({ sales }: { sales: SalesData }) {
                   <p className="mt-3 flex-grow text-sm leading-relaxed text-ink-secondary">
                     {venture.description}
                   </p>
-                  <div className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4 text-sm">
-                    <span className="text-ink-muted">Since {venture.founded}</span>
-                    <span className={`inline-flex items-center gap-1 font-medium ${accent.link}`}>
+                  <div className="mt-6 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-line pt-4 text-sm">
+                    <span className="whitespace-nowrap text-ink-muted">Since {venture.founded}</span>
+                    <span className={`inline-flex items-center gap-1 font-medium whitespace-nowrap ${accent.link}`}>
                       {venture.domain}
                       <ArrowUpRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </span>
@@ -171,9 +171,9 @@ export default function Ventures({ sales }: { sales: SalesData }) {
                 The ItsCoreyE community: new UGC, updates from every venture, and a place to chat
                 with me directly.
               </p>
-              <div className="mt-6 flex items-center justify-between gap-3 border-t border-white/20 pt-4 text-sm">
-                <span className="text-white/75">Free to Join</span>
-                <span className="inline-flex items-center gap-1 font-medium">
+              <div className="mt-6 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-white/20 pt-4 text-sm">
+                <span className="whitespace-nowrap text-white/75">Free to Join</span>
+                <span className="inline-flex items-center gap-1 font-medium whitespace-nowrap">
                   discord.gg/itscoreye
                   <ArrowUpRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>

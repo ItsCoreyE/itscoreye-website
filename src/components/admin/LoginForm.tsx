@@ -68,7 +68,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
       </Link>
 
       <div className="relative flex flex-1 items-center justify-center py-10">
-        <div className="animate-rise card w-full max-w-md p-7 sm:p-10">
+        <div className="animate-rise card w-full max-w-md p-6 sm:p-10">
           <div className="text-center">
             <Image
               src="/icons/android-chrome-512x512.png"
@@ -93,7 +93,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
                   id="admin-password"
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
-                  placeholder="Enter admin password"
+                  placeholder="Enter password"
                   value={password}
                   onChange={(event) => {
                     setPassword(event.target.value);
