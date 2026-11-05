@@ -36,10 +36,10 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: '/og-image.png?v=3',
         width: 1200,
         height: 630,
-        alt: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder'
+        alt: 'Corey Edwards, Roblox UGC Creator and Founder'
       }
     ]
   },
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
     description: 'Corey Edwards (ItsCoreyE) - Roblox UGC Creator and entrepreneur. Operating: UGC digital items, Odds Up competitions, Fix My Rig IT support, and Muzzle moderation bot.',
     creator: '@itscoreye',
-    images: ['/og-image.png']
+    images: ['/og-image.png?v=3']
   },
 
   robots: {

@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { ArrowRightIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
 import CountUp from './CountUp';
-import { ROBLOX_PROFILE_URL } from './links';
 import { ventures, ventureCount } from './ventureData';
+import { reportMonth } from '@/lib/format';
 import type { SalesData } from '@/types/ugc';
 
 const delay = (ms: number) => ({ animationDelay: `${ms}ms` });
@@ -11,9 +11,13 @@ export default function Hero({ sales }: { sales: SalesData }) {
   const bestSeller = sales.topItems[0];
   const newestLaunch = ventures.find((v) => v.id === 'muzzle');
 
+  // Sales figures are one month's report, so label them with that month
+  const month = reportMonth(sales.dataPeriod);
+  const monthSuffix = month ? ` in ${month.short}` : ' Last Month';
+
   const stats = [
-    { label: 'Robux Earned', value: sales.totalRevenue },
-    { label: 'UGC Items Sold', value: sales.totalSales },
+    { label: `Robux Earned${monthSuffix}`, value: sales.totalRevenue },
+    { label: `UGC Sales${monthSuffix}`, value: sales.totalSales },
     { label: 'Ventures', value: ventureCount },
     { label: 'Years Experience', value: 5, suffix: '+' },
   ];
@@ -40,27 +44,9 @@ export default function Hero({ sales }: { sales: SalesData }) {
 
       <div className="container-page relative grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr] lg:gap-12">
         <div>
-          <a
-            href={ROBLOX_PROFILE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass animate-rise group inline-flex min-h-11 items-center gap-2.5 rounded-full py-1.5 pr-4 pl-1.5 text-sm shadow-card transition-colors hover:border-accent-border"
-          >
-            <Image
-              src="/profile.webp"
-              alt=""
-              width={64}
-              height={64}
-              priority
-              className="h-8 w-8 rounded-full object-cover"
-            />
-            <span className="font-semibold text-ink">ItsCoreyE</span>
-            <span aria-hidden className="h-4 w-px bg-line" />
-            <span className="text-ink-muted transition-colors group-hover:text-accent">Roblox UGC Creator</span>
-          </a>
 
           <h1
-            className="animate-rise mt-7 max-w-3xl text-[2.6rem] leading-[1.04] font-semibold tracking-[-0.04em] text-ink sm:text-6xl lg:text-[3.6rem] xl:text-[4rem]"
+            className="animate-rise max-w-3xl text-[2.6rem] leading-[1.04] font-semibold tracking-[-0.04em] text-ink sm:text-6xl lg:text-[3.6rem] xl:text-[4rem]"
             style={delay(80)}
           >
             I design <span className="gradient-text">Roblox UGC</span> and build businesses people trust.
@@ -70,8 +56,8 @@ export default function Hero({ sales }: { sales: SalesData }) {
             className="animate-rise mt-6 max-w-xl text-lg leading-relaxed text-ink-secondary sm:text-xl"
             style={delay(160)}
           >
-            I&apos;m Corey Edwards. I create avatar accessories for the Roblox marketplace and run three
-            ventures of my own: Odds Up, Muzzle and Fix My Rig.
+            I&apos;m Corey Edwards, known as ItsCoreyE. I create avatar accessories for the Roblox
+            marketplace and run three ventures of my own: Odds Up, Muzzle and Fix My Rig.
           </p>
 
           <div className="animate-rise mt-9 grid grid-cols-2 gap-3 sm:flex" style={delay(240)}>
@@ -89,7 +75,7 @@ export default function Hero({ sales }: { sales: SalesData }) {
             style={delay(320)}
           >
             {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col-reverse bg-surface/90 px-4 py-4 sm:px-5">
+              <div key={stat.label} className="flex flex-col-reverse justify-end bg-surface/90 px-4 py-4 sm:px-5">
                 <dt className="mt-1 text-xs leading-snug text-ink-muted sm:text-sm">{stat.label}</dt>
                 <dd className="text-2xl font-semibold tracking-tight text-ink sm:text-[1.65rem]">
                   <CountUp value={stat.value} />
@@ -138,7 +124,7 @@ export default function Hero({ sales }: { sales: SalesData }) {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-medium text-ink-muted">Best Seller</p>
+                  <p className="text-xs font-medium text-ink-muted">{month ? `Top Seller in ${month.short}` : 'Top Seller'}</p>
                   <p className="max-w-[9rem] truncate text-sm font-semibold text-ink">{bestSeller.name}</p>
                   <p className="text-xs font-medium text-success">
                     {bestSeller.sales.toLocaleString('en-GB')} sold

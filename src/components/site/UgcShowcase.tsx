@@ -1,11 +1,18 @@
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
-import { CheckBadgeIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowTrendingDownIcon,
+  ArrowTrendingUpIcon,
+  BanknotesIcon,
+  ChartBarIcon,
+  ShoppingBagIcon,
+} from '@heroicons/react/24/outline';
 import Reveal from './Reveal';
 import CountUp from './CountUp';
+import StatusBadge from './StatusBadge';
 import { socialLinks, BrandIcon } from './links';
 import { getCategoryProgress } from '@/lib/milestones';
-import { formatAssetType, formatDate, formatNumber } from '@/lib/format';
+import { formatAssetType, formatDate, formatNumber, reportMonth } from '@/lib/format';
 import type { Milestone, SalesData } from '@/types/ugc';
 
 interface UgcShowcaseProps {
@@ -21,6 +28,8 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
   const categoryProgress = getCategoryProgress(milestones);
   const growth = sales.growthPercentage;
   const perSale = sales.totalSales > 0 ? sales.totalRevenue / sales.totalSales : 0;
+  // Every sales figure is a single monthly report, never an all-time total
+  const month = reportMonth(sales.dataPeriod);
 
   const tracked = categoryProgress.reduce(
     (sum, category) => ({ done: sum.done + category.completed, total: sum.total + category.total }),
@@ -42,55 +51,90 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
             <span className="gradient-text">ItsCoreyE</span> on Roblox
           </h2>
           <p className="section-intro">
-            Real numbers from the Roblox marketplace. Every figure below comes straight from my
-            sales reports.
+            Real numbers from the Roblox marketplace, taken straight from my monthly sales
+            reports.
           </p>
         </Reveal>
 
-        {/* Headline numbers */}
+        {/* Monthly snapshot */}
         <Reveal delay={80}>
           <div className="card mt-12 overflow-hidden">
-            <dl className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3">
-              <div className="col-span-2 flex flex-col-reverse bg-surface p-6 sm:col-span-1 sm:p-8">
-                <dt className="mt-2 text-sm text-ink-muted">Robux Earned</dt>
-                <dd className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                  <span className="text-4xl font-semibold tracking-tight sm:text-5xl">
-                    <CountUp value={sales.totalRevenue} gradient />
-                  </span>
-                  {growth !== 0 && (
-                    <span
-                      className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                        growth > 0 ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
-                      }`}
-                    >
-                      {growth > 0 ? '+' : ''}
-                      {growth}% vs last month
-                    </span>
-                  )}
-                </dd>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-5 sm:px-8">
+              <div>
+                <h3 className="text-lg font-semibold tracking-tight text-ink">Monthly Snapshot</h3>
+                <p className="mt-0.5 text-sm text-ink-muted">
+                  {month ? `${month.full} sales report` : 'Latest monthly sales report'}
+                </p>
               </div>
-              <div className="flex flex-col-reverse bg-surface p-6 sm:p-8">
-                <dt className="mt-2 text-sm text-ink-muted">Items Sold</dt>
-                <dd className="text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
-                  <CountUp value={sales.totalSales} />
-                </dd>
-              </div>
-              <div className="flex flex-col-reverse bg-surface p-6 sm:p-8">
-                <dt className="mt-2 text-sm text-ink-muted">Robux per Sale</dt>
-                <dd className="text-3xl font-semibold tracking-tight text-ink sm:text-5xl">
-                  <CountUp value={perSale} decimals={1} />
-                </dd>
-              </div>
-            </dl>
-            <div className="flex flex-col gap-1 border-t border-line bg-surface-muted/60 px-6 py-4 text-sm text-ink-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
-              <span className="break-words">Period: {sales.dataPeriod || 'Current period'}</span>
               {lastUpdated && (
-                <span className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" />
+                <span className="inline-flex h-7 items-center gap-2 rounded-full border border-line bg-surface-muted px-3 text-xs font-medium text-ink-muted">
+                  <span aria-hidden className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" />
                   Updated {lastUpdated}
                 </span>
               )}
             </div>
+
+            <dl className="grid grid-cols-1 gap-px bg-line sm:grid-cols-3">
+              <div className="flex flex-col bg-surface p-5 sm:p-8">
+                <dt className="flex items-center gap-2.5 text-sm font-medium text-ink-muted">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-soft">
+                    <BanknotesIcon className="h-4 w-4 text-accent" />
+                  </span>
+                  Robux Earned
+                </dt>
+                <dd className="mt-4 text-4xl font-semibold tracking-tight lg:text-5xl">
+                  <CountUp value={sales.totalRevenue} gradient />
+                </dd>
+                <dd className="mt-3 flex min-h-7 items-center text-sm text-ink-muted">
+                  {growth !== 0 ? (
+                    <span
+                      className={`inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium ${
+                        growth > 0 ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
+                      }`}
+                    >
+                      {growth > 0 ? (
+                        <ArrowTrendingUpIcon className="h-4 w-4" />
+                      ) : (
+                        <ArrowTrendingDownIcon className="h-4 w-4" />
+                      )}
+                      {Math.abs(growth)}% vs previous month
+                    </span>
+                  ) : (
+                    'Earned across all items'
+                  )}
+                </dd>
+              </div>
+
+              <div className="flex flex-col bg-surface p-5 sm:p-8">
+                <dt className="flex items-center gap-2.5 text-sm font-medium text-ink-muted">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-soft">
+                    <ShoppingBagIcon className="h-4 w-4 text-brand-blue" />
+                  </span>
+                  Items Sold
+                </dt>
+                <dd className="mt-4 text-4xl font-semibold tracking-tight text-ink lg:text-5xl">
+                  <CountUp value={sales.totalSales} />
+                </dd>
+                <dd className="mt-3 flex min-h-7 items-center text-sm text-ink-muted">
+                  Units sold across all items
+                </dd>
+              </div>
+
+              <div className="flex flex-col bg-surface p-5 sm:p-8">
+                <dt className="flex items-center gap-2.5 text-sm font-medium text-ink-muted">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-soft">
+                    <ChartBarIcon className="h-4 w-4 text-brand-cyan-deep" />
+                  </span>
+                  Robux per Sale
+                </dt>
+                <dd className="mt-4 text-4xl font-semibold tracking-tight text-ink lg:text-5xl">
+                  <CountUp value={perSale} decimals={1} />
+                </dd>
+                <dd className="mt-3 flex min-h-7 items-center text-sm text-ink-muted">
+                  Average earned per unit
+                </dd>
+              </div>
+            </dl>
           </div>
         </Reveal>
 
@@ -101,7 +145,9 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
               <div className="flex flex-wrap items-end justify-between gap-3">
                 <div>
                   <h3 className="text-2xl font-semibold tracking-tight text-ink">Best Sellers</h3>
-                  <p className="mt-1 text-ink-muted">Ranked by total units sold.</p>
+                  <p className="mt-1 text-ink-muted">
+                    Ranked by units sold{month ? ` in ${month.full}` : ' last month'}.
+                  </p>
                 </div>
                 <p className="text-sm text-ink-muted sm:hidden">Swipe to see more</p>
               </div>
@@ -162,14 +208,9 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
           <div className="card-gradient-border rounded-[var(--radius-panel)] shadow-card p-6 sm:p-10">
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
               <div>
-                <span
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
-                    isVerified ? 'bg-success-soft text-success' : 'bg-accent-soft text-accent'
-                  }`}
-                >
-                  {isVerified && <CheckBadgeIcon className="h-4 w-4" />}
+                <StatusBadge tone={isVerified ? 'done' : 'progress'}>
                   {isVerified ? 'Verified' : 'In Progress'}
-                </span>
+                </StatusBadge>
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                   Road to Verified Creator
                 </h3>
