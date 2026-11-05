@@ -63,7 +63,7 @@ export default function Ventures({ sales }: { sales: SalesData }) {
           </p>
         </Reveal>
 
-        <SpotlightGroup className="mt-10 sm:mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3">
+        <SpotlightGroup className="mt-8 grid grid-cols-1 gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4 md:gap-5 lg:grid-cols-3">
           {/* Featured: Roblox UGC */}
           <Reveal className="sm:col-span-2">
             <a

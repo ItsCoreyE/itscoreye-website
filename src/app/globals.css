@@ -208,7 +208,7 @@
 
   /* Page rhythm: every homepage section shares this padding and container */
   .section {
-    @apply px-5 py-16 sm:px-6 sm:py-28 lg:px-8 lg:py-32;
+    @apply px-5 py-12 sm:px-6 sm:py-28 lg:px-8 lg:py-32;
   }
 
   .container-page {
