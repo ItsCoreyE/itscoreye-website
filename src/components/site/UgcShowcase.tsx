@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import Image from 'next/image';
 import {
   ArrowTrendingDownIcon,
@@ -45,12 +45,12 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-[image:linear-gradient(90deg,transparent,var(--color-accent-border),transparent)]" />
 
       <div className="container-page relative">
-        <Reveal>
+        <Reveal className="text-center">
           <span className="section-label mb-4">Featured Venture</span>
           <h2 className="heading-section">
             <span className="gradient-text">ItsCoreyE</span> on Roblox
           </h2>
-          <p className="section-intro">
+          <p className="section-intro mx-auto">
             Real numbers from the Roblox marketplace, taken straight from my monthly sales
             reports.
           </p>
@@ -59,36 +59,32 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
         {/* Monthly snapshot */}
         <Reveal delay={80}>
           <div className="card mt-8 overflow-hidden sm:mt-12">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-5 sm:px-8">
-              <div>
-                <h3 className="text-lg font-semibold tracking-tight text-ink">Monthly Snapshot</h3>
-                <p className="mt-0.5 text-sm text-ink-muted">
-                  {month ? `${month.full} sales report` : 'Latest monthly sales report'}
-                </p>
-              </div>
+            {/* Centred header so the card reads as one summary, matching the section heading above */}
+            <div className="flex flex-col items-center gap-1 border-b border-line px-5 py-6 text-center sm:px-8">
+              <h3 className="text-lg font-semibold tracking-tight text-ink">Monthly Snapshot</h3>
+              <p className="text-sm text-ink-muted">
+                {month ? `${month.full} sales report` : 'Latest monthly sales report'}
+              </p>
               {lastUpdated && (
-                <span className="inline-flex h-7 items-center gap-2 rounded-full border border-line bg-surface-muted px-3 text-xs font-medium text-ink-muted">
+                <span className="mt-2 inline-flex h-7 items-center gap-2 rounded-full border border-line bg-surface-muted px-3 text-xs font-medium text-ink-muted">
                   <span aria-hidden className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" />
                   Updated {lastUpdated}
                 </span>
               )}
             </div>
 
-            <dl className="grid grid-cols-1 gap-px bg-line sm:grid-cols-3">
-              <div className="flex flex-col bg-surface p-5 sm:p-8">
-                <dt className="flex items-center gap-2.5 text-sm font-medium text-ink-muted">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-soft">
-                    <BanknotesIcon className="h-4 w-4 text-accent" />
-                  </span>
-                  Robux Earned
-                </dt>
-                <dd className="mt-4 text-4xl font-semibold tracking-tight lg:text-5xl">
-                  <CountUp value={sales.totalRevenue} gradient />
-                </dd>
-                <dd className="mt-3 flex min-h-7 items-center text-sm text-ink-muted">
-                  {growth !== 0 ? (
+            {/* Robux spans the full width on phones; the other two sit side by side. Three across from sm. */}
+            <dl className="grid grid-cols-2 gap-px bg-line sm:grid-cols-3">
+              <SnapshotStat
+                className="col-span-2 sm:col-span-1"
+                label="Robux Earned"
+                icon={<BanknotesIcon className="h-5 w-5 text-accent" />}
+                chip="bg-accent-soft"
+                value={<CountUp value={sales.totalRevenue} gradient />}
+                note={
+                  growth !== 0 ? (
                     <span
-                      className={`inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium ${
+                      className={`inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium whitespace-nowrap ${
                         growth > 0 ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'
                       }`}
                     >
@@ -100,40 +96,24 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
                       {Math.abs(growth)}% vs previous month
                     </span>
                   ) : (
-                    'Earned across all items'
-                  )}
-                </dd>
-              </div>
-
-              <div className="flex flex-col bg-surface p-5 sm:p-8">
-                <dt className="flex items-center gap-2.5 text-sm font-medium text-ink-muted">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-soft">
-                    <ShoppingBagIcon className="h-4 w-4 text-brand-blue" />
-                  </span>
-                  Items Sold
-                </dt>
-                <dd className="mt-4 text-4xl font-semibold tracking-tight text-ink lg:text-5xl">
-                  <CountUp value={sales.totalSales} />
-                </dd>
-                <dd className="mt-3 flex min-h-7 items-center text-sm text-ink-muted">
-                  Units sold across all items
-                </dd>
-              </div>
-
-              <div className="flex flex-col bg-surface p-5 sm:p-8">
-                <dt className="flex items-center gap-2.5 text-sm font-medium text-ink-muted">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-soft">
-                    <ChartBarIcon className="h-4 w-4 text-brand-cyan-deep" />
-                  </span>
-                  Robux per Sale
-                </dt>
-                <dd className="mt-4 text-4xl font-semibold tracking-tight text-ink lg:text-5xl">
-                  <CountUp value={perSale} decimals={1} />
-                </dd>
-                <dd className="mt-3 flex min-h-7 items-center text-sm text-ink-muted">
-                  Average earned per unit
-                </dd>
-              </div>
+                    'Across all items'
+                  )
+                }
+              />
+              <SnapshotStat
+                label="Items Sold"
+                icon={<ShoppingBagIcon className="h-5 w-5 text-brand-blue" />}
+                chip="bg-blue-soft"
+                value={<CountUp value={sales.totalSales} />}
+                note="Across all items"
+              />
+              <SnapshotStat
+                label="Robux per Sale"
+                icon={<ChartBarIcon className="h-5 w-5 text-brand-cyan-deep" />}
+                chip="bg-cyan-soft"
+                value={<CountUp value={perSale} decimals={1} />}
+                note="Average per unit"
+              />
             </dl>
           </div>
         </Reveal>
@@ -142,14 +122,12 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
         {topItems.length > 0 && (
           <div className="mt-10 sm:mt-20">
             <Reveal>
-              <div className="flex flex-wrap items-end justify-between gap-3">
-                <div>
-                  <h3 className="text-2xl font-semibold tracking-tight text-ink">Best Sellers</h3>
-                  <p className="mt-1 text-ink-muted">
-                    Ranked by units sold{month ? ` in ${month.full}` : ' last month'}.
-                  </p>
-                </div>
-                <p className="text-sm text-ink-muted sm:hidden">Swipe to see more</p>
+              <div className="text-center">
+                <h3 className="text-2xl font-semibold tracking-tight text-ink">Best Sellers</h3>
+                <p className="mt-1 text-ink-muted">
+                  Ranked by units sold{month ? ` in ${month.full}` : ' last month'}.
+                </p>
+                <p className="mt-1 text-sm text-ink-muted sm:hidden">Swipe to see more</p>
               </div>
             </Reveal>
 
@@ -207,19 +185,19 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
         <Reveal className="mt-10 sm:mt-20">
           <div className="card-gradient-border rounded-[var(--radius-panel)] shadow-card p-5 sm:p-10">
             <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
-              <div>
+              <div className="text-center lg:text-left">
                 <StatusBadge tone={isVerified ? 'done' : 'progress'}>
                   {isVerified ? 'Verified' : 'In Progress'}
                 </StatusBadge>
                 <h3 className="mt-4 text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
                   Road to Verified Creator
                 </h3>
-                <p className="mt-3 leading-relaxed text-ink-muted">
+                <p className="mx-auto mt-3 max-w-xl leading-relaxed text-ink-muted lg:mx-0">
                   Roblox verification needs 2,000,000 Robux earned within 90 days and 200,000 total
                   items sold. Every milestone here is checked by hand, so you are seeing the real
                   progress.
                 </p>
-                <div className="mt-6 flex items-baseline gap-3">
+                <div className="mt-6 flex items-baseline justify-center gap-3 lg:justify-start">
                   <span className="shrink-0 text-5xl font-semibold tracking-tight whitespace-nowrap">
                     <CountUp value={overall} gradient />
                     <span className="gradient-text">%</span>
@@ -284,5 +262,34 @@ export default function UgcShowcase({ sales, milestones }: UgcShowcaseProps) {
         </Reveal>
       </div>
     </section>
+  );
+}
+
+// One centred figure in the Monthly Snapshot: icon, number, label, then a short note.
+// Notes are kept short so the two side-by-side cells on phones stay on one line.
+function SnapshotStat({
+  label,
+  icon,
+  chip,
+  value,
+  note,
+  className = '',
+}: {
+  label: string;
+  icon: ReactNode;
+  chip: string;
+  value: ReactNode;
+  note: ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`flex flex-col items-center bg-surface px-4 py-6 text-center sm:px-6 sm:py-8 ${className}`}>
+      <span aria-hidden className={`flex h-10 w-10 items-center justify-center rounded-xl ${chip}`}>
+        {icon}
+      </span>
+      <dt className="order-3 mt-1 text-sm font-medium text-ink-muted">{label}</dt>
+      <dd className="order-2 mt-4 text-3xl font-semibold tracking-tight text-ink sm:text-4xl lg:text-5xl">{value}</dd>
+      <dd className="order-4 mt-3 flex min-h-7 items-center text-xs text-ink-muted sm:text-sm">{note}</dd>
+    </div>
   );
 }

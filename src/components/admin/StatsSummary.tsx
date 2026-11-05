@@ -53,11 +53,12 @@ export default function StatsSummary({ salesData }: { salesData: SalesData | nul
         {tiles.map((tile, index) => (
           <div
             key={tile.label}
-            className={`card flex gap-3 p-4 sm:flex-row sm:items-center sm:gap-4 sm:p-5 ${
-              index === 0 ? 'col-span-2 flex-row items-center sm:col-span-1' : 'flex-col items-start'
+            // Every tile shares one layout (icon beside the figure); revenue spans the full width on phones
+            className={`card flex min-w-0 items-center gap-3 p-4 sm:gap-4 sm:p-5 ${
+              index === 0 ? 'col-span-2 sm:col-span-1' : ''
             }`}
           >
-            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tile.chip}`}>
+            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl sm:h-11 sm:w-11 ${tile.chip}`}>
               <tile.Icon className={`h-5 w-5 ${tile.iconClass}`} />
             </div>
             <div className="min-w-0">

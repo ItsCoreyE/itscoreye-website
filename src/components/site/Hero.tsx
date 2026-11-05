@@ -76,7 +76,7 @@ export default function Hero({ sales }: { sales: SalesData }) {
             style={delay(320)}
           >
             {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col-reverse items-center justify-end bg-surface/90 px-4 py-4 sm:px-5 lg:items-start">
+              <div key={stat.label} className="flex flex-col-reverse items-center justify-end bg-surface/90 px-4 py-4 text-center sm:px-5">
                 <dt className="mt-1 text-xs whitespace-nowrap text-ink-muted sm:text-sm">{stat.label}</dt>
                 <dd className="text-2xl font-semibold tracking-tight text-ink sm:text-[1.65rem]">
                   <CountUp value={stat.value} />

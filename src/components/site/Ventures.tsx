@@ -52,12 +52,12 @@ export default function Ventures({ sales }: { sales: SalesData }) {
   return (
     <section id="ventures" className="section scroll-mt-24">
       <div className="container-page">
-        <Reveal>
+        <Reveal className="text-center">
           <span className="section-label mb-4">What I Do</span>
-          <h2 className="heading-section max-w-3xl">
+          <h2 className="heading-section mx-auto max-w-3xl">
             One creator, {ventureCount} ventures, all built in the open.
           </h2>
-          <p className="section-intro">
+          <p className="section-intro mx-auto">
             From avatar items on the Roblox marketplace to prize competitions and moderation
             tools, here is everything I run right now.
           </p>

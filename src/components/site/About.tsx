@@ -48,21 +48,22 @@ export default function About() {
     <section id="about" className="section scroll-mt-24 bg-surface">
       <div className="container-page">
         <div className="grid grid-cols-1 gap-8 sm:gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
-          <Reveal>
+          {/* Centred while stacked; left-aligned as the left column on desktop */}
+          <Reveal className="text-center lg:text-left">
             <span className="section-label mb-4">About</span>
             <h2 className="heading-section">The person behind the work.</h2>
-            <p className="mt-6 text-lg leading-relaxed text-ink-secondary">
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-secondary lg:mx-0 lg:max-w-none">
               I&apos;m Corey, a results-driven entrepreneur with over five years of experience in
               customer operations and service roles. I build businesses that solve real problems
               and deliver measurable value.
             </p>
-            <p className="mt-4 leading-relaxed text-ink-secondary">
+            <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-ink-secondary lg:mx-0 lg:max-w-none">
               Whether it&apos;s designing digital items for Roblox players, running fair prize
               competitions or keeping people&apos;s tech working, I focus on trust, quality and
               looking after the people who use what I make.
             </p>
-            <figure className="mt-8 flex gap-4">
-              <span aria-hidden className="w-[3px] shrink-0 self-stretch rounded-full bg-[image:var(--gradient-brand)]" />
+            <figure className="mt-8 flex flex-col items-center gap-4 lg:flex-row lg:items-stretch">
+              <span aria-hidden className="h-[3px] w-10 shrink-0 rounded-full bg-[image:var(--gradient-brand)] lg:h-auto lg:w-[3px] lg:self-stretch" />
               <blockquote className="text-lg font-medium text-ink">
                 &ldquo;Building businesses that people can trust, one venture at a time.&rdquo;
               </blockquote>
@@ -87,15 +88,15 @@ export default function About() {
             </div>
 
             <Reveal delay={120}>
-              <h3 className="text-sm font-semibold tracking-[0.12em] text-ink-muted uppercase">Toolkit</h3>
+              <h3 className="text-center text-sm font-semibold tracking-[0.12em] text-ink-muted uppercase lg:text-left">Toolkit</h3>
               <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-1">
                 {skillGroups.map((group) => (
                   <div key={group.title}>
-                    <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold text-ink">
+                    <h4 className="mb-2 flex items-center justify-center gap-2 text-sm font-semibold text-ink lg:justify-start">
                       <span aria-hidden className={`h-1.5 w-1.5 rounded-full ${group.dot}`} />
                       {group.title}
                     </h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap justify-center gap-2 lg:justify-start">
                       {group.skills.map((skill) => (
                         <span key={skill} className="tag">
                           {skill}

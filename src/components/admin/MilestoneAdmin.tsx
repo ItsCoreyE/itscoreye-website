@@ -8,6 +8,7 @@ import {
   TrophyIcon,
   DocumentCheckIcon,
   CheckBadgeIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import type { Milestone, MilestonesData } from '@/types/ugc';
 
@@ -281,8 +282,10 @@ export default function MilestoneAdmin() {
               </div>
             )}
 
-            <div className="rounded-lg border border-accent-border bg-accent-soft/50 p-4">
-              <p className="text-center text-sm break-words text-ink-secondary">
+            {/* Left-aligned like the rest of the admin cards */}
+            <div className="flex gap-3 rounded-xl border border-accent-border bg-accent-soft/50 p-4">
+              <InformationCircleIcon className="mt-0.5 h-5 w-5 shrink-0 text-accent" />
+              <p className="text-sm break-words text-ink-secondary">
                 <strong>Note:</strong> When you toggle this milestone and save, an @everyone
                 notification will be sent to Discord #milestones channel!
               </p>
