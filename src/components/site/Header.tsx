@@ -117,7 +117,7 @@ export default function Header() {
           {/* Mobile menu */}
           <div
             id="mobile-menu"
-            className={`glass shadow-float absolute inset-x-0 top-full mt-3 -mx-3 origin-top rounded-3xl p-3 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:-mx-4 md:hidden ${
+            className={`shadow-float absolute inset-x-0 top-full mt-3 -mx-3 origin-top rounded-3xl border border-line/80 bg-surface/95 p-3 backdrop-blur-xl transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:-mx-4 md:hidden ${
               isMenuOpen ? 'scale-100 opacity-100' : 'pointer-events-none -translate-y-2 scale-[0.98] opacity-0'
             }`}
             inert={!isMenuOpen}
@@ -146,8 +146,14 @@ export default function Header() {
                 </li>
               ))}
             </ul>
-            <div className="mt-2 flex items-center gap-2 border-t border-line px-1 pt-3">
-              <a href="#contact" onClick={() => setIsMenuOpen(false)} className="btn-primary flex-1 text-sm">
+            {/* Near-opaque panel and a darker rule so the divider stays visible over the hero photo */}
+            {/* Below 360px the button takes its own row so its label never wraps */}
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-2 border-t border-ink/15 px-1 pt-3">
+              <a
+                href="#contact"
+                onClick={() => setIsMenuOpen(false)}
+                className="btn-primary w-full px-5 text-sm whitespace-nowrap min-[360px]:w-auto min-[360px]:flex-1"
+              >
                 Get in Touch
               </a>
               {socialLinks.map((social) => (
