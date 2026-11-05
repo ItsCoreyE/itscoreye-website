@@ -11,13 +11,14 @@ export default function Hero({ sales }: { sales: SalesData }) {
   const bestSeller = sales.topItems[0];
   const newestLaunch = ventures.find((v) => v.id === 'muzzle');
 
-  // Sales figures are one month's report, so label them with that month
+  // Sales figures are one month's report, so the label names that month.
+  // Labels are kept short enough to stay on one line in every grid layout below.
   const month = reportMonth(sales.dataPeriod);
-  const monthSuffix = month ? ` in ${month.short}` : ' Last Month';
+  const monthLabel = (name: string) => (month ? `${name} · ${month.short}` : `${name} Last Month`);
 
   const stats = [
-    { label: `Robux Earned${monthSuffix}`, value: sales.totalRevenue },
-    { label: `UGC Sales${monthSuffix}`, value: sales.totalSales },
+    { label: monthLabel('Robux'), value: sales.totalRevenue },
+    { label: monthLabel('Sales'), value: sales.totalSales },
     { label: 'Ventures', value: ventureCount },
     { label: 'Years Experience', value: 5, suffix: '+' },
   ];
@@ -71,12 +72,12 @@ export default function Hero({ sales }: { sales: SalesData }) {
           </div>
 
           <dl
-            className="animate-rise mt-10 grid grid-cols-2 sm:mt-12 gap-px overflow-hidden rounded-card border border-line bg-line shadow-card sm:grid-cols-4"
+            className="animate-rise mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-card border border-line bg-line shadow-card sm:mt-12 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4"
             style={delay(320)}
           >
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col-reverse items-center justify-end bg-surface/90 px-4 py-4 sm:px-5 lg:items-start">
-                <dt className="mt-1 text-xs leading-snug text-ink-muted sm:text-sm">{stat.label}</dt>
+                <dt className="mt-1 text-xs whitespace-nowrap text-ink-muted sm:text-sm">{stat.label}</dt>
                 <dd className="text-2xl font-semibold tracking-tight text-ink sm:text-[1.65rem]">
                   <CountUp value={stat.value} />
                   {stat.suffix}
