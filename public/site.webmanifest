@@ -1,5 +1,5 @@
 {
-  "name": "ItsCoreyE - Entrepreneur & Creator",
+  "name": "Corey Edwards (ItsCoreyE)",
   "short_name": "ItsCoreyE",
   "icons": [
     {
@@ -13,7 +13,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#0a0e27",
-  "background_color": "#0a0e27",
+  "theme_color": "#fafafa",
+  "background_color": "#fafafa",
   "display": "standalone"
 }

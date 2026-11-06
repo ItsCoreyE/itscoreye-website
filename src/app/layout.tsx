@@ -14,7 +14,12 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.itscoreye.com'),
-  title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
+  // Homepage title stays under 60 characters so Google shows it in full; other pages
+  // set a short title and the template adds the name, e.g. "Admin | Corey Edwards"
+  title: {
+    default: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
+    template: '%s | Corey Edwards',
+  },
   description: 'Corey Edwards (ItsCoreyE) designs Roblox UGC avatar accessories and runs Odds Up, Muzzle and Fix My Rig. See the ventures, real monthly sales numbers and how to get in touch.',
   keywords: ['Corey Edwards', 'ItsCoreyE', 'Entrepreneur', 'Business Owner', 'UGC Creator', 'Roblox Designer', 'Digital Creator', 'Odds Up', 'Prize Competitions', 'UK Competitions', 'Fix My Rig', 'IT Support', 'Remote Tech Support', 'Muzzle', 'Moderation Bot', "Yapin'", 'Customer Service', 'Operations Management', 'Web Development', 'Stripe Integration'],
   authors: [{ name: 'Corey Edwards' }],
@@ -32,7 +37,7 @@ export const metadata: Metadata = {
     title: 'Corey Edwards (ItsCoreyE) | Roblox UGC Creator & Founder',
     description: 'I design Roblox UGC and build businesses people trust, including Odds Up, Muzzle and Fix My Rig.',
     url: 'https://www.itscoreye.com',
-    siteName: 'Corey Edwards Portfolio',
+    siteName: 'Corey Edwards',
     type: 'website',
     images: [
       {

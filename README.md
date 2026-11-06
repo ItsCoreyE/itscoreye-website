@@ -64,8 +64,7 @@ itscoreye-website/
 │   ├── icons/              # Favicons and app icons
 │   ├── og-image.png        # Social media preview image
 │   ├── profile.webp        # Hero headshot
-│   ├── site.webmanifest
-│   └── sitemap.xml
+│   └── site.webmanifest
 ├── src/
 │   ├── app/
 │   │   ├── api/
@@ -76,7 +75,9 @@ itscoreye-website/
 │   │   │   └── roblox/     # Roblox thumbnail proxy (single and batched)
 │   │   ├── admin/          # Admin panel page
 │   │   ├── layout.tsx      # Root layout with SEO metadata
-│   │   ├── page.tsx        # Homepage (Server Component)
+│   │   ├── page.tsx        # Homepage (Server Component, canonical URL)
+│   │   ├── robots.ts       # robots.txt
+│   │   ├── sitemap.ts      # sitemap.xml
 │   │   └── globals.css     # Design tokens and global styles
 │   ├── components/
 │   │   ├── site/           # Public homepage sections

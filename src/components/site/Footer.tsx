@@ -79,6 +79,7 @@ export default function Footer() {
             <div className="flex items-center gap-2">
               <Link
                 href="/admin"
+                rel="nofollow"
                 className="group inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink-muted shadow-sm transition-colors hover:border-accent-border hover:text-accent"
               >
                 <LockClosedIcon className="h-4 w-4 transition-transform duration-300 group-hover:-rotate-6" />
