@@ -14,9 +14,9 @@ export default function AdminNavigation({ onLogout }: AdminNavigationProps) {
           <Image
             src="/icons/android-chrome-512x512.png"
             alt=""
-            width={64}
-            height={64}
-            className="h-8 w-8 shrink-0"
+            width={80}
+            height={80}
+            className="h-10 w-10 shrink-0"
           />
           <span className="hidden truncate text-base font-semibold tracking-tight text-ink sm:block">
             Corey Edwards

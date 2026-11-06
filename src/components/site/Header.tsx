@@ -75,7 +75,9 @@ export default function Header() {
               className="flex h-11 items-center gap-2.5 text-base font-semibold tracking-tight text-ink"
               aria-label="Corey Edwards, back to top"
             >
-              <Image src="/icons/android-chrome-512x512.png" alt="" width={64} height={64} className="h-7 w-7" />
+              {/* The CE mark fills only the middle half of this square icon, so a 40px box gives
+                  letters about 20px tall, in step with the name beside it as on the OG image */}
+              <Image src="/icons/android-chrome-512x512.png" alt="" width={80} height={80} priority className="h-10 w-10 shrink-0" />
               Corey Edwards
             </a>
 

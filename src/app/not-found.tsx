@@ -17,11 +17,13 @@ export default function NotFound() {
         <Image
           src="/icons/android-chrome-512x512.png"
           alt=""
-          width={128}
-          height={128}
-          className="mx-auto h-14 w-14"
+          width={192}
+          height={192}
+          priority
+          className="mx-auto h-20 w-20 sm:h-24 sm:w-24"
         />
-        <p className="mt-8 text-sm font-semibold tracking-wide text-accent uppercase">Error 404</p>
+        {/* The icon's transparent band already adds space below the mark */}
+        <p className="mt-4 text-sm font-semibold tracking-wide text-accent uppercase">Error 404</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
           <span className="gradient-text">Page Not Found</span>
         </h1>
